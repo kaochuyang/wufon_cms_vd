@@ -1,13 +1,17 @@
 # depslib dependency file v1.0
-1500862828 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/main.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/main.cpp
 	<stdio.h>
+	"sharememory.h"
+	"PARSEGROUP.h"
+	"readjob.h"
+	"writejob.h"
 
-1500862895 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/PARSEGROUP.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/PARSEGROUP.cpp
 	"PARSEGROUP.h"
 
-1500862828 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/PARSEGROUP.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/PARSEGROUP.h
 
-1501750013 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/UDP.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/UDP.cpp
 	"UDP.h"
 	<stdio.h>
 	<sys/types.h>
@@ -15,14 +19,14 @@
 	<unistd.h>
 	<string.h>
 
-1501750052 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/UDP.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/UDP.h
 	"var.h"
 	<sys/socket.h>
 	<netinet/in.h>
 	<netdb.h>
 	<pthread.h>
 
-1501749270 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/RS232.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/RS232.cpp
 	"RS232.h"
 	<stdio.h>
 	<fcntl.h>
@@ -30,29 +34,38 @@
 	<unistd.h>
 	<string.h>
 
-1501749615 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/RS232.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/RS232.h
 	"var.h"
 	<pthread.h>
 
-1501749752 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/var.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/var.h
 
-1500863219 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/execute_thread.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/execute_thread.cpp
 	"execute_thread.h"
 
-1500863219 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/execute_thread.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/execute_thread.h
 
-1500863291 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/readjob.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/readjob.cpp
 	"readjob.h"
 
-1500863291 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/readjob.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/readjob.h
 
-1500863252 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.cpp
 	"sharememory.h"
 
-1500863252 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.h
 
-1501558055 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/writejob.cpp
+1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/writejob.cpp
 	"writejob.h"
 
-1500863339 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/writejob.h
+1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/writejob.h
+
+1502114216 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junli_vd.cpp
+	"junli_vd.h"
+	<string.h>
+
+1502112234 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junli_vd.h
+	"variable.h"
+
+1502111538 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/variable.h
 
