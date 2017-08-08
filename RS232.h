@@ -1,7 +1,7 @@
 #ifndef RS232_H
 #define RS232_H
 
-#include "var.h"
+#include "variable.h"
 #include <pthread.h>
 //---------------------------------------------------------------------------
 class RS232

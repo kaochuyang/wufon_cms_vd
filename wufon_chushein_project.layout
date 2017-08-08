@@ -1,13 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
 <CodeBlocks_layout_file>
 	<ActiveTarget name="Debug" />
-	<File name="PARSEGROUP.cpp" open="1" top="0" tabpos="3">
+	<File name="PARSEGROUP.cpp" open="0" top="0" tabpos="3">
 		<Cursor position="188" topLine="0" />
 	</File>
-	<File name="PARSEGROUP.h" open="1" top="0" tabpos="2">
+	<File name="PARSEGROUP.h" open="0" top="0" tabpos="2">
 		<Cursor position="192" topLine="0" />
 	</File>
-	<File name="main.cpp" open="1" top="0" tabpos="1">
+	<File name="junbo_cms.cpp" open="1" top="0" tabpos="2">
+		<Cursor position="1542" topLine="13" />
+	</File>
+	<File name="junbo_cms.h" open="1" top="0" tabpos="1">
+		<Cursor position="221" topLine="0" />
+	</File>
+	<File name="junli_vd.cpp" open="0" top="0" tabpos="0">
+		<Cursor position="2248" topLine="42" />
+	</File>
+	<File name="junli_vd.h" open="0" top="0" tabpos="0">
+		<Cursor position="276" topLine="0" />
+	</File>
+	<File name="main.cpp" open="0" top="0" tabpos="1">
 		<Cursor position="151" topLine="0" />
+	</File>
+	<File name="variable.h" open="1" top="0" tabpos="3">
+		<Cursor position="2302" topLine="3" />
 	</File>
 </CodeBlocks_layout_file>

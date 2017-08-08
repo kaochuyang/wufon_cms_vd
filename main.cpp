@@ -19,15 +19,52 @@ try
 
 
 
-//initial function, parameter
+//open a lot of device port
+
+
+maxport++;
+
+while(1)
+{//initial function, parameter
+FD_ZERO(&readfs);
+
 
 
 //while loop, select
 
-//parse
+            timeout.tv_sec=60;                                                      //timeout秒數
+            timeout.tv_usec=0;                                                      //這個是毫秒,暫不使用
+
+            rec=select(maxport,&readfs,NULL,NULL,&timeout);                         //wait block for read
+
+            if (rec<0)                                                              //Select Error
+            {
+
+            }
+            else if (rec==0)                                                        //Select Time Out
+            {
+               printf("Select Time Out!!\n");
+            }
+            else//parse
+            {
+               /* if (smem.DeviceSocket.GetPortAlreadyOpen())
+                {
+                    if (FD_ISSET(smem.DeviceSocket.Getfd(),&readfs))
+                    {
+                        readSelectLength=smem.DeviceSocket.UdpRead();
+                        if (readSelectLength>0)
+                        {
+
+                        }
+                    }
+                }*/
+
+            }
+
+
 
 //close function, free memory
-
+}
 }
 catch(...){}
 

@@ -40,11 +40,16 @@
 		<Unit filename="UDP.h" />
 		<Unit filename="execute_thread.cpp" />
 		<Unit filename="execute_thread.h" />
+		<Unit filename="junbo_cms.cpp" />
+		<Unit filename="junbo_cms.h" />
+		<Unit filename="junli_vd.cpp" />
+		<Unit filename="junli_vd.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="readjob.cpp" />
 		<Unit filename="readjob.h" />
 		<Unit filename="sharememory.cpp" />
 		<Unit filename="sharememory.h" />
+		<Unit filename="variable.h" />
 		<Unit filename="writejob.cpp" />
 		<Unit filename="writejob.h" />
 		<Extensions>

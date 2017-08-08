@@ -1,6 +1,6 @@
 #ifndef UDP_H
 #define UDP_H
-#include "var.h"
+#include "variable.h"
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
