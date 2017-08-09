@@ -45,6 +45,7 @@ class junbo_cms
     };
 
 RS232 junbo_cms_port;
+int open_port_process(char* tty_name);
 
 
     private:

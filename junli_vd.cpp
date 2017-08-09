@@ -166,5 +166,14 @@ bool junli_vd::vClearMsg(MESSAGEOK *messageIn, unsigned short int msgID)
     */
     bzero(messageIn[msgID].packet, BUFFERSIZE);
 }
+int junli_vd::open_port_process(char* tty_name)
+{try{int tempmax=0;
+     if (tempmax=junli_port.OpenRs232Port(tty_name, 9600, false)>0)
+    {
+        printf("open junli_port-%s  Success!!\n",tty_name);
+    }
+    else printf("open junli_port Fail!!\n");
 
-
+    return tempmax;
+}catch(...){}
+}

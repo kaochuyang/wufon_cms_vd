@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/main.cpp
+1502284247 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/main.cpp
 	<stdio.h>
 	"sharememory.h"
 	"PARSEGROUP.h"
@@ -53,18 +53,20 @@
 1502192776 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.cpp
 	"sharememory.h"
 
-1502192832 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.h
+1502283986 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/sharememory.h
 	<pthread.h>
 	"RS232.h"
 	"UDP.h"
 	"variable.h"
+	"junli_vd.h"
+	"junbo_cms.h"
 
 1502111123 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/writejob.cpp
 	"writejob.h"
 
 1502111123 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/writejob.h
 
-1502195530 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junli_vd.cpp
+1502281128 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junli_vd.cpp
 	"junli_vd.h"
 	<string.h>
 	<time.h>
@@ -72,15 +74,16 @@
 	<signal.h>
 	<unistd.h>
 
-1502195391 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junli_vd.h
+1502280749 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junli_vd.h
+	"RS232.h"
 	"variable.h"
 
-1502196889 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/variable.h
+1502283002 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/variable.h
 
-1502182665 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junbo_cms.cpp
+1502281332 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junbo_cms.cpp
 	"junbo_cms.h"
 
-1502182549 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junbo_cms.h
+1502281332 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junbo_cms.h
 	"variable.h"
 	<stdlib.h>
 	<stdio.h>
@@ -117,4 +120,13 @@
 1502198076 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/V3protocol_0F.h
 	"variable.h"
 	<time.h>
+
+1502283046 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/PARSETRAFFIC.cpp
+	"PARSETRAFFIC.h"
+	"sharememory.h"
+	<stdio.h>
+	<string.h>
+
+1502283062 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/PARSETRAFFIC.h
+	"variable.h"
 

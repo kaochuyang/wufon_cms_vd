@@ -32,12 +32,20 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="CDataToMessageOK.cpp" />
+		<Unit filename="CDataToMessageOK.h" />
+		<Unit filename="CHexToInt.cpp" />
+		<Unit filename="CHexToInt.h" />
 		<Unit filename="PARSEGROUP.cpp" />
 		<Unit filename="PARSEGROUP.h" />
+		<Unit filename="PARSETRAFFIC.cpp" />
+		<Unit filename="PARSETRAFFIC.h" />
 		<Unit filename="RS232.cpp" />
 		<Unit filename="RS232.h" />
 		<Unit filename="UDP.cpp" />
 		<Unit filename="UDP.h" />
+		<Unit filename="V3protocol_0F.cpp" />
+		<Unit filename="V3protocol_0F.h" />
 		<Unit filename="execute_thread.cpp" />
 		<Unit filename="execute_thread.h" />
 		<Unit filename="junbo_cms.cpp" />

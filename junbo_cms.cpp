@@ -415,3 +415,14 @@ bool junbo_cms::ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *message
     return true;
 }
 
+int junbo_cms::open_port_process(char* tty_name)
+{try{int tempmax=0;
+     if (tempmax=junbo_cms_port.OpenRs232Port(tty_name, 9600, false)>0)
+    {
+        printf("open junbo_cms_port-%s  Success!!\n",tty_name);
+    }
+    else printf("open junbo_cms_port Fail!!\n");
+
+    return tempmax;
+}catch(...){}
+}

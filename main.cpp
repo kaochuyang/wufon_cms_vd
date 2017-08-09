@@ -13,7 +13,7 @@ try
 
  int rec=-1;                                                                 //Select Result
  fd_set readfs;                                                              //File Descriptor Set
- int maxport=0,tempmax=0;                                                    //maxnum file desciptor used
+ int maxport=0;                                                             //maxnum file desciptor used
  struct timeval timeout;                                                     //假使若干秒select都沒有資料進來,就做timeout要作的事情
  int readSelectLength=0;                                                     //判斷讀到的長度
 
@@ -21,14 +21,15 @@ try
 
 //open a lot of device port
 
-
+maxport=smem.junli_object.open_port_process("/dev/ttyS0");
+maxport=smem.junbo_object.open_port_process("/dev/ttyS1");
 maxport++;
 
 while(1)
 {//initial function, parameter
 FD_ZERO(&readfs);
 
-
+  if(smem.junli_object.junli_port.GetPortAlreadyOpen())FD_SET(smem.junli_object.junli_port.Getfd(),&readfs);
 
 //while loop, select
 
@@ -47,21 +48,40 @@ FD_ZERO(&readfs);
             }
             else//parse
             {
-               /* if (smem.DeviceSocket.GetPortAlreadyOpen())
+
+                if (smem.centerSocket.GetPortAlreadyOpen())
                 {
-                    if (FD_ISSET(smem.DeviceSocket.Getfd(),&readfs))
+                    if (FD_ISSET(smem.centerSocket.Getfd(),&readfs))
                     {
-                        readSelectLength=smem.DeviceSocket.UdpRead();
+                        readSelectLength=smem.centerSocket.UdpRead();
                         if (readSelectLength>0)
                         {
 
+
                         }
                     }
-                }*/
+                }
+
+
+
+
+                if (smem.junli_object.junli_port.GetPortAlreadyOpen())
+                {
+                    if (smem.junli_object.junli_port.Getfd(),&readfs)
+                    {
+                        readSelectLength=smem.junli_object.junli_port.Rs232Read();
+                        if (readSelectLength>0)
+                        {
+                        smem.junli_object.parse_junli(readSelectLength,smem.junli_object.junli_port.block,smem.junli_object.junli_port.messageIn,&smem.junli_object.junli_port.lastPacketIndex);
+                        }
+                    }
+                }
 
             }
 
+        if (smem.junli_object.junli_port.CloseRs232Port()) printf("Close junli_port Successful!!\n");
 
+        if (smem.junbo_object.junbo_cms_port.CloseRs232Port()) printf("Close junbo_cms_port Successful!!\n");
 
 //close function, free memory
 }
