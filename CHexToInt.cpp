@@ -1,17 +1,7 @@
 #include "CHexToInt.h"
 #include <ctype.h>
 #include <stdio.h>
-#include "variable.h"
-CHexToInt::CHexToInt()
-{
-    //ctor
-}
-
-CHexToInt::~CHexToInt()
-{
-    //dtor
-}
-
+#include "var.h"
 
 CHexToInt oHexToInt;
 //--------------------------------------------------------------------

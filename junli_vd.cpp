@@ -1,4 +1,5 @@
 #include "junli_vd.h"
+#include "SMEM.h"
 #include <string.h>
 #include <time.h>
 #include <stdio.h>
@@ -70,8 +71,10 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                 {
                     messageIn[j].cksStatus=true;
 
-                    if(messageIn[j].packet[1]==0xed) {} //make cms light_on
-                    else if(messageIn[j].packet[1]==0x1c) {} //record the VD still alive
+                    if(messageIn[j].packet[1]==0xed) {
+                        printf("CMS MESSAGE!!\n");
+                        smem.junbo_object.junbo_send_by_VD(1);} //make cms light_on
+                    else if(messageIn[j].packet[1]==0x1c) {printf("VD IS ALIVE\n");} //record the VD still alive
                     //   junbo_light_receive(messageIn[j]);    //save log
                     vClearMsg(messageIn,j);
                     k=0;

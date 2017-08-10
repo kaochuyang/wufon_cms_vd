@@ -1,7 +1,7 @@
 #ifndef JUNBO_CMS_H
 #define JUNBO_CMS_H
 
-#include "variable.h"
+#include "var.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <unistd.h>
@@ -21,6 +21,7 @@ class junbo_cms
     void junbo_cms_send(unsigned char junbo_send_packet[6]);
     void junbo_cms_receive(MESSAGEOK messageIn);
     //void junbo_light_send_reference_step(unsigned short int junbo_step);
+     void junbo_send_by_VD(int textID);
 
 
     void query_modual_state(int query_block);

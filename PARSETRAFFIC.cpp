@@ -1,11 +1,11 @@
 //---------------------------------------------------------------------------
 #include "PARSETRAFFIC.h"
-#include "sharememory.h"
+#include "SMEM.h"
 
 #include <stdio.h>
 #include <string.h>
 
-
+#include "screenCurrentCommPacket.h"
 //---------------------------------------------------------------------------
 PARSETRAFFIC::PARSETRAFFIC(void)
 {
@@ -510,6 +510,43 @@ try {
   } catch (...) {}
 }
 //---------------------------------------------------------------------------
+bool PARSETRAFFIC::EchoToGUI(int *maxMessageIndex,MESSAGEOK *messageIn,char *deviceName)      //作此協定相對的事情
+{
+try {
+    if (*maxMessageIndex>=0) {                                                  //確保
+        for (int i=0;i<=*maxMessageIndex;i++) {
+             if (messageIn[i].cksStatus==true) {                                //通過CheckSum檢測
+                 if (messageIn[i].success==true) {                              //通過檢查封包含合理性
+
+                 //OTADD for packet display to screen
+                   screenCurrentCommPacket.vRefreshCurrentScreenPacket(messageIn[i].packet, messageIn[i].packetLength, "0");
+
+                     char tempBuff[256],buff[2048]="";
+                     char portName[200]="[RECEIVE] ";
+                     char temp[6]=" --";
+
+                     strcat(portName,deviceName);
+                     strcat(portName,temp);
+
+                     strcat(buff,portName);
+
+                     for (int j=0;j<messageIn[i].packetLength;j++) {
+                          sprintf(tempBuff,"%3X",messageIn[i].packet[j]);
+                          strcat(buff,tempBuff);
+                     }
+
+
+                     printf("%s\n",buff);
+
+                 }
+             }
+        }  //end for (int i=0 ; i < maxMessageIndex ; i++)
+    }  //end if (maxMessageIndex >= 0)
+
+    return true;
+
+  } catch(...) {}
+}
 
 //---------------------------------------------------------------------------
 bool PARSETRAFFIC::MoveLastData(int *maxMessageIndex,int *lastPacketIndex,MESSAGEOK *messageIn)
@@ -541,6 +578,602 @@ try {
 
 
 //---------------------------------------------------------------------------
+
+/*
+//---------------------------------------------------------------------------
+//bool PARSETRAFFIC::decide77Or87(int messageInIdx,BYTE controlCode,int length)
+bool PARSETRAFFIC::decide77Or87(MESSAGEOK *messageIn)
+{
+try {
+    switch(messageIn.packet[4]) {      //77或87要由控制碼判斷
+         //號誌控制器送回中心
+         case 0xE7:          //77年版號誌控制器:現行步階與剩餘秒數應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=12) messageIn.success=true;
+         break;
+         case 0xE2:          //77年版號誌控制器:現行操作模式應答
+         case 0xD2:          //32時段控制器使用
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0xEC:          //77年版號誌控制器:控制器運作狀態應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x0E:          //77年版號誌控制器:for 宏眾
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x0F:          //77年版號誌控制器:
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x0C:          //77年版號誌控制器:Plan2傳送成功
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0xEF:          //77年版號誌控制器:特殊日時段型態應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=27) messageIn.success=true;
+         break;
+         case 0xEB:          //77年版號誌控制器:最近一次箱門開啟及關閉時間
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=15) messageIn.success=true;
+         break;
+         case 0xE3:          //77年版號誌控制器:現行時段起始時間應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=12) messageIn.success=true;
+         break;
+         case 0xE9:          //77年版號誌控制器:時段應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=10) messageIn.success=true;
+         break;
+         case 0xEA:          //77年版號誌控制器:時段內時制計劃應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=10) messageIn.success=true;
+         break;
+         case 0xE0:          //77年版號誌控制器:即時時間應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=10) messageIn.success=true;
+         break;
+         case 0xE1:          //77年版號誌控制器:當日日期應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=11) messageIn.success=true;
+         break;
+         case 0xE4:          //77年版號誌控制器:第一類訊息應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=14) messageIn.success=true;
+         break;
+         case 0xE5:          //77年版號誌控制器:第二類訊息應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=14) messageIn.success=true;
+         break;
+         case 0xE8:          //77年版號誌控制器:週內日時段型態應答
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=12) messageIn.success=true;
+         break;
+
+         //中心送至號誌控制器
+
+
+         //資訊可變系統控制器送回中心
+         case 0x00:          //87年版資訊可變系統控制器:傳送成功
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=9) messageIn.success=true;
+         break;
+         case 0x01:          //87年版資訊可變系統控制器:傳送失敗
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=9) messageIn.success=true;
+         break;
+         case 0x15:          //87年版資訊可變系統控制器:硬體重置回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x19:          //87年版資訊可變系統控制器:軟體重置回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x13:          //87年版資訊可變系統控制器:對時誤差過大要求中心對時
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=9) messageIn.success=true;
+         break;
+         case 0x14:          //87年版資訊可變系統控制器:現場設備日期時間回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=13) messageIn.success=true;
+         break;
+         case 0x2F:          //87年版資訊可變系統控制器:現場設備傳輸週期回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x1D:          //87年版資訊可變系統控制器:現場設備硬體狀態回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x1E:          //87年版資訊可變系統控制器:電源中斷回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=11) messageIn.success=true;
+         break;
+         case 0x25:          //87年版資訊可變系統控制器:控制器版本日期回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=12) messageIn.success=true;
+         break;
+         case 0x26:          //87年版資訊可變系統控制器:減光控制管理回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=12) messageIn.success=true;
+         break;
+         case 0x2A:          //87年版資訊可變系統控制器:減光開始與結束回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x2E:          //87年版資訊可變系統控制器:迴路測試
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x2D:          //87年版資訊可變系統控制器:要求中心下傳控制器資料
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+         case 0x76:          //87年版資訊可變系統控制器:全文訊息回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=38) messageIn.success=true;
+         break;
+         case 0x86:          //87年版資訊可變系統控制器:全文色彩回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=22) messageIn.success=true;
+         break;
+         case 0xA8:          //87年版資訊可變系統控制器:全文時間回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=20) messageIn.success=true;
+         break;
+         case 0x52:          //87年版資訊可變系統控制器:顯示秒數與間距回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=10) messageIn.success=true;
+         break;
+         case 0x7F:          //87年版資訊可變系統控制器:單點測試結果回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=16) messageIn.success=true;
+         break;
+
+         //77,87都有
+         case 0x10:
+              if (messageIn.packetLength==12) {
+                     messageIn.protocol = PROTOCOL77;
+                     messageIn.success=true;
+              } else {
+                  messageIn.protocol = PROTOCOL87;
+                  if (messageIn.packetLength>=6) messageIn.success=true;
+              }
+         break;
+         case 0x29:          //87年版資訊可變系統控制器:現場設備編號回報
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=8) messageIn.success=true;
+         break;
+
+         case 0x11:
+              if (messageIn.packetLength==11) {
+                     messageIn.protocol = PROTOCOL77;
+                     messageIn.success=true;
+              } else {
+                  messageIn.protocol = PROTOCOL87;
+                  if (messageIn.packetLength>=6) messageIn.success=true;
+              }
+         break;
+         case 0x21:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x22:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x24:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x27:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x28:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x2C:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+
+
+
+         //中心送至資訊可變系統控制器
+         case 0x12:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x2B:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x16:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x17:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x18:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x1C:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x1F:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+
+         case 0x74:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x77:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x75:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x85:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x79:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x7C:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x7E:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0xA5:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0xA7:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0xA6:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x50:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x51:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x55:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x56:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+         case 0x59:
+              messageIn.protocol = PROTOCOL87;
+              if (messageIn.packetLength>=6) messageIn.success=true;
+         break;
+
+         default: //主要為了中心送往77年版路口控制器的協定
+              messageIn.protocol = PROTOCOL77;
+              if (messageIn.packetLength>=7) messageIn.success=true;
+         break;
+    } //end switch
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool PARSETRAFFIC::decideProtocol92Normal(MESSAGEOK *messageIn)
+{
+try {
+    //共用訊息 0F+controlCode
+    switch (messageIn.packet[8]) {
+        case 0x80:       //回報指令有效       終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=13) messageIn.success=true;
+        break;
+        case 0x81:       //回報指令無效       終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=15) messageIn.success=true;
+        break;
+        case 0x8F:       //現場設備代傳指令上傳    終端控制器->區域控制器->控制中心
+             if (messageIn.packetLength>=16) messageIn.success=true;
+        break;
+        case 0x8E:       //下載代傳指令至路口設備  控制中心->區域控制器->終端控制器
+             if (messageIn.packetLength>=16) messageIn.success=true;
+        break;
+        case 0x10:       //重設定現場設備(硬體重置)   控制中心->終端控制器
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x90:       //回報現場設備重設定 終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x40:       //查詢現場設備編號   控制中心->終端控制器
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0xC0:       //回報現場設備編號   終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=14) messageIn.success=true;
+        break;
+        case 0x00:       //回報前次電源中斷(設備重新啟動)  終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=15) messageIn.success=true;
+        break;
+        case 0x11:       //重設現場設備之通訊(軟體重置)    控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0x91:       //回報通訊重設定    終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0x41:       //查詢現場設備狀態     控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0xC1:       //回報查詢現場設備狀態     終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x12:       //設定現場設備之日期時間    控制中心->終端控制器
+             if (messageIn.packetLength>=18) messageIn.success=true;
+        break;
+        case 0x92:       //對時誤差回報及要求中心對時   終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x42:       //查詢現場設備之日期時間    控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0xC2:       //回報現場設備之日期時間    終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=18) messageIn.success=true;
+        break;
+        case 0x02:       //回報終端設備現場手動更改時間  終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0x13:       //設定現場設備指令等級    控制中心->終端控制器
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x43:       //查詢軔體燒錄日期版本及指令等級   控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0xC3:       //回報軔體燒錄日期版本及指令等級   終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=17) messageIn.success=true;
+        break;
+        case 0x14:       //設定現場設備回報硬體狀態之週期   控制中心->終端控制器
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x44:       //查詢現場設備回報狀況之傳輸週期   控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0xC4:       //回報現場設備回報狀況之傳輸週期   終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x04:       //現場設備回報狀態    終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x15:       //設定現場設備操作密碼     控制中心->終端控制器
+             if (messageIn.packetLength>=17) messageIn.success=true;
+        break;
+        case 0x45:       //查詢現場設備操作鎖定密碼    控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0xC5:       //回覆現場設備操作密碼    終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=17) messageIn.success=true;
+        break;
+        case 0x16:       //設定,解除現場資料庫操作鎖定   控制中心->終端控制器
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x46:       //查詢現場資料庫鎖定   控制中心->終端控制器
+             if (messageIn.packetLength>=11) messageIn.success=true;
+        break;
+        case 0xC6:       //回報現場資料庫鎖定   終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0x47:       //查詢通訊協定回測指令   控制中心->終端控制器
+             if (messageIn.packetLength>=12) messageIn.success=true;
+        break;
+        case 0xC7:       //回報通訊協定回測指令   終端控制器->區域控制器(交控中心)
+             if (messageIn.packetLength>=13) messageIn.success=true;
+        break;
+        default:
+        break;
+    }
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool PARSETRAFFIC::decideProtocol92Tc(MESSAGEOK *messageIn)
+{
+try {
+    //號誌控制器訊息 0x5F+controlCode
+    messageIn.success=true;
+    switch (messageIn.packet[8]) {
+        case 0x10:       //設定現行控制策略之內容
+        break;
+        case 0x40:       //查詢現行控制策略之設定內容
+        break;
+        case 0xC0:       //回報現行控制策略之內容
+        break;
+        case 0x00:       //自動回報控制策略之現行執行內容
+        break;
+        case 0x11:       //設定一般日車道調撥控制之參數
+        break;
+        case 0x41:       //查詢一般日車道調撥控制參數之設定內容
+        break;
+        case 0xC1:       //回報一般日車道調撥控制參數之設定內容
+        break;
+        case 0x01:       //自動回報一般車道調撥控制之起迄
+        break;
+        case 0x12:       //設定特殊日車道調撥之參數
+        break;
+        case 0x42:       //查詢特殊日車道調撥控制參數之設定內容
+        break;
+        case 0xC2:       //回報特殊日車道調撥控制參數之設定內容
+        break;
+        case 0x02:       //自動回報特殊日車道調撥控制之起迄
+        break;
+        case 0x13:       //設定號誌控制器時相排列
+        break;
+        case 0x43:       //查詢號誌控制器時相排列之資料
+        break;
+        case 0xC3:       //回報號誌控制器時相排列之資料
+        break;
+        case 0x03:       //主動回報號誌控制器步階轉換之資料
+        break;
+        case 0x14:       //設定路口時制計劃之基本參數
+        break;
+        case 0x44:       //查詢路口時制計劃的基本參數
+        break;
+        case 0xC4:       //回報路口時制計畫的基本參數
+        break;
+        case 0x15:       //設定時制計劃內容
+        break;
+        case 0x45:       //查詢時制計劃之設定內容
+        break;
+        case 0xC5:       //回報時制計劃之設定內容
+        break;
+        case 0x16:       //設定一般日時段型態
+        break;
+        case 0x46:       //查詢一般日時段型態之設定內容
+        break;
+        case 0xC6:       //回報一般日時段型態之設定內容
+        break;
+        case 0x17:       //設定特殊日時段型態
+        break;
+        case 0x47:       //查詢特殊日時段型態之設定內容
+        break;
+        case 0xC7:       //回報特殊日時段型態之設定內容
+        break;
+        case 0x18:       //選擇執行之時制計劃
+        break;
+        case 0x48:       //查詢目前時制計劃內容
+        break;
+        case 0xC8:       //回報目前時制計劃內容
+        break;
+        case 0x19:       //設定觸動控制組態
+        break;
+        case 0x49:       //查詢觸動控制組態內容
+        break;
+        case 0xC9:       //回報觸動控制組態內容
+        break;
+        case 0x09:       //觸動後回報觸動控制之進行
+        break;
+        case 0x1A:       //設定一般日觸動時段型態
+        break;
+        case 0x4A:       //查詢一般日觸動型態之設定內容
+        break;
+        case 0xCA:       //回報一般日觸動時段型態之設定內容
+        break;
+        case 0x1B:       //設定特殊日期觸動時段行態
+        break;
+        case 0x4B:       //查詢特殊日期觸動時段型態之設定內容
+        break;
+        case 0xCB:       //回報特殊日觸動時段型態之設定內容
+        break;
+        case 0x1C:       //時相或步階變換控制
+        break;
+        case 0x4C:       //查詢號誌控制器現行時相及步階
+        break;
+        case 0xCC:       //回報號誌控制器現行時相及步階與執行秒數
+        break;
+        case 0x0C:       //主動回報號誌控制器現行時相及步階
+        break;
+        case 0x1D:       //臨界路口控制
+        break;
+        case 0x1E:       //設定特勤路線控制參數
+        break;
+        case 0x4E:       //查詢特勤路線控制參數之設定內容
+        break;
+        case 0xCE:       //回報特勤路線控制參數之設定內容
+        break;
+        case 0x2F:       //設定號制控制器時相排列
+        break;
+        case 0x5F:       //查詢號制控制器時相排列之資料
+        break;
+        case 0xDF:       //回報號制控制器時相排列之資料
+        break;
+        case 0x31:       //設定母機連鎖輸出組態
+        break;
+        case 0x61:       //查詢母機連鎖輸出組態
+        break;
+        case 0xE1:       //回報母機連鎖輸出組態
+        break;
+        case 0x32:       //設定子機連鎖設定組態
+        break;
+        case 0x62:       //查詢子機連鎖設定組態
+        break;
+        case 0xE2:       //回報子機連鎖設定組態
+        break;
+        case 0x33:       //設定子機控制組態
+        break;
+        case 0x63:       //查詢子機控制組態的設定內容
+        break;
+        case 0xE3:       //回報子機控制組態的設定內容
+        break;
+        case 0x08:       //回報號誌控制器現場操作
+        break;
+        case 0x0A:       //回報現場資料更動
+        break;
+        case 0x0B:       //要求控制中心下傳資料庫資料
+        break;
+        case 0x3F:       //設定資料回報傳輸週期
+        break;
+        case 0x6F:       //查詢現場設備交通參數之傳輸週期
+        break;
+        case 0xEF:       //查詢後回報現場燈態或步階轉換資料之回報傳輸週期
+        break;
+        case 0x0F:       //重覆傳輸路口號制控制之燈態狀態
+        break;
+        case 0x3E:       //設定現場設備減光控制狀態
+        break;
+        case 0x6E:       //查詢現場設備減光設定
+        break;
+        case 0xEE:       //回報現場設備減光控制狀態
+        break;
+        case 0x0E:       //回報排程減光控制之起迄
+        break;
+        default:
+        break;
+    }
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool PARSETRAFFIC::decideProtocol92Vd(MESSAGEOK *messageIn)
+{
+try {
+    //車輛偵側器訊息 0x6F+controlCode
+    switch (messageIn.packet[8]) {
+        default:
+            messageIn.success=true;
+        break;
+    }
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool PARSETRAFFIC::decideProtocol92Cms(MESSAGEOK *messageIn)
+{
+try {
+    //資訊可變標誌訊息 0xAF+controlCode
+    switch (messageIn.packet[8]) {
+        default:
+            messageIn.success=true;
+        break;
+    }
+  } catch(...) {}
+}
+*/
 
 //---------------------------------------------------------------------------
 bool PARSETRAFFIC::vJudgeProtocolAndCheckLength(int *maxMessageIndex,MESSAGEOK *messageIn)

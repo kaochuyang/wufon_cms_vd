@@ -1,3 +1,4 @@
+//---------------------------------------------------------------------------
 #include "RS232.h"
 
 #include <stdio.h>
@@ -12,7 +13,7 @@ try {
 
     pthread_mutex_init(&mutexRS232,NULL);
 
-    for (int i=0;i<BUFFERSIZE;i++) block[i]=0;                                  //²MªÅblock
+    for (int i=0;i<BUFFERSIZE;i++) block[i]=0;                                  //�M��block
 
     rs232fd=0;
     alreadyOpen=false;
@@ -80,7 +81,7 @@ int RS232::OpenRs232Port(char *deviceName,int baudrate,bool isEvenParity)
 {
 try {
 
-    struct termios oldtiocom,newtiocom;                                         //RS232³]©w
+    struct termios oldtiocom,newtiocom;                                         //RS232�]�w
 
     pthread_mutex_lock(&mutexRS232);
 
@@ -94,7 +95,7 @@ try {
 
     alreadyOpen=true;
 
-    tcgetattr(rs232fd,&oldtiocom);                                              //Àx¦sÂÂ³]©w
+    tcgetattr(rs232fd,&oldtiocom);                                              //�x�s�³]�w
 
     //115200,true: 115200E81
     //115200,false:115200N81
@@ -146,11 +147,11 @@ try {
     newtiocom.c_iflag=IGNPAR;
     newtiocom.c_oflag=0;
     newtiocom.c_lflag=0;
-    newtiocom.c_cc[VMIN]=1;                                                     //¦Ü¤Ö¤@­Óbyte¤~·|¦¬¤U¨Ó
+    newtiocom.c_cc[VMIN]=1;                                                     //�ܤ֤@��byte�~�|���U��
     newtiocom.c_cc[VTIME]=0;
 
     tcflush(rs232fd,TCIFLUSH);
-    tcsetattr(rs232fd,TCSANOW,&newtiocom);                                      //³]©w·s³]©w
+    tcsetattr(rs232fd,TCSANOW,&newtiocom);                                      //�]�w�s�]�w
 
     pthread_mutex_unlock(&mutexRS232);
 

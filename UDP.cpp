@@ -7,7 +7,7 @@
 #include <unistd.h>
 #include <string.h>
 
-
+#define dShowPrintfMsg
 
 //---------------------------------------------------------------------------
 UDP::UDP(void)
@@ -16,7 +16,7 @@ try {
 
     pthread_mutex_init(&mutexUdp,NULL);
 
-    for (int i=0;i<BUFFERSIZE;i++) block[i]=0;                                  //²MªÅblock
+    for (int i=0;i<BUFFERSIZE;i++) block[i]=0;                                  //�M��block
 
     udpfd;
     alreadyOpen=false;
@@ -82,23 +82,23 @@ int UDP::OpenUdpSocket(char *local_ip,int listen_port,char *send_ip,int send_por
 {
 try {
 
-    int so_broadcast,so_sndbuf=131070,so_rcvbuf=131070;        //³Ì¤jÀ³¸Ó¥u¦³131070 (default:65535) ³]¶W¹L¤]À³¥u¦³131070
+    int so_broadcast,so_sndbuf=131070,so_rcvbuf=131070;        //�̤j���ӥu��131070 (default:65535) �]�W�L�]���u��131070
 
     pthread_mutex_lock(&mutexUdp);
 
-    memset(&listen_addr,0,sizeof(listen_addr));                //listen port(¥»¥x¹q¸£ºÊÅ¥ªºport)
+    memset(&listen_addr,0,sizeof(listen_addr));                //listen port(���x�q����ť��port)
     listen_addr.sin_family=AF_INET;
-    listen_addr.sin_port=htons(listen_port);                   //³]©wlisten_port
-    listen_addr.sin_addr.s_addr=inet_addr(local_ip);           //³]©wlocal_ip
+    listen_addr.sin_port=htons(listen_port);                   //�]�wlisten_port
+    listen_addr.sin_addr.s_addr=inet_addr(local_ip);           //�]�wlocal_ip
 
 
-    memset(&send_addr,0,sizeof(send_addr));                    //­n°e¨ìºô¸ô¤Wªº»·ºÝ¹q¸£ªºport
+    memset(&send_addr,0,sizeof(send_addr));                    //�n�e������W�����ݹq����port
     send_addr.sin_family=AF_INET;
-    send_addr.sin_port=htons(send_port);                       //³]©wsend_port
-    send_addr.sin_addr.s_addr=inet_addr(send_ip);              //³]©wsend_ip
+    send_addr.sin_port=htons(send_port);                       //�]�wsend_port
+    send_addr.sin_addr.s_addr=inet_addr(send_ip);              //�]�wsend_ip
 
 
-    if ((udpfd=socket(AF_INET,SOCK_DGRAM,0))==-1) {            //¶}°ðSOCK_DGRAM(UDP)
+    if ((udpfd=socket(AF_INET,SOCK_DGRAM,0))==-1) {            //�}��SOCK_DGRAM(UDP)
          alreadyOpen=false;
          pthread_mutex_unlock(&mutexUdp);
          return false;
@@ -125,7 +125,7 @@ try {
         return false;
     }
 
-    //bind socket³s±µºô¸ô¥d
+    //bind socket�s�������d
     if (bind(udpfd,(struct sockaddr *)&listen_addr,sizeof(listen_addr))==-1) {
         alreadyOpen=false;
         pthread_mutex_unlock(&mutexUdp);

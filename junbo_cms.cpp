@@ -1,5 +1,5 @@
 #include "junbo_cms.h"
-
+#include "SMEM.h"
 junbo_cms::junbo_cms()
 {
     //ctor
@@ -92,7 +92,7 @@ void junbo_cms::initial_junbo_control(char *text_record_location,char *output_tt
 
 
 
-    junbo_send_packet[1]=0;//adjust seq
+
     FILE *pf=NULL;
 
     printf("\n junbo_command=%2x parameter=%2x\n",junbo_send_packet[3],junbo_send_packet[4]);
@@ -129,6 +129,23 @@ void junbo_cms::initial_junbo_control(char *text_record_location,char *output_tt
 
     usleep(30000);
 
+ }
+ void junbo_cms::junbo_send_by_VD(int textID)
+ {
+     try
+     {
+         junbo_send_packet[0]=0xaa;
+junbo_send_packet[1]=smem.GetSequence();
+junbo_send_packet[2]=0x1;
+junbo_send_packet[3]=notice_car[textID].command;
+junbo_send_packet[4]=notice_car[textID].parameter;
+
+
+
+
+printf("VD TEST MESSAGE ,I RECEIVE THE VD MESSAGE\n");
+junbo_cms_send(junbo_send_packet);
+     }catch(...){}
  }
 
   void junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the junbo_cms return message

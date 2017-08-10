@@ -1,10 +1,13 @@
-#ifndef RS232_H
-#define RS232_H
+//---------------------------------------------------------------------------
+#ifndef RS232H
+#define RS232H
 
-#include "variable.h"
+#include "var.h"
+#include "IODEVICE.h"
+
 #include <pthread.h>
 //---------------------------------------------------------------------------
-class RS232
+class RS232:public IODEVICE
 {
     public:
 
@@ -13,29 +16,29 @@ class RS232
 
         BYTE block[BUFFERSIZE];                                                 //rs232 port buffer
 
-        MESSAGEOK messageIn[MSGINSIZE];                                         //±µ¦¬¸ÑªR¦¨¥\ªºbuffer
+        MESSAGEOK messageIn[MSGINSIZE];                                         //�����ѪR���\��buffer
 
-        int maxMessageIndex;                                                    //¦¹¦¸³B²zªºmessageIn«Ê¥]­Ó¼Æ
-        int lastPacketIndex;                                                    //¤W¤@¦¸©ñ¨ì³Ì«á¤@­ÓmessageIn.packet[Index]
+        int maxMessageIndex;                                                    //�����B�z��messageIn�ʥ]�Ӽ�
+        int lastPacketIndex;                                                    //�W�@�����̫�@��messageIn.packet[Index]
 
-        int Getfd(void);                                                        //Àò±ofile description
-        bool GetPortAlreadyOpen(void);                                          //§PÂ_¦¹°ð¬O§_¤w¶}±Ò
-        int GetConnDevice(void);                                                //Àò±o¦¹°ð©Ò³s±µªº³]³Æ
-        bool SetConnDevice(int);                                                //³]©w¦¹°ð©Ò³s±µªº³]³Æ
-        int OpenRs232Port(char *,int,bool);                                     //¶}³q°T°ð(device name,baudrate,is even parity)
-        bool CloseRs232Port(void);                                              //Ãö³q°T°ð
-        int Rs232Read(void);                                                    //Åª³q°T°ð(read buffer)
-        bool Rs232Write(BYTE *,int,char *);                                     //¼g³q°T°ð(write array,write length,device name)
+        int Getfd(void);                                                        //��ofile description
+        bool GetPortAlreadyOpen(void);                                          //�P�_����O�_�w�}��
+        int GetConnDevice(void);                                                //��o����ҳs�����]��
+        bool SetConnDevice(int);                                                //�]�w����ҳs�����]��
+        int OpenRs232Port(char *,int,bool);                                     //�}�q�T��(device name,baudrate,is even parity)
+        bool CloseRs232Port(void);                                              //���q�T��
+        int Rs232Read(void);                                                    //Ū�q�T��(read buffer)
+        bool Rs232Write(BYTE *,int,char *);                                     //�g�q�T��(write array,write length,device name)
 
 
     private:
 
-        pthread_mutex_t mutexRS232;                                             //«OÅ@°O¾ÐÅé
+        pthread_mutex_t mutexRS232;                                             //�O�@�O����
 
         int rs232fd;                                                            //file descript
-        bool alreadyOpen;                                                       //¦¹port¬O§_¤w¶}±Ò
-        int connDevice;                                                         //¦¹°ð³s±µªº³]³Æ
-        int connSubDevice;                                                      //¦¹°ð³s±µªº³]³Æ©Ò³s±µªº¤l³]³Æ
+        bool alreadyOpen;                                                       //��port�O�_�w�}��
+        int connDevice;                                                         //����s�����]��
+        int connSubDevice;                                                      //����s�����]�Ʃҳs�����l�]��
 
 
 };

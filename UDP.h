@@ -1,12 +1,17 @@
-#ifndef UDP_H
-#define UDP_H
-#include "variable.h"
+//---------------------------------------------------------------------------
+#ifndef UDPH
+#define UDPH
+
+#include "var.h"
+#include "IODEVICE.h"
+
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <pthread.h>
 
-class UDP
+//---------------------------------------------------------------------------
+class UDP:public IODEVICE
 {
     public:
 
@@ -15,31 +20,32 @@ class UDP
 
         BYTE block[BUFFERSIZE];                                                 //udp socket buffer
 
-        MESSAGEOK messageIn[MSGINSIZE];                                         //buffer
+        MESSAGEOK messageIn[MSGINSIZE];                                         //接收解析成功的buffer
 
-        int maxMessageIndex;                                                    //
-        int lastPacketIndex;                                                    //
+        int maxMessageIndex;                                                    //此次處理的messageIn封包個數
+        int lastPacketIndex;                                                    //上一次放到最後一個messageIn.packet[Index]
 
-        int Getfd(void);                                                        //
-        bool GetPortAlreadyOpen(void);                                          //
-        int GetConnDevice(void);                                                //
-        bool SetConnDevice(int);                                                //
-        int OpenUdpSocket(char *local_ip,int listen_port,char *send_ip,int send_port);
-        bool CloseUdpSocket(void);                                              //
-        int  UdpRead(void);                                                     //
-        bool UdpSend(BYTE *,int,char *);                                        //
+        int Getfd(void);                                                        //獲得file description
+        bool GetPortAlreadyOpen(void);                                          //判斷此埠是否已開啟
+        int GetConnDevice(void);                                                //獲得此埠所連接的設備
+        bool SetConnDevice(int);                                                //設定此埠所連接的設備
+        int OpenUdpSocket(char *local_ip,int listen_port,char *send_ip,int send_port);                               //開通訊埠(localhost,listen port,remotehost,remote port)
+        bool CloseUdpSocket(void);                                              //關通訊埠
+        int  UdpRead(void);                                                     //讀通訊埠(read buffer)
+        bool UdpSend(BYTE *,int,char *);                                        //寫通訊埠(write array,write length,device name)
 
     private:
 
-        pthread_mutex_t mutexUdp;                                               //
+        pthread_mutex_t mutexUdp;                                               //保護記憶體
 
         int udpfd;                                                              //file descript
-        bool alreadyOpen;                                                       //
-        int connDevice;                                                         //
-        int connSubDevice;                                                      //
+        bool alreadyOpen;                                                       //此port是否已開啟
+        int connDevice;                                                         //此埠連接的設備
+        int connSubDevice;                                                      //此埠連接的設備所連接的子設備
 
-        struct sockaddr_in listen_addr;                                         //
-        struct sockaddr_in send_addr;                                           //簫
+        struct sockaddr_in listen_addr;                                         //要監聽的port
+        struct sockaddr_in send_addr;                                           //要送出的port(廣撥發送接收的與送出的埠不同才不會又接回到自己送的)
 
 };
-#endif // UDP_H
+//---------------------------------------------------------------------------
+#endif

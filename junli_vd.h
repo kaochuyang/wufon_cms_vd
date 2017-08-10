@@ -1,7 +1,7 @@
 #ifndef JUNLI_VD_H
 #define JUNLI_VD_H
 #include "RS232.h"
-#include "variable.h"
+#include "var.h"
 class junli_vd
 {
     public:
