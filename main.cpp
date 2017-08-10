@@ -30,6 +30,7 @@ while(1)
 FD_ZERO(&readfs);
 
   if(smem.junli_object.junli_port.GetPortAlreadyOpen())FD_SET(smem.junli_object.junli_port.Getfd(),&readfs);
+  if(smem.junbo_object.junbo_cms_port.GetPortAlreadyOpen())FD_SET(smem.junbo_object.junbo_cms_port.Getfd(),&readfs);
 
 //while loop, select
 
