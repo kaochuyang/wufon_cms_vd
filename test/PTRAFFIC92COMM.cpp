@@ -26,7 +26,7 @@ PTRAFFIC92COMM::PTRAFFIC92COMM(void)
         for (i = 0 ; i < 256; i++)
         {
             bProtocol0FStatus[i] = true;
-            bProtocol5FStatus[i] = true;
+            bProtocol5FStatus[i] = false;
 //         bProtocol6FStatus[i] = true;
         }
 
@@ -77,96 +77,96 @@ PTRAFFIC92COMM::PTRAFFIC92COMM(void)
 
 
 //------------------------------------- 5F
-        bProtocol5FStatus[0x10] = false;
-        bProtocol5FStatus[0x40] = false;
-        bProtocol5FStatus[0xC0] = false;
-        bProtocol5FStatus[0x00] = false;
+        /*    bProtocol5FStatus[0x10] = false;
+            bProtocol5FStatus[0x40] = false;
+            bProtocol5FStatus[0xC0] = false;
+            bProtocol5FStatus[0x00] = false;
 
-        bProtocol5FStatus[0x11] = true;
-        bProtocol5FStatus[0x41] = true;
-        bProtocol5FStatus[0xC1] = true;
-        bProtocol5FStatus[0x01] = true;
-        bProtocol5FStatus[0x12] = true;
-        bProtocol5FStatus[0x42] = true;
-        bProtocol5FStatus[0xC2] = true;
-        bProtocol5FStatus[0x02] = true;
+            bProtocol5FStatus[0x11] = true;
+            bProtocol5FStatus[0x41] = true;
+            bProtocol5FStatus[0xC1] = true;
+            bProtocol5FStatus[0x01] = true;
+            bProtocol5FStatus[0x12] = true;
+            bProtocol5FStatus[0x42] = true;
+            bProtocol5FStatus[0xC2] = true;
+            bProtocol5FStatus[0x02] = true;
 
-        bProtocol5FStatus[0x13] = false;
-        bProtocol5FStatus[0x43] = false;
-        bProtocol5FStatus[0xC3] = false;
-        bProtocol5FStatus[0x03] = false;
+            bProtocol5FStatus[0x13] = false;
+            bProtocol5FStatus[0x43] = false;
+            bProtocol5FStatus[0xC3] = false;
+            bProtocol5FStatus[0x03] = false;
 
-        bProtocol5FStatus[0x14] = false;
-        bProtocol5FStatus[0x44] = false;
-        bProtocol5FStatus[0xC4] = false;
+            bProtocol5FStatus[0x14] = false;
+            bProtocol5FStatus[0x44] = false;
+            bProtocol5FStatus[0xC4] = false;
 
-        bProtocol5FStatus[0x15] = false;
-        bProtocol5FStatus[0x45] = false;
-        bProtocol5FStatus[0xC5] = false;
+            bProtocol5FStatus[0x15] = false;
+            bProtocol5FStatus[0x45] = false;
+            bProtocol5FStatus[0xC5] = false;
 
-        bProtocol5FStatus[0x16] = false;
-        bProtocol5FStatus[0x46] = false;
-        bProtocol5FStatus[0xC6] = false;
+            bProtocol5FStatus[0x16] = false;
+            bProtocol5FStatus[0x46] = false;
+            bProtocol5FStatus[0xC6] = false;
 
-        bProtocol5FStatus[0x17] = false;
-        bProtocol5FStatus[0x47] = false;
-        bProtocol5FStatus[0xC7] = false;
+            bProtocol5FStatus[0x17] = false;
+            bProtocol5FStatus[0x47] = false;
+            bProtocol5FStatus[0xC7] = false;
 
-        bProtocol5FStatus[0x18] = false;
-        bProtocol5FStatus[0x48] = false;
-        bProtocol5FStatus[0xC8] = false;
+            bProtocol5FStatus[0x18] = false;
+            bProtocol5FStatus[0x48] = false;
+            bProtocol5FStatus[0xC8] = false;
 
-        bProtocol5FStatus[0x19] = true;
-        bProtocol5FStatus[0x49] = true;
-        bProtocol5FStatus[0xC9] = true;
-        bProtocol5FStatus[0x09] = true;
-        bProtocol5FStatus[0x1A] = true;
-        bProtocol5FStatus[0x4A] = true;
-        bProtocol5FStatus[0xCA] = true;
-        bProtocol5FStatus[0x1B] = true;
-        bProtocol5FStatus[0x4B] = true;
-        bProtocol5FStatus[0xCB] = true;
+            bProtocol5FStatus[0x19] = true;
+            bProtocol5FStatus[0x49] = true;
+            bProtocol5FStatus[0xC9] = true;
+            bProtocol5FStatus[0x09] = true;
+            bProtocol5FStatus[0x1A] = true;
+            bProtocol5FStatus[0x4A] = true;
+            bProtocol5FStatus[0xCA] = true;
+            bProtocol5FStatus[0x1B] = true;
+            bProtocol5FStatus[0x4B] = true;
+            bProtocol5FStatus[0xCB] = true;
 
-        bProtocol5FStatus[0x1C] = false;
-        bProtocol5FStatus[0x4C] = false;
-        bProtocol5FStatus[0xCC] = false;
-        bProtocol5FStatus[0x0C] = false;
+            bProtocol5FStatus[0x1C] = false;
+            bProtocol5FStatus[0x4C] = false;
+            bProtocol5FStatus[0xCC] = false;
+            bProtocol5FStatus[0x0C] = false;
 
-        bProtocol5FStatus[0x1D] = true;
+            bProtocol5FStatus[0x1D] = true;
 
-        bProtocol5FStatus[0x1E] = true;
-        bProtocol5FStatus[0x4E] = true;
-        bProtocol5FStatus[0xCE] = true;
+            bProtocol5FStatus[0x1E] = true;
+            bProtocol5FStatus[0x4E] = true;
+            bProtocol5FStatus[0xCE] = true;
 
-        bProtocol5FStatus[0x2F] = false;
-        bProtocol5FStatus[0x5F] = false;
-        bProtocol5FStatus[0xDF] = false;
+            bProtocol5FStatus[0x2F] = false;
+            bProtocol5FStatus[0x5F] = false;
+            bProtocol5FStatus[0xDF] = false;
 
-        bProtocol5FStatus[0x31] = true;
-        bProtocol5FStatus[0x61] = true;
-        bProtocol5FStatus[0xE1] = true;
-        bProtocol5FStatus[0x32] = true;
-        bProtocol5FStatus[0x62] = true;
-        bProtocol5FStatus[0xE2] = true;
-        bProtocol5FStatus[0x33] = true;
-        bProtocol5FStatus[0x63] = true;
-        bProtocol5FStatus[0xE3] = true;
-        bProtocol5FStatus[0x31] = true;
+            bProtocol5FStatus[0x31] = true;
+            bProtocol5FStatus[0x61] = true;
+            bProtocol5FStatus[0xE1] = true;
+            bProtocol5FStatus[0x32] = true;
+            bProtocol5FStatus[0x62] = true;
+            bProtocol5FStatus[0xE2] = true;
+            bProtocol5FStatus[0x33] = true;
+            bProtocol5FStatus[0x63] = true;
+            bProtocol5FStatus[0xE3] = true;
+            bProtocol5FStatus[0x31] = true;
 
-        bProtocol5FStatus[0x08] = false;
+            bProtocol5FStatus[0x08] = false;
 
-        bProtocol5FStatus[0x0A] = false;
-        bProtocol5FStatus[0x0B] = false;
+            bProtocol5FStatus[0x0A] = false;
+            bProtocol5FStatus[0x0B] = false;
 
-        bProtocol5FStatus[0x3F] = false;
-        bProtocol5FStatus[0x6F] = false;
-        bProtocol5FStatus[0xEF] = false;
-        bProtocol5FStatus[0x0F] = false;
+            bProtocol5FStatus[0x3F] = false;
+            bProtocol5FStatus[0x6F] = false;
+            bProtocol5FStatus[0xEF] = false;
+            bProtocol5FStatus[0x0F] = false;
 
-        bProtocol5FStatus[0x3E] = true;
-        bProtocol5FStatus[0x6E] = true;
-        bProtocol5FStatus[0xEE] = true;
-        bProtocol5FStatus[0x0E] = true;
+            bProtocol5FStatus[0x3E] = true;
+            bProtocol5FStatus[0x6E] = true;
+            bProtocol5FStatus[0xEE] = true;
+            bProtocol5FStatus[0x0E] = true;*/
 
     }
     catch (...) {}
@@ -182,6 +182,14 @@ bool PTRAFFIC92COMM::DoWorkViaPTraffic92(MESSAGEOK message)
     {
         switch (message.packet[8])
         {
+        case 0x5a:
+         smem.power_object.report_power_reboot_to_center();
+        break;
+
+        case 0xb7:
+        smem.junbo_object.report_module_state_to_center();
+        break;
+
         case 0x10:
             vRebootIPC_0F10(message);
             break;
@@ -693,6 +701,7 @@ bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
                   system(ctime);
             */
 
+            _intervalTimer.power_regular_reboot_resetting_for_outer();
             stc.TimersReset_AfterResetCMOSTime();  //OTBUG =1
             _intervalTimer.TimersReset_AfterResetCMOSTime();
 
@@ -1822,7 +1831,7 @@ bool PTRAFFIC92COMM::vRebootIPC_0F10_revAPP(MESSAGEOK DataMessageIn)
             _MSG = oDataToMessageOK.vPackageINFOTo92Protocol(data3, 4, true);
             _MSG.InnerOrOutWard = cOutWard;
             writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECENTER92);
-       //     writeJob.WritePhysicalOut(data3, 4, revAPP);
+            //     writeJob.WritePhysicalOut(data3, 4, revAPP);
 
 
 //Mask       digitalIO.WriteDigitalIO(0xFF);     //³q°T­«¸m
@@ -1847,6 +1856,20 @@ bool PTRAFFIC92COMM::vRebootIPC_0F10_revAPP(MESSAGEOK DataMessageIn)
     catch(...) {}
 }
 
+
+bool PTRAFFIC92COMM::VD_CMS_reboot_0F17(BYTE second)
+{
+    try
+    {
+        BYTE data[2];
+        data[0] = 0x0F;
+        data[1] = 0x17;
+        smem.power_object.power_reset_all(second);
+        writeJob.WritePhysicalOut(data,2,revAPP);
+
+    }
+    catch(...) {}
+}
 bool PTRAFFIC92COMM::vReportIPCTime_0FC2_revAPP()
 {
     try
@@ -1865,23 +1888,15 @@ bool PTRAFFIC92COMM::vReportIPCTime_0FC2_revAPP()
 
 
         data[2]=currenttime>>24;
-         data[3]=currenttime>>16;
-          data[4]=currenttime>>8;
-           data[5]=currenttime;
-
-      /*  data[2] = (now->tm_year) - 11;
-        data[3] = (now->tm_mon) + 1;
-        data[4] = (now->tm_mday);
-        data[5] = (now->tm_wday);
-        data[6] = (now->tm_hour);
-        data[7] = (now->tm_min);
-        data[8] = (now->tm_sec);*/
+        data[3]=currenttime>>16;
+        data[4]=currenttime>>8;
+        data[5]=currenttime;
 
 
         writeJob.WritePhysicalOut(data,6,revAPP);
 
 
-         return true;
+        return true;
     }
     catch(...) {}
 }
@@ -1905,8 +1920,62 @@ bool PTRAFFIC92COMM::check_link_revAPP()
         writeJob.WritePhysicalOut(data,2,revAPP);
 
 
-         return true;
+        return true;
     }
     catch(...) {}
 }
 
+bool PTRAFFIC92COMM::setting_regular_reboot_0F17(MESSAGEOK MessageIn)
+{
+    try
+    {
+
+
+
+        unsigned char data[6];
+
+        MESSAGEOK _MsgOK;
+
+
+        if(_intervalTimer.setting_regular_reboot_0F17((int)MessageIn.packet[9],(int)MessageIn.packet[10]))
+        {
+
+
+
+            data[0] = 0x0F;
+            data[1] = 0x80;
+            data[2] = 0x0F;
+            data[3] = 0X17;
+
+            _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 4,true);
+            _MsgOK.InnerOrOutWard = cOutWard;
+//    writeJob.WriteWorkByMESSAGEOUT(_MsgOK);
+            writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
+
+
+        }
+
+        else
+        {
+
+            data[0] = 0x0F;
+            data[1] = 0x81;
+            data[2] = 0x0F;
+            data[3] = 0x17;
+            data[4] = 0x80;
+            data[5] = 0x00;
+
+
+            _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 6,true);
+            _MsgOK.InnerOrOutWard = cOutWard;
+//    writeJob.WriteWorkByMESSAGEOUT(_MsgOK);
+            writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
+
+        }
+
+
+
+
+    }
+    catch(...) {}
+}

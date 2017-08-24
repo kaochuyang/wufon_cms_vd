@@ -1,0 +1,592 @@
+//---------------------------------------------------------------------------
+#include "PARSEV3.h"
+#include "SMEM.h"
+#include "WRITEJOB.h"
+
+#include <stdio.h>
+#include <string.h>
+//---------------------------------------------------------------------------
+PARSEV3::PARSEV3(void)
+{
+}
+//---------------------------------------------------------------------------
+PARSEV3::~PARSEV3(void)
+{
+}
+//---------------------------------------------------------------------------
+bool PARSEV3::ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex,int *maxMessageIndex)
+{
+try {
+
+  int i,j,k;
+  unsigned char ucTmpCKS;
+
+  i=0;                         //block[i]
+  j=0;                         //messageIn[j]
+  k=*lastPacketIndex+1;        //messageIn[j].packet[k]
+
+  for (i=0;i<receiveBlockLength;i++) {
+
+    if(k >= BUFFERSIZE -1 || k >= 128) {
+        printf("Parse Error At:%d\n", k);
+        k = 0;
+        j = 0;
+        messageIn[j].success   = false;
+        messageIn[j].cksStatus = false;
+        messageIn[j].bGetDLE = false;
+        messageIn[j].bGetSOH = false;
+        messageIn[j].bGetACK = false;
+        messageIn[j].bGetNAK = false;
+        messageIn[j].uiPacketTEXTLEN = 0;
+        messageIn[j].bChkSum1 = false;
+        messageIn[j].bChkSum2 = false;
+        messageIn[j].bFormatOK = false;
+    }
+
+//    printf("i:%d, receiveBlockLength:%d block:%X\n", i, receiveBlockLength, block[i]);
+
+//DLE
+    if (block[i]==(const BYTE)0x10) {
+      if(messageIn[j].bGetDLE == false && messageIn[j].bGetSOH == false && messageIn[j].bGetACK == false && messageIn[j].bGetNAK == false) {
+        messageIn[j].bGetDLE = true;
+      }
+    }
+
+    messageIn[j].packet[k] = block[i];
+    k++;
+
+
+//SOH
+    if (block[i]==(const BYTE)0x01) {
+      if(messageIn[j].bGetDLE == true && messageIn[j].bGetSOH == false && messageIn[j].bGetACK == false && messageIn[j].bGetNAK == false) {
+        messageIn[j].bGetSOH = true;
+      }
+    }
+
+//ACK
+    if (block[i]==(const BYTE)0x06) {
+      if(messageIn[j].bGetDLE == true && messageIn[j].bGetSOH == false && messageIn[j].bGetACK == false && messageIn[j].bGetNAK == false) {
+        messageIn[j].bGetACK = true;
+      }
+    }
+//NACK
+    if (block[i]==(const BYTE)0x15) {
+      if(messageIn[j].bGetDLE == true && messageIn[j].bGetSOH == false && messageIn[j].bGetACK == false && messageIn[j].bGetNAK == false) {
+        messageIn[j].bGetNAK = true;
+      }
+    }
+
+//SEQ do nothing
+
+//HEADER LEN
+    if (k == 7 && messageIn[j].bGetSOH == true) {
+      printf("go set TEXT LEN:%d\n", messageIn[j].packet[5]*256 + messageIn[j].packet[6]);
+      messageIn[j].uiPacketTEXTLEN = messageIn[j].packet[5]*256 + messageIn[j].packet[6];
+      printf("go set TEXT LEN2:%d\n", messageIn[j].uiPacketTEXTLEN);
+    }
+//    printf("i:%d, messageIn[j].uiPacketTEXTLEN:%d \n",i, messageIn[j].uiPacketTEXTLEN);
+
+//HEADER LRC
+    if (k == 8 && messageIn[j].bGetSOH == true) {
+      ucTmpCKS = 0;
+      for(int ii = 3; ii < 7; ii++) {
+        ucTmpCKS ^= messageIn[j].packet[ii];
+      }
+      if(ucTmpCKS == messageIn[j].packet[7]) {
+        messageIn[j].bChkSum1 = true;
+      } else {
+        //Send NAK
+        writeJob.WriteNACKNEEB(messageIn[j].packet[2], 0x04);  //LRC Error
+
+        printf("Header LRC error, ucTmpCKS:%X, messageIn[j].packet[7]:%X\n", ucTmpCKS, messageIn[j].packet[7]);
+      //CLEAR
+        messageIn[j].packetLength=k;
+        j++;
+        k=0;
+
+        messageIn[j].success   = false;
+        messageIn[j].cksStatus = false;
+        messageIn[j].bGetDLE = false;
+        messageIn[j].bGetSOH = false;
+        messageIn[j].bGetACK = false;
+        messageIn[j].bGetNAK = false;
+        messageIn[j].uiPacketTEXTLEN = 0;
+        messageIn[j].bChkSum1 = false;
+        messageIn[j].bChkSum2 = false;
+        messageIn[j].bFormatOK = false;
+
+      }
+    }
+
+    if(k >= 9 && k < 9 + messageIn[j].uiPacketTEXTLEN + 1 && messageIn[j].bGetSOH == true) {
+      //move
+    }
+
+//SOH TAIL LRC
+    if (k == messageIn[j].uiPacketTEXTLEN + 9 && messageIn[j].bGetSOH == true) {
+//      printf("OTT cal TAIL LRC\n");
+      ucTmpCKS = 0;
+      for(int ii = 0; ii < 8 + messageIn[j].uiPacketTEXTLEN; ii++) {
+        ucTmpCKS ^= messageIn[j].packet[ii];
+      }
+      if(ucTmpCKS == messageIn[j].packet[k-1]) {
+        messageIn[j].bChkSum2 = true;
+      }
+      else {
+        //Send NAK
+        writeJob.WriteNACKNEEB(messageIn[j].packet[2], 0x04);  //LRC Error
+      //CLEAR
+        printf("Parse Error At:%d, CheckSum!?\n", k);
+        messageIn[j].packetLength=k;
+        j++;
+        k=0;
+        messageIn[j].success   = false;
+        messageIn[j].cksStatus = false;
+        messageIn[j].bGetDLE = false;
+        messageIn[j].bGetSOH = false;
+        messageIn[j].bGetACK = false;
+        messageIn[j].bGetNAK = false;
+        messageIn[j].uiPacketTEXTLEN = 0;
+        messageIn[j].bChkSum1 = false;
+        messageIn[j].bChkSum2 = false;
+        messageIn[j].bFormatOK = false;
+
+      }
+
+//CHECK AND CHANGE LINE
+      if(messageIn[j].bChkSum1 == true && messageIn[j].bChkSum2 == true) {
+        messageIn[j].cksStatus = true;
+        messageIn[j].success = true;
+      }
+
+      messageIn[j].packetLength=k;
+      j++;
+      k=0;
+
+      messageIn[j].success   = false;
+      messageIn[j].cksStatus = false;
+      messageIn[j].bGetDLE = false;
+      messageIn[j].bGetSOH = false;
+      messageIn[j].bGetACK = false;
+      messageIn[j].bGetNAK = false;
+      messageIn[j].uiPacketTEXTLEN = 0;
+      messageIn[j].bChkSum1 = false;
+      messageIn[j].bChkSum2 = false;
+      messageIn[j].bFormatOK = false;
+    }
+
+    //ACK TAIL LRC
+    if (k == 6 && messageIn[j].bGetACK == true) {
+      ucTmpCKS = 0;
+      for(int ii = 0; ii < 5; ii++) {
+        ucTmpCKS ^= messageIn[j].packet[ii];
+      }
+      if(ucTmpCKS == messageIn[j].packet[k-1]) {
+        messageIn[j].cksStatus = true;
+        messageIn[j].success = true;
+      }
+      else {
+      //CLEAR
+        messageIn[j].success   = false;
+        messageIn[j].cksStatus = false;
+      }
+      messageIn[j].packetLength=k;
+      j++;
+      k=0;
+
+      messageIn[j].success   = false;
+      messageIn[j].cksStatus = false;
+      messageIn[j].bGetDLE = false;
+      messageIn[j].bGetSOH = false;
+      messageIn[j].bGetACK = false;
+      messageIn[j].bGetNAK = false;
+      messageIn[j].uiPacketTEXTLEN = 0;
+      messageIn[j].bChkSum1 = false;
+      messageIn[j].bChkSum2 = false;
+      messageIn[j].bFormatOK = false;
+
+    }
+
+    //NAK TAIL LRC
+    if (k == 8 && messageIn[j].bGetNAK == true) {
+      ucTmpCKS = 0;
+      for(int ii = 0; ii < 7; ii++) {
+        ucTmpCKS ^= messageIn[j].packet[ii];
+      }
+      if(ucTmpCKS == messageIn[j].packet[k-1]) {
+        messageIn[j].cksStatus = true;
+        messageIn[j].success = true;
+      }
+      else {
+      //CLEAR
+        messageIn[j].success   = false;
+        messageIn[j].cksStatus = false;
+      }
+      messageIn[j].packetLength=k;
+      j++;
+      k=0;
+
+      messageIn[j].success   = false;
+      messageIn[j].cksStatus = false;
+      messageIn[j].bGetDLE = false;
+      messageIn[j].bGetSOH = false;
+      messageIn[j].bGetACK = false;
+      messageIn[j].bGetNAK = false;
+      messageIn[j].uiPacketTEXTLEN = 0;
+      messageIn[j].bChkSum1 = false;
+      messageIn[j].bChkSum2 = false;
+      messageIn[j].bFormatOK = false;
+    }
+
+
+//DROP ERROR DLE
+    if( k == 1 ) {
+      if(messageIn[j].packet[0] == 0x10) {} //Do nothing
+      else {
+        printf("Parse Error At:%d\n, first byte error", k);
+        for (int b=0;b<BUFFERSIZE;b++) {        //清空messageIn[].packet
+          messageIn[j].packet[b]=0;
+        }
+        k=0;
+        messageIn[j].UDPorRS232=0;
+        messageIn[j].ReadorWrite=0;
+        messageIn[j].success   = false;
+        messageIn[j].cksStatus = false;
+        messageIn[j].bGetDLE = false;
+        messageIn[j].bGetSOH = false;
+        messageIn[j].bGetACK = false;
+        messageIn[j].bGetNAK = false;
+        messageIn[j].uiPacketTEXTLEN = 0;
+        messageIn[j].bChkSum1 = false;
+        messageIn[j].bChkSum2 = false;
+        messageIn[j].bFormatOK = false;
+      }
+    }
+    if( k == 2 ) {
+      if( messageIn[j].packet[1] == 0x01 || messageIn[j].packet[1] == 0x06 || messageIn[j].packet[1] == 0x15) {} //Do nothing
+      else {
+        if(messageIn[j].packet[1] == 0x10) {                                    // when case in 10 10 01 balabala
+          messageIn[j].packet[1] = 0;
+          k--;
+        }
+        else {
+          printf("Parse Error At:%d\n, second byte error", k);
+          /* using bzero()
+          for (int b=0;b<BUFFERSIZE;b++) {        //清空messageIn[].packet
+            messageIn[j].packet[b]=0;
+          }
+          */
+          bzero(messageIn[j].packet, BUFFERSIZE);
+          k=0;
+          messageIn[j].UDPorRS232=0;
+          messageIn[j].ReadorWrite=0;
+          messageIn[j].success   = false;
+          messageIn[j].cksStatus = false;
+          messageIn[j].bGetDLE = false;
+          messageIn[j].bGetSOH = false;
+          messageIn[j].bGetACK = false;
+          messageIn[j].bGetNAK = false;
+          messageIn[j].uiPacketTEXTLEN = 0;
+          messageIn[j].bChkSum1 = false;
+          messageIn[j].bChkSum2 = false;
+          messageIn[j].bFormatOK = false;
+        }
+
+      }
+    }
+
+  }
+
+  *maxMessageIndex=j;
+  messageIn[j].packetLength=k;
+  return true;
+
+  } catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+bool PARSEV3::TransferNEEBToV30Protocol(int *maxMessageIndex,MESSAGEOK *messageIn)
+{
+try {
+    BYTE tempMsg[BUFFERSIZE]={0};
+    int info=0;
+
+    if (*maxMessageIndex >= 0 && smem.GetCommVersion()==cNEEB) {
+        for (int i=0;i<=*maxMessageIndex;i++) {
+             if (messageIn[i].cksStatus==true) {
+                 switch (messageIn[i].protocol) {
+                         case PROTOCOL92:
+                         case PROTOCOLNEEB20:
+
+                              messageIn[i].protocol = PROTOCOLNEEB20;
+
+                              for (int tempLen=0;tempLen<messageIn[i].packetLength;tempLen++)
+                                   tempMsg[tempLen]=messageIn[i].packet[tempLen];
+
+                              EchoOriginalPacket(tempMsg,messageIn[i].packetLength);
+
+                              if (messageIn[i].packet[0]==(const BYTE)0x10) {
+                                  if (messageIn[i].packet[1]==(const BYTE)0x01) {
+                                      if (0) {
+                                      } else {
+
+                                          messageIn[i].packet[0]=0xAA;          //0xAA
+                                          messageIn[i].packet[1]=0xBB;          //0xBB
+                                          messageIn[i].packet[2]=tempMsg[2];    //SEQ
+                                          messageIn[i].packet[3]=tempMsg[3];    //LcnHi
+                                          messageIn[i].packet[4]=tempMsg[4];    //LcnLo
+                                          if (0) {
+                                          } else {
+                                              messageIn[i].packet[5]=HI(messageIn[i].packetLength+2);
+                                              messageIn[i].packet[6]=LO(messageIn[i].packetLength+2);
+                                              messageIn[i].packet[7]=(BYTE)GetEquipCode(tempMsg[8]);
+                                              for (info=0;info<messageIn[i].packetLength-9;info++)     //\uFFFD拐\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD\uFFFD撣園\uFFFD靘\uFFFD
+                                              messageIn[i].packet[8+info]=tempMsg[8+info];
+                                          }
+
+                                          messageIn[i].packet[8+info]=0xAA;   //0xAA
+                                          messageIn[i].packet[9+info]=0xCC;  //0xCC
+                                          messageIn[i].packet[10+info]=0;
+                                          for (int cks=0;cks<10+info;cks++) messageIn[i].packet[10+info]^=messageIn[i].packet[cks];
+
+                                          messageIn[i].packetLength=messageIn[i].packetLength+2;
+
+/*
+                                          printf("OT len %d\n", messageIn[i].packetLength);
+                                          for(int gg = 0; gg < messageIn[i].packetLength; gg++) {
+                                            printf("%x ", messageIn[i].packet[gg]);
+                                          }
+                                          printf("\n");
+*/
+
+                                      }
+                                  } else if (messageIn[i].packet[1]==(const BYTE)0x06) {
+                                      if (0) {
+                                      } else if (messageIn[i].packetLength==6 && messageIn[i].packet[0]==(const BYTE)0x10 && messageIn[i].packet[1]==(const BYTE)0x06) {
+                                          messageIn[i].packet[0]=0xAA;          //0xAA
+                                          messageIn[i].packet[1]=0xDD;          //0xDD
+                                          messageIn[i].packet[2]=tempMsg[2];    //SEQ
+                                          messageIn[i].packet[3]=tempMsg[3];    //HiLcn
+                                          messageIn[i].packet[4]=tempMsg[4];    //LoLcn
+                                          messageIn[i].packet[5]=0;  //HiLen
+                                          messageIn[i].packet[6]=8;  //LoLen
+                                          messageIn[i].packet[7]=0;
+                                          for (int cks=0;cks<7;cks++) messageIn[i].packet[7]^=messageIn[i].packet[cks];
+                                          messageIn[i].packetLength=8;
+                                      }
+                                  } else if (messageIn[i].packet[1]==(const BYTE)0x15) {
+                                      if (0) {
+                                      } else if (messageIn[i].packetLength==8 && messageIn[i].packet[0]==(const BYTE)0x10 && messageIn[i].packet[1]==(const BYTE)0x15) {
+                                          messageIn[i].packet[0]=0xAA;          //0xAA
+                                          messageIn[i].packet[1]=0xEE;          //0xEE
+                                          messageIn[i].packet[2]=tempMsg[2];    //SEQ
+                                          messageIn[i].packet[3]=tempMsg[3];    //HiLcn
+                                          messageIn[i].packet[4]=tempMsg[4];    //LoLcn
+                                          messageIn[i].packet[5]=0;  //HiLen
+                                          messageIn[i].packet[6]=9;  //LoLen
+                                          messageIn[i].packet[7]=tempMsg[6];    //Error
+                                          messageIn[i].packet[8]=0;
+                                          for (int cks=0;cks<8;cks++) messageIn[i].packet[8]^=messageIn[i].packet[cks];
+                                          messageIn[i].packetLength=9;
+                                      }
+                                  }
+                              }
+                         break;
+                         default:
+                         printf("NEEB PROTOC0L SET ERROR, ERROR PROTOCOL is %d\n", messageIn[i].protocol);
+                         break;
+                 }
+             }
+        }
+    }
+
+    return true;
+
+  } catch (...) {}
+}
+
+
+//---------------------------------------------------------------------------
+bool PARSEV3::EchoToGUI(int *maxMessageIndex, MESSAGEOK *messageIn, char *deviceName)
+{
+try {
+    if (*maxMessageIndex>=0) {
+        for (int i=0;i<=*maxMessageIndex;i++) {
+             if (messageIn[i].cksStatus==true) {
+                 if (messageIn[i].success==true) {
+                     char tempBuff[5],buff[2048]="";
+                     char portName[200]="[RECEIVE] ";
+                     char temp[6]=" --";
+
+                     strcat(portName,deviceName);
+                     strcat(portName,temp);
+
+                     strcat(buff,portName);
+
+                     for (int j=0;j<messageIn[i].packetLength;j++) {
+                          sprintf(tempBuff,"%3X",messageIn[i].packet[j]);
+                          strcat(buff,tempBuff);
+                     }
+
+                     printf("%s\n",buff);
+                 }
+             }
+        }  //end for (int i=0 ; i < maxMessageIndex ; i++)
+    }  //end if (maxMessageIndex >= 0)
+
+    return true;
+
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool PARSEV3::MoveLastData(int *maxMessageIndex,int *lastPacketIndex,MESSAGEOK *messageIn)
+{
+try {
+    if (messageIn[*maxMessageIndex].cksStatus == false) {
+        for (int j=0;j<messageIn[*maxMessageIndex].packetLength;j++) {
+             messageIn[0].packet[j]=messageIn[*maxMessageIndex].packet[j];
+        }
+        messageIn[0].packetLength=messageIn[*maxMessageIndex].packetLength;
+        messageIn[0].bGetDLE = messageIn[*maxMessageIndex].bGetDLE;
+        messageIn[0].bGetSOH = messageIn[*maxMessageIndex].bGetSOH;
+        messageIn[0].bGetACK = messageIn[*maxMessageIndex].bGetACK;
+        messageIn[0].bGetNAK = messageIn[*maxMessageIndex].bGetNAK;
+        messageIn[0].uiPacketTEXTLEN = messageIn[*maxMessageIndex].uiPacketTEXTLEN;
+        messageIn[0].bChkSum1 = messageIn[*maxMessageIndex].bChkSum1;
+        messageIn[0].bChkSum2 = messageIn[*maxMessageIndex].bChkSum2;
+        messageIn[0].success = messageIn[*maxMessageIndex].success;
+        messageIn[0].cksStatus = messageIn[*maxMessageIndex].cksStatus;
+        *lastPacketIndex=messageIn[*maxMessageIndex].packetLength-1;
+        *maxMessageIndex = 0;
+
+        for (int a=1;a<MSGINSIZE;a++) {
+             messageIn[a].cksStatus=false;
+             messageIn[a].success=false;
+             messageIn[a].UDPorRS232=0;
+             messageIn[a].ReadorWrite=0;
+
+             messageIn[a].bGetDLE = false;
+             messageIn[a].bGetSOH = false;
+             messageIn[a].bGetACK = false;
+             messageIn[a].bGetNAK = false;
+             messageIn[a].uiPacketTEXTLEN = 0;
+             messageIn[a].bChkSum1 = false;
+             messageIn[a].bChkSum2 = false;
+             messageIn[a].bFormatOK = false;
+
+/* Using bzero
+             for (int b=0;b<BUFFERSIZE;b++) {
+                  messageIn[a].packet[b]=0;
+             }
+*/
+
+             bzero( messageIn[a].packet, BUFFERSIZE);
+        }
+    } else {
+      for (int a=0;a<MSGINSIZE;a++) {
+             messageIn[a].cksStatus=false;
+             messageIn[a].success=false;
+             messageIn[a].UDPorRS232=0;
+             messageIn[a].ReadorWrite=0;
+             messageIn[a].bGetDLE = false;
+             messageIn[a].bGetSOH = false;
+             messageIn[a].bGetACK = false;
+             messageIn[a].bGetNAK = false;
+             messageIn[a].uiPacketTEXTLEN = 0;
+             messageIn[a].bChkSum1 = false;
+             messageIn[a].bChkSum2 = false;
+             messageIn[a].bFormatOK = false;
+
+/* Using bzero()
+             for (int b=0;b<BUFFERSIZE;b++) {
+                  messageIn[a].packet[b]=0;
+             }
+*/
+             bzero( messageIn[a].packet, BUFFERSIZE);
+      }
+
+              *lastPacketIndex=-1;
+              *maxMessageIndex=0;
+    }
+
+
+    return true;
+
+  } catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+bool PARSEV3::EchoOriginalPacket(BYTE *packet,int packetLength)
+{
+try {
+    char tempBuff[5],buff[2048]="";
+    char portName[200]="[NEEB VER ORIGINAL] ";
+    char temp[6]=" --";
+
+    strcat(portName,temp);
+    strcat(buff,portName);
+
+    for (int j=0;j<packetLength;j++) {
+         sprintf(tempBuff,"%3X",packet[j]);
+         strcat(buff,tempBuff);
+    }
+
+    printf("%s%s%s\n",ColorWhiteBlue,buff,ColorNormal);
+  } catch (...) {}
+}
+
+
+//---------------------------------------------------------------------------
+BYTE PARSEV3::GetEquipCode(BYTE controlCode)
+{
+try {
+    BYTE tempEquip=0;
+
+    switch (controlCode) {
+        case 0x00:
+        case 0x01:
+        case 0x02:
+        case 0x03:
+        case 0x04:
+        case 0x05:
+        case 0x06:
+        case 0x07:
+        case 0x08:
+        case 0x09:
+        case 0x0A:
+        case 0x0B:
+        case 0x0C:
+        case 0x0D:
+        case 0x0E:
+        case 0x0F:
+          tempEquip=0x0F;
+        break;
+
+        case 0x10:
+        case 0x11:
+        case 0x12:
+        case 0x13:
+        case 0x14:
+        case 0x15:
+        case 0x16:
+        case 0x17:
+        case 0x18:
+        case 0x19:
+        case 0x1A:
+        case 0x1B:
+        case 0x1C:
+        case 0x1D:
+        case 0x1E:
+        case 0x1F:
+          tempEquip=0x6F;
+        break;
+
+        default:
+        break;
+    }
+
+    return tempEquip;
+
+  } catch (...) {}
+}
+

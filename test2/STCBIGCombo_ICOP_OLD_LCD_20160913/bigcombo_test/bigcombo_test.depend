@@ -1,0 +1,1890 @@
+# depslib dependency file v1.0
+1310024241 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CDataToMessageOK.cpp
+	"CDataToMessageOK.h"
+	"SMEM.h"
+	"CHexToInt.h"
+	<stdio.h>
+	<time.h>
+	<string.h>
+
+1278409715 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CDataToMessageOK.h
+	"var.h"
+
+1452147918 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/var.h
+	<time.h>
+
+1452147919 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SMEM.h
+	"var.h"
+	"STORAGE.h"
+	"RS232.h"
+	"UDP.h"
+	<pthread.h>
+
+1399448105 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/STORAGE.h
+	"var.h"
+	"IODEVICE.h"
+	<pthread.h>
+	<stdio.h>
+
+1205475609 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/IODEVICE.h
+	"var.h"
+
+1205475559 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/RS232.h
+	"var.h"
+	"IODEVICE.h"
+	<pthread.h>
+
+1205474913 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/UDP.h
+	"var.h"
+	"IODEVICE.h"
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+	<pthread.h>
+
+1205475633 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CHexToInt.h
+
+1205475636 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CHexToInt.cpp
+	"CHexToInt.h"
+	<ctype.h>
+	<stdio.h>
+	"var.h"
+
+1205475632 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CIOCom.cpp
+	"CIOCom.h"
+	<stdio.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdlib.h>
+	<strings.h>
+
+1205475632 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CIOCom.h
+	<termios.h>
+
+1205475631 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CPacketCluster.cpp
+	"CPacketCluster.h"
+
+1205475630 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CPacketCluster.h
+
+1222150096 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CPhaseInfo.cpp
+	"CPhaseInfo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1222150025 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CPhaseInfo.h
+	<pthread.h>
+
+1222148844 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CPlanInfo.cpp
+	"CPlanInfo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1271925679 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CPlanInfo.h
+	<pthread.h>
+
+1205475623 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CRTMSDecoder.cpp
+	"CRTMSDecoder.h"
+	<string.h>
+	<stdio.h>
+
+1205475622 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CRTMSDecoder.h
+	"CRTMSInformation.h"
+	"CPacketCluster.h"
+
+1205475621 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CRTMSInformation.h
+	"CTarget.h"
+
+1205475617 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTarget.h
+
+1205475621 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CRTMSInformation.cpp
+	"CRTMSInformation.h"
+	<stdio.h>
+
+1277114109 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CReverseTime.cpp
+	"CReverseTime.h"
+	<stdio.h>
+	<stdlib.h>
+
+1277113611 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CReverseTime.h
+	<pthread.h>
+
+1442368109 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CSTC.cpp
+	"CSTC.h"
+	"light.h"
+	"CTools.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<pthread.h>
+	<signal.h>
+	<time.h>
+	<mntent.h>
+	<sstream>
+	<iomanip>
+	"screenCurrentLightStatus.h"
+	"screenStrategy.h"
+	"CTIMER.h"
+	"SCREENHWReset.h"
+	"screenRedCountHWCheckSel.h"
+
+1399517501 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CSTC.h
+	<fstream>
+	"CReverseTime.h"
+	"CSegmentInfo.h"
+	"CPhaseInfo.h"
+	"CPlanInfo.h"
+	"CIOCom.h"
+	"CPacketCluster.h"
+	"CRTMSDecoder.h"
+	"CRTMSInformation.h"
+	"CTrafficAnalyzer.h"
+
+1222149414 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CSegmentInfo.h
+	<pthread.h>
+
+1205475613 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTrafficAnalyzer.h
+	"CTarget.h"
+
+1205475604 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/light.h
+
+1205475616 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTools.h
+
+1245315926 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/WRITEJOB.h
+	"var.h"
+	"JOB.h"
+
+1205475613 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/JOB.h
+	"var.h"
+
+1397812716 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenCurrentLightStatus.h
+	"SCREEN.h"
+
+1205475557 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREEN.h
+	"var.h"
+
+1205475064 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenStrategy.h
+	"SCREEN.h"
+
+1270177045 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTIMER.h
+	<pthread.h>
+
+1205475527 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENHWReset.h
+	"SCREEN.h"
+	"var.h"
+
+1271666050 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckSel.h
+	"SCREEN.h"
+
+1276830627 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CSTORINI.cpp
+	"CSTORINI.h"
+	<iostream>
+	<string>
+	<sstream>
+	<ctype.h>
+	<stdio.h>
+	"var.h"
+
+1276830498 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CSTORINI.h
+	"inifile.h"
+
+1269852256 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/inifile.h
+	<map>
+	<string>
+	<string.h>
+	<wchar.h>
+
+1222150526 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CSegmentInfo.cpp
+	"CSegmentInfo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1452149541 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTIMER.cpp
+	"CTIMER.h"
+	"var.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"SMEM.h"
+	"DIGITALIO.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENModifyDT.h"
+	"SCREENNone.h"
+	"SCREENOnline.h"
+	"SCREENCommStat.h"
+	"SCREENTotalRun.h"
+	"screenCurrentLightStatus.h"
+	"screenChainStatus.h"
+	"SCREENOperStat.h"
+	"screenActuateArwenStatus.h"
+	"screenReverseMenu.h"
+	<stdio.h>
+	<sys/types.h>
+	<unistd.h>
+	<stdlib.h>
+	<pthread.h>
+	<signal.h>
+	<time.h>
+	"CSTC.h"
+
+1206525060 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/DIGITALIO.h
+	"var.h"
+	"pthread.h"
+
+1205475502 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENMain.h
+	"SCREEN.h"
+
+1205475539 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCtlSetup.h
+	"SCREEN.h"
+
+1205475496 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENModifyDT.h
+	"SCREEN.h"
+
+1205475488 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNone.h
+	"SCREEN.h"
+	"var.h"
+
+1205476083 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOnline.h
+	"SCREEN.h"
+	"var.h"
+
+1205475543 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCommStat.h
+	"SCREEN.h"
+
+1205475063 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENTotalRun.h
+	"SCREEN.h"
+
+1205475552 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenChainStatus.h
+	"SCREEN.h"
+
+1322528644 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOperStat.h
+	"SCREEN.h"
+
+1274672736 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenActuateArwenStatus.h
+	"SCREEN.h"
+
+1277548757 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenReverseMenu.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1205475614 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTools.cpp
+	<stdio.h>
+	"CTools.h"
+
+1205475619 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/CTrafficAnalyzer.cpp
+	"CTrafficAnalyzer.h"
+	<stdio.h>
+
+1231149341 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/DIGITALIO.cpp
+	"DIGITALIO.h"
+	"SMEM.h"
+	<stdio.h>
+	<sys/perm.h>
+	<sys/io.h>
+	<stdio.h>
+
+1205475611 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/DYNCTLJOB.cpp
+	"DYNCTLJOB.h"
+	"PROTOCOL.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+
+1205475609 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/DYNCTLJOB.h
+	"var.h"
+	"JOB.h"
+
+1205475588 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PROTOCOL.h
+	"var.h"
+	"PTRAFFIC.h"
+	"PDEVICE.h"
+
+1278402183 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC.h
+	"var.h"
+	"PTRAFFIC77.h"
+	"PTRAFFIC87.h"
+	"PTRAFFIC92.h"
+	"PTRAFFICNTCIP.h"
+	"PTRAFFICCCJ.h"
+	"PTRAFFICREVSYNC.h"
+	"PTRAFFICAMEGIDS.h"
+
+1205475585 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC77.h
+	"var.h"
+
+1205475583 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87.h
+	"var.h"
+	"PTRAFFIC87COMM.h"
+	"PTRAFFIC87TC.h"
+	"PTRAFFIC87CMS.h"
+	"PTRAFFIC87VD.h"
+
+1205475577 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87COMM.h
+	"var.h"
+
+1205475580 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87TC.h
+	"var.h"
+
+1205475579 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87CMS.h
+	"var.h"
+
+1205475576 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87VD.h
+	"var.h"
+
+1205475571 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92.h
+	"var.h"
+	"PTRAFFIC92COMM.h"
+	"PTRAFFIC92TC.h"
+	"PTRAFFIC92CMS.h"
+	"PTRAFFIC92VD.h"
+	"PTRAFFIC92OTHER.h"
+
+1205475569 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92COMM.h
+	"var.h"
+	"SMEM.h"
+
+1397807950 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92TC.h
+	"var.h"
+	"SMEM.h"
+
+1205475575 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92CMS.h
+	"var.h"
+	"SMEM.h"
+
+1205475565 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92VD.h
+	"var.h"
+	"SMEM.h"
+
+1205475567 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92OTHER.h
+	"var.h"
+	"SMEM.h"
+
+1205475560 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICNTCIP.h
+	"var.h"
+
+1305527625 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICCCJ.h
+	"var.h"
+	"SMEM.h"
+
+1276832231 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICREVSYNC.h
+	"var.h"
+
+1278409545 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICAMEGIDS.h
+	"var.h"
+	"SMEM.h"
+
+1236325982 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICE.h
+	"var.h"
+	"PDEVICESS.h"
+	"PDEVICERTMS.h"
+	"PDEVICEKEYPAD.h"
+	"PDEVICETRAFFICLIGHT.h"
+	"PDEVICEREVMANUALPAD.h"
+
+1205475590 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICESS.h
+	"var.h"
+
+1205475591 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICERTMS.h
+	"var.h"
+
+1279186237 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICEKEYPAD.h
+	"var.h"
+
+1459144423 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICETRAFFICLIGHT.h
+	"var.h"
+
+1236673852 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICEREVMANUALPAD.h
+	"var.h"
+
+1205475608 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/IODEVICE.cpp
+	"IODEVICE.h"
+
+1205475610 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/JOB.cpp
+	"JOB.h"
+
+1418356218 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/LCD240x128.cpp
+	"LCD240x128.h"
+	<stdio.h>
+	<sys/perm.h>
+	<sys/io.h>
+	"SMEM.h"
+
+1405331148 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/LCD240x128.h
+	"pthread.h"
+
+1205475602 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSE.cpp
+	"PARSE.h"
+
+1205475601 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSE.h
+	"var.h"
+
+1450062720 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSENMEA.cpp
+	"PARSENMEA.h"
+	"SMEM.h"
+	"CTIMER.h"
+	"CSTC.h"
+	"SCREENOperStat.h"
+	"CHexToInt.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<unistd.h>
+
+1207115135 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSENMEA.h
+	"var.h"
+	"PARSE.h"
+
+1205475600 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSERTMS.cpp
+	"PARSERTMS.h"
+
+1205475598 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSERTMS.h
+	"var.h"
+	"PARSE.h"
+
+1205475598 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSESS.cpp
+	"PARSESS.h"
+	<stdio.h>
+	<string.h>
+
+1205475597 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSESS.h
+	"var.h"
+	"CHexToInt.h"
+
+1316670169 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSETRAFFIC.cpp
+	"PARSETRAFFIC.h"
+	"SMEM.h"
+	<stdio.h>
+	<string.h>
+	"screenCurrentCommPacket.h"
+
+1309140271 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSETRAFFIC.h
+	"var.h"
+	"PARSE.h"
+
+1205475540 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenCurrentCommPacket.h
+	"SCREEN.h"
+
+1246502996 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSEV3.cpp
+	"PARSEV3.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	<stdio.h>
+	<string.h>
+
+1245834161 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PARSEV3.h
+	"var.h"
+	"PARSE.h"
+
+1236325982 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICE.cpp
+	"PDEVICE.h"
+
+1450060546 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICEKEYPAD.cpp
+	"PDEVICEKEYPAD.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"SCREENNone.h"
+	"SCREENLogo.h"
+	"SCREENLogin.h"
+	"SCREENLoginErr.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENCtlNo.h"
+	"SCREENLastDown.h"
+	"SCREENModifyDT.h"
+	"SCREENFWVerDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENOperStat.h"
+	"SCREENOperMode.h"
+	"SCREENCommStat.h"
+	"SCREENSendCycle.h"
+	"SCREENUpdateDB.h"
+	"SCREENOnline.h"
+	"SCREENOffline.h"
+	"SCREENLockdb.h"
+	"SCREENTotalRun.h"
+	"SCREENABOErr.h"
+	"SCREENCmdSet.h"
+	"SCREENHWReset.h"
+	"SCREENLcnEncode.h"
+	"screenPlan.h"
+	"screenWeekDay.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"screenSpecialDay.h"
+	"screenSegtypeSel.h"
+	"screenRunTableList.h"
+	"screenStrategy.h"
+	"screenRTMSInfo.h"
+	"screenCurrentLightStatus.h"
+	"screenCurrentCommPacket.h"
+	"screenRedCountHWCheck.h"
+	"screenRedCountHWCheckSel.h"
+	"screenRedCountMenu.h"
+	"screenRedCountHWVerMenu.h"
+	"SCREENRedCountMap.h"
+	"screenReverseMenu.h"
+	"screenReverse.h"
+	"screenRevWeekDay.h"
+	"screenRevSpecialDay.h"
+	"screenActuateEdit.h"
+	"screenPassModeSet.h"
+	"SCREENDirMap.h"
+	"screenDirLightBoardMappingMenu.h"
+	"SCREENLightBoardMap.h"
+	"screenPlanEditF2.h"
+	"screenSegtypeEditF2.h"
+	"screenWeekDayEditF2.h"
+	"screenSpecialDayView.h"
+	"screenSpecialDayEditF2.h"
+	"screenPhasePreview.h"
+	"screenSegtypePreview.h"
+	"screenPlanPreview.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"screenChainMenu.h"
+	"screenMotherChainSet.h"
+	"screenChildChainSet.h"
+	"screenChainStatus.h"
+	"screenLightPreview.h"
+	"screenLightEdit.h"
+	"SCREENNetworkSetConfirm.h"
+	"SCREENNetworkSet.h"
+	"SCREENNetmaskSet.h"
+	"SCREENMBSelect.h"
+	"SCREENUart2.h"
+	"SCREENWarning.h"
+	"SCREENTFDStatus.h"
+	"screenRedCountHWCheckDevID.h"
+	"screenRedCountHWCheckCycleNum.h"
+	"screenRedCountHWCheckNum88.h"
+	"screenRailwayChainSet.h"
+	"screenActuateArwenStatus.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"unistd.h"
+	<stdio.h>
+
+1205475499 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLogo.h
+	"SCREEN.h"
+	"var.h"
+
+1205475501 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLogin.h
+	"SCREEN.h"
+
+1205475499 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLoginErr.h
+	"SCREEN.h"
+
+1205475541 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCtlNo.h
+	"SCREEN.h"
+
+1205475518 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLastDown.h
+	"SCREEN.h"
+
+1245746725 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENFWVerDT.h
+	"SCREEN.h"
+	"var.h"
+
+1205475532 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENHWCycle.h
+	"SCREEN.h"
+
+1205475493 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENModifyPWD.h
+	"SCREEN.h"
+
+1205475535 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENDBSetup.h
+	"SCREEN.h"
+
+1205475275 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOperMode.h
+	"SCREEN.h"
+
+1205475072 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENSendCycle.h
+	"SCREEN.h"
+
+1205475638 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENUpdateDB.h
+	"SCREEN.h"
+
+1205475483 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOffline.h
+	"SCREEN.h"
+	"var.h"
+
+1205475513 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLockdb.h
+	"SCREEN.h"
+	"var.h"
+
+1205475555 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENABOErr.h
+	"SCREEN.h"
+	"var.h"
+
+1205475544 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCmdSet.h
+	"SCREEN.h"
+	"var.h"
+
+1205475516 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLcnEncode.h
+	"SCREEN.h"
+
+1205475271 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlan.h
+	"SCREEN.h"
+
+1205474961 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenWeekDay.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475215 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtype.h
+	"SCREEN.h"
+
+1205475080 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypeMenu.h
+	"SCREEN.h"
+
+1205475070 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSpecialDay.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475074 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypeSel.h
+	"SCREEN.h"
+
+1205475212 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRunTableList.h
+	"SCREEN.h"
+
+1205475214 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRTMSInfo.h
+	"SCREEN.h"
+
+1205475242 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheck.h
+	"SCREEN.h"
+
+1205475233 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountMenu.h
+	"SCREEN.h"
+
+1205475238 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWVerMenu.h
+	"SCREEN.h"
+
+1205475234 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENRedCountMap.h
+	"SCREEN.h"
+
+1205475228 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenReverse.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1205475216 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRevWeekDay.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1205475218 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRevSpecialDay.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1252656626 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenActuateEdit.h
+	"SCREEN.h"
+
+1205475267 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPassModeSet.h
+	"SCREEN.h"
+
+1205475533 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENDirMap.h
+	"SCREEN.h"
+
+1205475534 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenDirLightBoardMappingMenu.h
+	"SCREEN.h"
+
+1205475518 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLightBoardMap.h
+	"SCREEN.h"
+
+1205475254 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlanEditF2.h
+	"SCREEN.h"
+
+1205475088 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypeEditF2.h
+	"SCREEN.h"
+
+1205474964 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenWeekDayEditF2.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475066 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSpecialDayView.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475067 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSpecialDayEditF2.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475265 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPhasePreview.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475078 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypePreview.h
+	"SCREEN.h"
+
+1205475260 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlanPreview.h
+	"SCREEN.h"
+
+1205475527 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLast92TCPlanSegmentUpdate.h
+	"SCREEN.h"
+
+1205475550 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenChainMenu.h
+	"SCREEN.h"
+
+1205475497 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenMotherChainSet.h
+	"SCREEN.h"
+
+1205475548 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenChildChainSet.h
+	"SCREEN.h"
+
+1205475503 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenLightPreview.h
+	"SCREEN.h"
+
+1205475514 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenLightEdit.h
+	"SCREEN.h"
+
+1319080671 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNetworkSetConfirm.h
+	"SCREEN.h"
+	"var.h"
+
+1300706177 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNetworkSet.h
+	"SCREEN.h"
+
+1319079468 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNetmaskSet.h
+	"SCREEN.h"
+
+1207036714 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENMBSelect.h
+	"SCREEN.h"
+
+1207039951 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENUart2.h
+	"SCREEN.h"
+
+1207038585 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENWarning.h
+	"SCREEN.h"
+
+1213696577 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENTFDStatus.h
+	"SCREEN.h"
+	"var.h"
+
+1228634790 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckDevID.h
+	"SCREEN.h"
+
+1228637429 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckCycleNum.h
+	"SCREEN.h"
+
+1228637429 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckNum88.h
+	"SCREEN.h"
+
+1322710152 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRailwayChainSet.h
+	"SCREEN.h"
+
+1238394213 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICEREVMANUALPAD.cpp
+	"PDEVICEREVMANUALPAD.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"unistd.h"
+	<stdio.h>
+
+1205475593 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICERTMS.cpp
+	"PDEVICERTMS.h"
+
+1218795120 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICESS.cpp
+	"PDEVICESS.h"
+	"CHexToInt.h"
+	"CDataToMessageOK.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	<string.h>
+
+1459144369 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PDEVICETRAFFICLIGHT.cpp
+	"PDEVICETRAFFICLIGHT.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"CSTORINI.h"
+	<stdio.h>
+
+1278401889 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PROTOCOL.cpp
+	"PROTOCOL.h"
+
+1278402223 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC.cpp
+	"PTRAFFIC.h"
+
+1205475584 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC77.cpp
+	"PTRAFFIC77.h"
+
+1205475587 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87.cpp
+	"PTRAFFIC87.h"
+
+1205475581 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87CMS.cpp
+	"PTRAFFIC87CMS.h"
+
+1205475578 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87COMM.cpp
+	"PTRAFFIC87COMM.h"
+
+1205475578 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87TC.cpp
+	"PTRAFFIC87TC.h"
+
+1205475577 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC87VD.cpp
+	"PTRAFFIC87VD.h"
+
+1241657238 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92.cpp
+	"PTRAFFIC92.h"
+	"WRITEJOB.h"
+	"SMEM.h"
+
+1205475570 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92CMS.cpp
+	"PTRAFFIC92CMS.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1442367942 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92COMM.cpp
+	"PTRAFFIC92COMM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"SCREENOnline.h"
+	"SCREENHWReset.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"READJOB.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1205475564 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/READJOB.h
+	"var.h"
+	"JOB.h"
+
+1205475567 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92OTHER.cpp
+	"PTRAFFIC92OTHER.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1397812604 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92TC.cpp
+	"PTRAFFIC92TC.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"CTools.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CTIMER.h"
+
+1205475568 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFIC92VD.cpp
+	"PTRAFFIC92VD.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1322472908 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICAMEGIDS.cpp
+	"PTRAFFICAMEGIDS.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"CTools.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CTIMER.h"
+
+1387960444 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICCCJ.cpp
+	"PTRAFFICCCJ.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"CTools.h"
+	"SCREENTFDStatus.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CTIMER.h"
+	"CPlanInfo.h"
+	"CPhaseInfo.h"
+	"CSegmentInfo.h"
+
+1205475562 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICNTCIP.cpp
+	"PTRAFFICNTCIP.h"
+
+1277687005 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/PTRAFFICREVSYNC.cpp
+	"PTRAFFICREVSYNC.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"unistd.h"
+	<stdio.h>
+	<math.h>
+
+1307666846 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/READJOB.cpp
+	"READJOB.h"
+	"PROTOCOL.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"screenRedCountHWCheck.h"
+
+1316662722 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/RS232.cpp
+	"RS232.h"
+	<stdio.h>
+	<fcntl.h>
+	<termios.h>
+	<unistd.h>
+	<string.h>
+
+1205475558 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREEN.cpp
+	"SCREEN.h"
+	"LCD240x128.h"
+	<stdio.h>
+	<string.h>
+
+1218795167 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENABOErr.cpp
+	"SCREENABOErr.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENModifyDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENSendCycle.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	<stdio.h>
+
+1221552411 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCmdSet.cpp
+	"SCREENCmdSet.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENFWVerDT.h"
+	"SCREENLockdb.h"
+	<stdio.h>
+
+1245806919 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCommStat.cpp
+	"SCREENCommStat.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENHWReset.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"DIGITALIO.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CSTC.h"
+	"WRITEJOB.h"
+
+1205475545 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCtlNo.cpp
+	"SCREENCtlNo.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENABOErr.h"
+	"SCREENLcnEncode.h"
+
+1226891724 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENCtlSetup.cpp
+	"SCREENCtlSetup.h"
+	"SCREENMain.h"
+	"SCREENCtlNo.h"
+	"SCREENLastDown.h"
+	"SCREENModifyDT.h"
+	"SCREENFWVerDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENOperStat.h"
+	"SCREENOperMode.h"
+	"SCREENCommStat.h"
+	"SCREENTotalRun.h"
+	"screenCurrentCommPacket.h"
+	"screenPassModeSet.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	<time.h>
+
+1457061457 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENDBSetup.cpp
+	"SCREENDBSetup.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"SCREENABOErr.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475533 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENDirMap.cpp
+	"SCREENDirMap.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"screenDirLightBoardMappingMenu.h"
+
+1245748050 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENFWVerDT.cpp
+	"SCREENFWVerDT.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENCmdSet.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"stdlib.h"
+
+1207035582 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENHWCycle.cpp
+	"SCREENHWCycle.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"SCREENABOErr.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475636 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENHWReset.cpp
+	"SCREENHWReset.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475523 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLast92TCPlanSegmentUpdate.cpp
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475521 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLastDown.cpp
+	"SCREENLastDown.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475517 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLcnEncode.cpp
+	"SCREENLcnEncode.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENCtlNo.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENLockdb.h"
+
+1205475516 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLightBoardMap.cpp
+	"SCREENLightBoardMap.h"
+	"screenDirLightBoardMappingMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1218795212 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLockdb.cpp
+	"SCREENLockdb.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENModifyDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENSendCycle.h"
+	"SCREENCmdSet.h"
+	"SCREENLcnEncode.h"
+	"SCREENMain.h"
+	<stdio.h>
+
+1234868619 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLogin.cpp
+	<string.h>
+	<stdlib.h>
+	"SCREENLogin.h"
+	"SCREENLoginErr.h"
+	"SCREENLogo.h"
+	"SCREENOnline.h"
+	"SCREENOffline.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENMain.h"
+
+1205475501 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLoginErr.cpp
+	"SCREENLoginErr.h"
+	"SCREENLogo.h"
+	"SCREENLogin.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1218792030 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENLogo.cpp
+	"SCREENLogo.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENLogin.h"
+	<stdio.h>
+	<stdlib.h>
+
+1207040631 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENMBSelect.cpp
+	"SCREENMBSelect.h"
+	"SCREENMain.h"
+	"SCREENOperStat.h"
+	"SCREENLockdb.h"
+	"SCREENWarning.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1226891724 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENMain.cpp
+	"SCREENMain.h"
+	"SCREENLogo.h"
+	"SCREENCtlSetup.h"
+	"SCREENSendCycle.h"
+	"SCREENUpdateDB.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"screenSegtypeMenu.h"
+	"screenSegtype.h"
+	"screenPlan.h"
+	"screenRunTableList.h"
+	"screenRTMSInfo.h"
+	"screenRedCountMenu.h"
+	"screenReverseMenu.h"
+	"screenActuateEdit.h"
+	"SCREENDirMap.h"
+	"screenDirLightBoardMappingMenu.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"screenChainMenu.h"
+	<time.h>
+
+1249897591 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENModifyDT.cpp
+	"SCREENModifyDT.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475495 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENModifyPWD.cpp
+	"SCREENModifyPWD.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1319438127 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNetmaskSet.cpp
+	"SCREENNetworkSet.h"
+	"SCREENNetmaskSet.h"
+	"SCREENNetworkSetConfirm.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1319089222 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNetworkSet.cpp
+	"SCREENNetworkSet.h"
+	"SCREENNetmaskSet.h"
+	"SCREENNetworkSetConfirm.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1319080806 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNetworkSetConfirm.cpp
+	"SCREENNetworkSetConfirm.h"
+	"SCREENNetworkSet.h"
+	"SCREENHWReset.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"DIGITALIO.h"
+	"CSTC.h"
+	"WRITEJOB.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1205475485 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENNone.cpp
+	"SCREENNone.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENLogo.h"
+
+1205475493 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOffline.cpp
+	"SCREENOffline.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"SCREENLogo.h"
+
+1205476066 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOnline.cpp
+	"SCREENOnline.h"
+	"SCREENLogo.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475274 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOperMode.cpp
+	"SCREENOperMode.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1322528661 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENOperStat.cpp
+	"SCREENOperStat.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENMBSelect.h"
+	"SCREENUart2.h"
+	<string.h>
+
+1205475236 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENRedCountMap.cpp
+	"SCREENRedCountMap.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475071 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENSendCycle.cpp
+	"SCREENSendCycle.h"
+	"SCREENMain.h"
+	"SCREENLockdb.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENABOErr.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1213696713 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENTFDStatus.cpp
+	"screenRunTableList.h"
+	"SCREENTFDStatus.h"
+	"SCREENLogo.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475062 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENTotalRun.cpp
+	"SCREENTotalRun.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
+1450147469 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENUart2.cpp
+	"SCREENUart2.h"
+	"SCREENMain.h"
+	"SCREENOperStat.h"
+	"SCREENLockdb.h"
+	"SCREENWarning.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475284 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENUpdateDB.cpp
+	"SCREENUpdateDB.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+
+1245806919 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SCREENWarning.cpp
+	"SCREENWarning.h"
+	"SCREENMain.h"
+	"SCREENMBSelect.h"
+	"SCREENUart2.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENHWReset.h"
+	"WRITEJOB.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CSTC.h"
+
+1455765239 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/SMEM.cpp
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CTIMER.h"
+	"CSTC.h"
+	"DIGITALIO.h"
+	"CSTORINI.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<unistd.h>
+
+1450144345 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/STORAGE.cpp
+	"STORAGE.h"
+	<time.h>
+	<string.h>
+	<stdlib.h>
+
+1269857906 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/UDP.cpp
+	"UDP.h"
+	<stdio.h>
+	<sys/types.h>
+	<arpa/inet.h>
+	<unistd.h>
+	<string.h>
+
+1319098684 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/WRITEJOB.cpp
+	"WRITEJOB.h"
+	"SMEM.h"
+	"PROTOCOL.h"
+	"CHexToInt.h"
+	<unistd.h>
+	"screenCurrentCommPacket.h"
+
+1268564103 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/inifile.cpp
+	"inifile.h"
+	<algorithm>
+	<iostream>
+	<fstream>
+
+1205475605 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/light.cpp
+	"light.h"
+	<unistd.h>
+	<sys/perm.h>
+	<sys/io.h>
+
+1452136936 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/main.cpp
+	"var.h"
+	"SMEM.h"
+	"PARSETRAFFIC.h"
+	"PARSERTMS.h"
+	"PARSENMEA.h"
+	"PARSESS.h"
+	"READJOB.h"
+	"WRITEJOB.h"
+	"LCD240x128.h"
+	"DIGITALIO.h"
+	"CTIMER.h"
+	"CDataToMessageOK.h"
+	"SCREENLogo.h"
+	"STORAGE.h"
+	<stdio.h>
+	<string.h>
+	<unistd.h>
+	<pthread.h>
+	"CSTC.h"
+	"CSTORINI.h"
+
+1322474925 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenActuateArwenStatus.cpp
+	"screenActuateArwenStatus.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"SMEM.h"
+
+1392098131 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenActuateEdit.cpp
+	"screenActuateEdit.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+	<string.h>
+
+1234745682 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenChainMenu.cpp
+	"screenChainMenu.h"
+	"screenMotherChainSet.h"
+	"screenChildChainSet.h"
+	"screenRailwayChainSet.h"
+	<stdio.h>
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+
+1233888367 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenChainStatus.cpp
+	"screenChainStatus.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475549 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenChildChainSet.cpp
+	"screenChildChainSet.h"
+	"SCREENMain.h"
+	"screenChainMenu.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475538 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenCurrentCommPacket.cpp
+	"screenCurrentCommPacket.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"CSTC.h"
+	"SCREENNetworkSet.h"
+	<stdio.h>
+	<string.h>
+	"SMEM.h"
+
+1397815050 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenCurrentLightStatus.cpp
+	"screenCurrentLightStatus.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475536 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenDirLightBoardMappingMenu.cpp
+	"screenDirLightBoardMappingMenu.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+	"SCREENDirMap.h"
+	"SCREENLightBoardMap.h"
+
+1304038811 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenLightEdit.cpp
+	"screenLightEdit.h"
+	"screenSegtype.h"
+	"screenSegtypeEditF2.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPlan.h"
+	"screenLightPreview.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475513 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenLightPreview.cpp
+	"screenLightPreview.h"
+	"screenSegtype.h"
+	"screenSegtypeEditF2.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPlan.h"
+	"screenLightEdit.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475494 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenMotherChainSet.cpp
+	"screenMotherChainSet.h"
+	"SCREENMain.h"
+	"screenChainMenu.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475270 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPassModeSet.cpp
+	"screenPassModeSet.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+	<string.h>
+
+1322472819 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPhasePreview.cpp
+	"screenPhasePreview.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"screenPlanEditF2.h"
+	"screenPlan.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1234864344 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlan.cpp
+	"screenPlan.h"
+	"screenSegtype.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPlanEditF2.h"
+	"screenPhasePreview.h"
+	"screenLightPreview.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475262 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlanEdit0523.cpp
+	"screenPlanEdit0523.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475259 /home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlanEdit0523.h
+	"SCREEN.h"
+
+1322472860 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlanEditF2.cpp
+	"screenPlanEditF2.h"
+	"screenPlan.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPhasePreview.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475256 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenPlanPreview.cpp
+	"screenPlanPreview.h"
+	"screenSegtype.h"
+	"screenSegtypeEditF2.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475214 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRTMSInfo.cpp
+	"screenRTMSInfo.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+
+1322790571 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRailwayChainSet.cpp
+	"screenRailwayChainSet.h"
+	"SCREENMain.h"
+	"screenChainMenu.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CSTORINI.h"
+
+1278409715 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheck.cpp
+	"screenRedCountHWCheck.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"screenRedCountMenu.h"
+	"screenRedCountHWCheckSel.h"
+	<stdio.h>
+	"SMEM.h"
+
+1278409715 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckCycleNum.cpp
+	"screenRedCountHWCheckCycleNum.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	"SMEM.h"
+
+1278409715 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckDevID.cpp
+	"screenRedCountHWCheckDevID.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	"SMEM.h"
+
+1278409715 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckNum88.cpp
+	"screenRedCountHWCheckNum88.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	"SMEM.h"
+
+1271667464 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWCheckSel.cpp
+	"screenRedCountHWCheckSel.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountHWCheck.h"
+	"screenRedCountMenu.h"
+	<stdio.h>
+	"SMEM.h"
+
+1271924422 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountHWVerMenu.cpp
+	"screenRedCountHWVerMenu.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	<stdlib.h>
+	"CSTC.h"
+	"WRITEJOB.h"
+	"SMEM.h"
+	"screenRedCountMenu.h"
+	"SCREENHWReset.h"
+
+1228637042 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRedCountMenu.cpp
+	"screenRedCountMenu.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"CSTC.h"
+	"SMEM.h"
+	"screenRedCountHWCheckSel.h"
+	"screenRedCountHWVerMenu.h"
+	"SCREENRedCountMap.h"
+	"screenRedCountHWCheckDevID.h"
+	"screenRedCountHWCheckNum88.h"
+	"screenRedCountHWCheckCycleNum.h"
+
+1205475217 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRevSpecialDay.cpp
+	"screenRevSpecialDay.h"
+	"screenReverse.h"
+	"screenReverseMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475226 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRevWeekDay.cpp
+	"screenRevWeekDay.h"
+	"SCREENMain.h"
+	"screenReverse.h"
+	"screenReverseMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1455765084 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenReverse.cpp
+	"screenReverse.h"
+	"screenReverseMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1277549575 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenReverseMenu.cpp
+	"screenReverseMenu.h"
+	<stdio.h>
+	"screenRevWeekDay.h"
+	"screenRevSpecialDay.h"
+	"CSTC.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+
+1274666211 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenRunTableList.cpp
+	"screenRunTableList.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenStrategy.h"
+	"screenSegtype.h"
+	"screenCurrentLightStatus.h"
+	"screenPlan.h"
+	"CSTC.h"
+	"SCREENTFDStatus.h"
+	"screenChainStatus.h"
+	"screenActuateArwenStatus.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475213 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtype.cpp
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"screenSegtypeEditF2.h"
+	"screenWeekDay.h"
+	"screenSpecialDay.h"
+	"screenSegtypeSel.h"
+	"screenRunTableList.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"screenPlan.h"
+	"CSTC.h"
+	<stdio.h>
+
+1205475207 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypeEditF2.cpp
+	"screenSegtypeEditF2.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"screenPlanPreview.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"screenPlan.h"
+	"CSTC.h"
+	<stdio.h>
+
+1205475079 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypeMenu.cpp
+	"screenSegtypeMenu.h"
+	"screenWeekDay.h"
+	"screenSpecialDay.h"
+	"screenSegtypeSel.h"
+	<stdio.h>
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+
+1205475209 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypePreview.cpp
+	"screenSegtypePreview.h"
+	"screenSegtype.h"
+	"screenWeekDayEditF2.h"
+	"screenWeekDay.h"
+	"screenSpecialDay.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"screenPlan.h"
+	"CSTC.h"
+	<stdio.h>
+
+1205475075 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSegtypeSel.cpp
+	"screenSegtypeSel.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenSegtypeMenu.h"
+	"screenSegtype.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475076 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSpecialDay.cpp
+	"screenSpecialDay.h"
+	"screenSpecialDayView.h"
+	"SCREENMain.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475068 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSpecialDayEditF2.cpp
+	"screenSpecialDayEditF2.h"
+	"screenSpecialDayView.h"
+	"screenSpecialDay.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475065 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenSpecialDayView.cpp
+	"screenSpecialDayView.h"
+	"screenSpecialDayEditF2.h"
+	"screenSpecialDay.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475069 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenStrategy.cpp
+	"screenStrategy.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475638 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenWeekDay.cpp
+	"screenWeekDay.h"
+	"screenWeekDayEditF2.h"
+	"SCREENMain.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205474935 source:/home/cct/Desktop/UntitledFolder/STCBIGCombo_ICOP_NEW_LCD/screenWeekDayEditF2.cpp
+	"screenWeekDayEditF2.h"
+	"screenWeekDay.h"
+	"SCREENMain.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"screenSegtypePreview.h"
+	"SMEM.h"
+

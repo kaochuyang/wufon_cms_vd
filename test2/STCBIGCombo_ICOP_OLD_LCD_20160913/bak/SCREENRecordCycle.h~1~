@@ -1,0 +1,40 @@
+#ifndef SCREENRecordCycleH
+#define SCREENRecordCycleH
+
+#include "SCREEN.h"
+//---------------------------------------------------------------------------
+class SCREENRecordCycle:public SCREEN
+{
+    public:
+        SCREENRecordCycle(void);
+        ~SCREENRecordCycle(void);
+
+        void DisplayRecordCycle(void);                                          //顯示首頁
+        void DoKeyWork(BYTE);                                                   //根據KEY的值作事
+
+    private:
+        DISP_WORD record;
+        int recordCycle;
+        
+        BYTE recordCycleBitmap[3840];                                           //底圖
+
+        void LoadBitmapFromFile(void);                                          //將底圖Load進記憶體
+        void InitDispWord(void);                                                //初始化空白位置
+
+        void DoKey1Work();
+        void DoKey2Work();
+        void DoKey3Work();
+        void DoKey4Work();
+        void DoKey5Work();
+
+        void DoKeyF1Work();
+        void DoKeyF4Work();
+
+        void DoKeyUPWork(void);
+        void DoKeyDOWNWork(void);
+        
+        void DoKeyEnterWork();                                                  
+};
+//---------------------------------------------------------------------------
+extern SCREENRecordCycle screenRecordCycle;
+#endif

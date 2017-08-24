@@ -677,6 +677,8 @@ typedef struct tsUDPInfo {
 #define rev_manual_timer_signal 51
 #define RTSIGNAL_Timer 52                                                       //InterVal Timerï¿½Îªï¿½RT signal
 #define RTSIGNAL_RECODE_SMEM 53                                                 //ï¿½ï¿½ï¿½ï¿½ï¿½Oï¿½ï¿½ï¿½Tï¿½Îªï¿½
+#define power_signal_timer 54
+
 
 #define simulationNum 720                                                       //VDï¿½ï¿½ï¿\uFFFDï¿½Æ°Oï¿½ï¿½ï¿\uFFFD
 #define realRecordNum 1000

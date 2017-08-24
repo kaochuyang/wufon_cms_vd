@@ -1,0 +1,5 @@
+# umount /dev/sda1 /mnt/usb
+# mount /dev/sda1 /mnt/usb
+cp -afr ./linux/Release_Build/STCCombo /var/ftp/
+sync
+echo OK~

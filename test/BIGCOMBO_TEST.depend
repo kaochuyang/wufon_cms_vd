@@ -9504,10 +9504,10 @@
 1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CDataToMessageOK.h
 	"var.h"
 
-1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/var.h
+1502878046 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/var.h
 	<time.h>
 
-1502352776 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/SMEM.h
+1503555028 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/SMEM.h
 	"var.h"
 	"STORAGE.h"
 	"RS232.h"
@@ -9515,6 +9515,7 @@
 	"junbo_light_control.h"
 	"junli_vd.h"
 	"junbo_cms.h"
+	"power_reboot_group.h"
 	<pthread.h>
 
 1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/STORAGE.h
@@ -9526,7 +9527,7 @@
 1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/IODEVICE.h
 	"var.h"
 
-1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/RS232.h
+1502704704 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/RS232.h
 	"var.h"
 	"IODEVICE.h"
 	<pthread.h>
@@ -9628,7 +9629,7 @@
 1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CReverseTime.h
 	<pthread.h>
 
-1502347592 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CSTC.cpp
+1503519274 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CSTC.cpp
 	"CSTC.h"
 	"light.h"
 	"CTools.h"
@@ -9682,7 +9683,8 @@
 1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/screenStrategy.h
 	"SCREEN.h"
 
-1502348311 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CTIMER.h
+1503487475 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CTIMER.h
+	"power_reboot_group.h"
 	<pthread.h>
 
 1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/SCREENHWReset.h
@@ -9715,7 +9717,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1502349071 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CTIMER.cpp
+1503508927 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/CTIMER.cpp
 	"CTIMER.h"
 	"var.h"
 	"CDataToMessageOK.h"
@@ -9854,7 +9856,7 @@
 	"PTRAFFIC92VD.h"
 	"PTRAFFIC92OTHER.h"
 
-1498908954 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/PTRAFFIC92COMM.h
+1503309205 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/PTRAFFIC92COMM.h
 	"var.h"
 	"SMEM.h"
 
@@ -10352,7 +10354,7 @@
 	<stdlib.h>
 	<error.h>
 
-1502348170 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/PTRAFFIC92COMM.cpp
+1503381099 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/PTRAFFIC92COMM.cpp
 	"PTRAFFIC92COMM.h"
 	"CDataToMessageOK.h"
 	"WRITEJOB.h"
@@ -10860,7 +10862,7 @@
 	<error.h>
 	"CSTC.h"
 
-1502347679 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/SMEM.cpp
+1503488779 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/SMEM.cpp
 	"SMEM.h"
 	"WRITEJOB.h"
 	"CDataToMessageOK.h"
@@ -10888,7 +10890,7 @@
 	<unistd.h>
 	<string.h>
 
-1498908954 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/WRITEJOB.cpp
+1503513306 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/WRITEJOB.cpp
 	"WRITEJOB.h"
 	"SMEM.h"
 	"PROTOCOL.h"
@@ -10902,7 +10904,7 @@
 	<iostream>
 	<fstream>
 
-1499696758 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junbo_light_control.cpp
+1503309161 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junbo_light_control.cpp
 	"junbo_light_control.h"
 	"SMEM.h"
 
@@ -11384,7 +11386,7 @@
 	"screenSegtypePreview.h"
 	"SMEM.h"
 
-1502360867 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/main.cpp
+1503521167 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/main.cpp
 	"var.h"
 	"SMEM.h"
 	"PARSETRAFFIC.h"
@@ -11408,11 +11410,11 @@
 	"PTRAFFIC92TC.h"
 	"PTRAFFIC92COMM.h"
 
-1502355827 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junbo_cms.cpp
+1503520713 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junbo_cms.cpp
 	"junbo_cms.h"
 	"SMEM.h"
 
-1502355695 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junbo_cms.h
+1503403758 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junbo_cms.h
 	"var.h"
 	<stdlib.h>
 	<stdio.h>
@@ -11424,11 +11426,11 @@
 	<pthread.h>
 	"RS232.h"
 
-1502352706 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junli_vd.h
+1503323035 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junli_vd.h
 	"RS232.h"
 	"var.h"
 
-1502360867 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junli_vd.cpp
+1503484623 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/junli_vd.cpp
 	"junli_vd.h"
 	"SMEM.h"
 	<string.h>
@@ -11436,4 +11438,15 @@
 	<stdio.h>
 	<signal.h>
 	<unistd.h>
+
+1503517199 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/power_reboot_group.h
+	"var.h"
+	<time.h>
+	<signal.h>
+	<pthread.h>
+
+1503517250 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/test/power_reboot_group.cpp
+	"power_reboot_group.h"
+	<stdio.h>
+	"SMEM.h"
 

@@ -1,0 +1,343 @@
+#include "SCREENCarLength.h"
+#include "SCREENMain.h"
+#include "SCREENLockdb.h"
+#include "LCD240x128.h"
+#include "SMEM.h"
+#include "SCREENABOErr.h"
+
+#include "CDataToMessageOK.h"
+#include "WRITEJOB.h"
+
+
+SCREENCarLength screenCarLength;
+//---------------------------------------------------------------------------
+SCREENCarLength::SCREENCarLength(void)
+{
+try {
+    LoadBitmapFromFile();
+    InitDispWord();
+    cSelect=0;
+    for (int i=0;i<10;i++) len[i]=0;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+SCREENCarLength::~SCREENCarLength(void)
+{
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyWork(BYTE key)                                       //已過濾,進來的是0x80~0x98之間
+{
+try {
+    switch (key) {
+        case 0x80:
+          DoKey0Work();
+        break;
+        case 0x81:
+          DoKey1Work();
+        break;
+        case 0x82:
+          DoKey2Work();
+        break;
+        case 0x83:
+          DoKey3Work();
+        break;
+        case 0x84:
+          DoKey4Work();
+        break;
+        case 0x85:
+          DoKey5Work();
+        break;
+        case 0x86:
+          DoKey6Work();
+        break;
+        case 0x87:
+          DoKey7Work();
+        break;
+        case 0x88:
+          DoKey8Work();
+        break;
+        case 0x89:
+          DoKey9Work();
+        break;
+        case 0x90://F1 ESC
+          DoKeyF1Work();
+        break;
+        case 0x91:
+        break;
+        case 0x92:
+        break;
+        case 0x93:
+          DoKeyF4Work();
+        break;
+        case 0x94:
+          DoKeyUPWork();
+        break;
+        case 0x95:
+          DoKeyDOWNWork();
+        break;
+        case 0x96:
+          DoKeyLEFTWork();
+        break;
+        case 0x97:
+          DoKeyRIGHTWork();
+        break;
+        case 0x98://ENTER
+          DoKeyEnterWork();
+        break;
+        default:
+        break;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::LoadBitmapFromFile(void)
+{
+try {
+    FILE *bitmap;
+    bitmap=fopen("//cct//bitmap//backGround//4_2_carlength.bit","rb");
+    if (bitmap) {
+        fread(carLengthBitmap,3840,1,bitmap);
+        fclose(bitmap);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DisplayCarLength(void)
+{
+try {
+    smem.SetcFace(cCARLENGTH);
+    smem.vWriteMsgToDOM("Enter Car Length Setup Screen");
+    lcd240x128.DISPLAY_GRAPHIC(0,carLengthBitmap,128,30);
+    DisplayLength();
+    cSelect=0;
+    setCursor8x16(length[cSelect].X,length[cSelect].Y+16);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DisplayLength(void)
+{
+try {
+    int small=smem.vGet92VDCarLength();
+    int med=smem.vGet92VDBigCarLength();
+
+    med=med+1;
+    len[0]=med/10000;
+    len[1]=(med%10000)/1000;
+    len[2]=(med%1000)/100;
+    len[3]=(med%100)/10;
+    len[4]=med%10;
+    small=small+1;
+    len[5]=small/10000;
+    len[6]=(small%10000)/1000;
+    len[7]=(small%1000)/100;
+    len[8]=(small%100)/10;
+    len[9]=small%10;
+
+    for (int i=0;i<10;i++) lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[i].X,tempLength[i].Y,word8x16[len[i]],tempLength[i].height,tempLength[i].width/8);
+    //必須要先加後減才OK
+    med=med-1;
+    len[0]=med/10000;
+    len[1]=(med%10000)/1000;
+    len[2]=(med%1000)/100;
+    len[3]=(med%100)/10;
+    len[4]=med%10;
+    small=small-1;
+    len[5]=small/10000;
+    len[6]=(small%10000)/1000;
+    len[7]=(small%1000)/100;
+    len[8]=(small%100)/10;
+    len[9]=small%10;
+
+    for (int i=0;i<10;i++) lcd240x128.DISPLAY_GRAPHIC_XY(length[i].X,length[i].Y,word8x16[len[i]],length[i].height,length[i].width/8);
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::InitDispWord(void)
+{
+try {
+    for (int i=0;i<10;i++) {
+
+         if (i>=0 && i<=4) {
+             length[i].X=168+i*8;
+             length[i].Y=50;
+         } else if (i>=5 && i<=9) {
+             length[i].X=168+(i-5)*8;
+             length[i].Y=72;
+         }
+         length[i].width=8;
+         length[i].height=16;
+
+         if (i>=0 && i<=4) {
+             tempLength[i].X=104+i*8;
+             tempLength[i].Y=30;
+         } else if (i>=5 && i<=9) {
+             tempLength[i].X=+104+(i-5)*8;
+             tempLength[i].Y=50;
+         }
+         tempLength[i].width=8;
+         tempLength[i].height=16;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey0Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[0],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[0],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=0;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey1Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[1],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[1],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=1;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey2Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[2],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[2],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=2;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey3Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[3],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[3],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=3;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey4Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[4],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[4],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=4;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey5Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[5],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[5],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=5;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey6Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[6],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[6],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=6;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey7Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[7],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[7],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=7;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey8Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[8],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[8],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=8;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKey9Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(length[cSelect].X,length[cSelect].Y,word8x16[9],length[cSelect].height,length[cSelect].width/8);
+    lcd240x128.DISPLAY_GRAPHIC_XY(tempLength[cSelect].X,tempLength[cSelect].Y,word8x16[9],tempLength[cSelect].height,tempLength[cSelect].width/8);
+    len[cSelect]=9;
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyF1Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyF4Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyEnterWork(void)
+{
+try {
+    if (smem.GetDbOperStat()==0 || smem.vLoadCenterConnectStatus()==false) {
+        if (smem.vGet0FCommandSet()>1) {    //Advance Command 0與1都是Base
+            int small=len[5]*10000+len[6]*1000+len[7]*100+len[8]*10+len[9];
+            int med=len[0]*10000+len[1]*1000+len[2]*100+len[3]*10+len[4];
+            if (med>small && med<65535) {
+
+                unsigned char data[6];
+                data[0] = 0x6F;
+                data[1] = 0x31;
+                data[2] = HI(med);
+                data[3] = LO(med);
+                data[4] = HI(small);
+                data[5] = LO(small);
+
+                MESSAGEOK _MSG;
+                _MSG = oDataToMessageOK.vPackageINFOTo92Protocol(data, 6,false);
+                _MSG.InnerOrOutWard=cComingFromScreen;
+                writeJob.WriteWorkByMESSAGEOUT(_MSG);
+
+                char message[200]={0};
+                sprintf(message,"Set Car Length for [0,%#5d],[%#5d,%#5d],[%#5d,65535]",small,small+1,med,med+1);
+                smem.vWriteMsgToDOM(message);
+
+                screenMain.DisplayMain();
+            }
+        } else {
+            smem.SetLastFace(cCARLENGTH);
+            screenABOErr.DisplayABOErr();
+        }
+    } else {
+        smem.SetLastFace(cCARLENGTH);
+        screenLockdb.DisplayLockdb();
+    }
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyUPWork(void)
+{
+    DoKeyLEFTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyDOWNWork(void)
+{
+    DoKeyRIGHTWork();
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyLEFTWork(void)
+{
+try {
+    clearCursor8x16(length[cSelect].X,length[cSelect].Y+16);
+    if (cSelect==0) cSelect=1;
+    cSelect--;
+    setCursor8x16(length[cSelect].X,length[cSelect].Y+16);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENCarLength::DoKeyRIGHTWork(void)
+{
+try {
+    clearCursor8x16(length[cSelect].X,length[cSelect].Y+16);
+    cSelect++;
+    if (cSelect>=10) cSelect=9;
+    setCursor8x16(length[cSelect].X,length[cSelect].Y+16);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------

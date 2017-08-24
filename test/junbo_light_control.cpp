@@ -213,7 +213,7 @@ void junbo_light_control::junbol_light_5F7C()
         data[	0	]=0x5F;
         data[	1	]=0x7C;
 //   data[2]=0x8;//
-        for(int i=1; i<num_light+1; i++)
+     /*   for(int i=1; i<num_light+1; i++)
         {
             if(query_count==0)
             {
@@ -228,7 +228,7 @@ void junbo_light_control::junbol_light_5F7C()
                 data[i*3+2]=smem.record_light[countID[i-1]].parameter;
             }
         }
-
+*/
         MESSAGEOK _MsgOK;
         _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, (3+3*num_light), true);
         _MsgOK.InnerOrOutWard = cOutWard;
@@ -267,7 +267,7 @@ void junbo_light_control::junbol_light_5F7B()
 //   data[2]=0x8;//
         for(int i=1; i<num_light+1; i++)
         {
-            if(query_count==0)
+        /*    if(query_count==0)
             {
                 data[i*3]=smem.record_state[countID[i-1]].ID;
                 data[i*3+1]=smem.record_state[countID[i-1]].command;
@@ -278,7 +278,7 @@ void junbo_light_control::junbol_light_5F7B()
                 data[i*3]=smem.record_light[countID[i-1]].ID;
                 data[i*3+1]=smem.record_light[countID[i-1]].command;
                 data[i*3+2]=smem.record_light[countID[i-1]].parameter;
-            }
+            }*/
         }
 
         MESSAGEOK _MsgOK;
@@ -508,16 +508,7 @@ void junbo_light_control::junbo_light_send_reference_step(unsigned short int jun
 
             break;
         case(17):
-            /*   ucSendTMP[0] = 0xAA;//head
-               ucSendTMP[1] = 0x0;//sequence
-               ucSendTMP[2] = 4;//ID
-               ucSendTMP[3] = flash_off.command;
-               ucSendTMP[4] =flash_off.parameter;
-               ucSendTMP[5] = 0x0;//cks
-               for (int a=0; a<5; a++)
-                   ucSendTMP[5]^=ucSendTMP[a];
-               printf("flash off\n");
-               junbo_light_send(ucSendTMP);*/
+
 
             light_ID[1]=light_ID[6]=light_ID[8]=red;
             light_ID[2]=light_ID[5]=light_ID[7]=green;
@@ -721,7 +712,7 @@ void junbo_light_control::junbo_light_receive(MESSAGEOK messageIn)//just for rec
         {
 
 
-            if(junbo_receive_packet[2]>=1&&junbo_receive_packet[2]<=8)
+       /*     if(junbo_receive_packet[2]>=1&&junbo_receive_packet[2]<=8)
             {
                 if((junbo_receive_packet[3]==0xb1)
                         ||(junbo_receive_packet[3]==0xb0)
@@ -754,7 +745,7 @@ void junbo_light_control::junbo_light_receive(MESSAGEOK messageIn)//just for rec
                     smem.record_state[ID].parameter=junbo_receive_packet[4];
                 }
 
-            }
+            }*/
 
             printf("Receive junbo_protocol=");
             for(int i=0; i<6; i++)printf("%x ",junbo_receive_packet[i]);
@@ -895,10 +886,10 @@ void junbo_light_control::query_modual_state()
 
     for(int i=1; i<9; i++)
     {
-        smem.record_state[i].ID=0;
+/*        smem.record_state[i].ID=0;
         smem.record_state[i].command=0;
         smem.record_state[i].parameter=0;
-        //int i=4;
+        //int i=4;*/
         ucSendTMP[0] = 0xAA;//head
         ucSendTMP[1] = 0x1;//sequence
         ucSendTMP[2] = i;//ID
@@ -918,6 +909,8 @@ void junbo_light_control::query_modual_state()
     /*-----------------*/
 
 }
+
+
 void junbo_light_control::brightness_control(int bright_parameter)
 {
     pthread_mutex_lock(&junbo_light_control::_junbo_mutex);
@@ -1028,9 +1021,9 @@ void junbo_light_control::report_module_state_to_revapp()
     pthread_mutex_lock(&junbo_light_control::_junbo_mutex);
     for(int i=1; i<9; i++)
     {
-        data[3*i-1]=smem.record_state[i].ID;
+/*        data[3*i-1]=smem.record_state[i].ID;
         data[3*i]=smem.record_state[i].command;
-        data[3*i+1]=smem.record_state[i].parameter;
+        data[3*i+1]=smem.record_state[i].parameter;*/
     }
     writeJob.WritePhysicalOut(data, 26, revAPP);
     pthread_mutex_unlock(&junbo_light_control::_junbo_mutex);

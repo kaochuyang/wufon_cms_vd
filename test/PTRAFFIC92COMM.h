@@ -16,6 +16,8 @@ class PTRAFFIC92COMM
 
         bool DoWorkViaPTraffic92(MESSAGEOK);                                    //根據PTraffic92來的訊息作事情
 
+        bool setting_regular_reboot_0F17(MESSAGEOK);
+
         bool vRebootIPC_0F10(MESSAGEOK);
         bool vReportRebootMsg_0F90(void);
         bool vSetIPCTime_0F12(MESSAGEOK);                                       //設定時間
@@ -65,6 +67,7 @@ class PTRAFFIC92COMM
         bool vRebootIPC_0F10_revAPP(MESSAGEOK DataMessageIn);
         bool vReportIPCTime_0FC2_revAPP();
         bool check_link_revAPP();
+        bool VD_CMS_reboot_0F17(BYTE second);
 
 
     private:

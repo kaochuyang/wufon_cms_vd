@@ -1,0 +1,41 @@
+#ifndef SCREENRealEventH
+#define SCREENRealEventH
+
+#include "SCREEN.h"
+//---------------------------------------------------------------------------
+class SCREENRealEvent:public SCREEN
+{
+    public:
+        SCREENRealEvent(void);
+        ~SCREENRealEvent(void);
+
+        void DisplayRealEvent(void);                                            //顯示
+        void DoKeyWork(BYTE);                                                   //根據KEY的值作事
+
+        void DisplayEvent(int);
+        void DisplayPresence(DATA_Bit);
+
+    private:
+
+        BYTE realEventBitmap[3840];                                             //底圖
+        DISP_WORD title[8];
+        DISP_WORD data[8];
+        DISP_WORD position[2];
+
+        int cSelect;
+        int laneCount;
+
+        BYTE fill[32];
+        void ClearAllData(void);        
+
+        void LoadBitmapFromFile(void);                                          //將底圖Load進記憶體
+        void InitDispWord(void);                                                //初始化此畫面的座標等參數
+
+        void DoKeyF1Work(void);
+        void DoKeyF4Work(void);
+        void DoKeyLEFTWork(void);
+        void DoKeyRIGHTWork(void);                     
+};
+//---------------------------------------------------------------------------
+extern SCREENRealEvent screenRealEvent;
+#endif

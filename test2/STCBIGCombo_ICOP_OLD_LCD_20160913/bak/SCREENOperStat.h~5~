@@ -1,0 +1,28 @@
+#ifndef SCREENOperStatH
+#define SCREENOperStatH
+
+#include "SCREEN.h"
+//---------------------------------------------------------------------------
+class SCREENOperStat:public SCREEN
+{
+    public:
+        SCREENOperStat(void);
+        ~SCREENOperStat(void);
+
+        void DisplayOperStat(void);
+        void DoKeyWork(BYTE);                                                   //根據KEY的值作事
+
+        void vShowGPSTime(time_t);
+
+    private:
+        BYTE operStatBitmap[3840];                                              //底圖
+
+        void LoadBitmapFromFile(void);                                          //將底圖Load進記憶體
+
+        void DoKeyF1Work();
+        void DoKeyF4Work();
+};
+//---------------------------------------------------------------------------
+extern SCREENOperStat screenOperStat;
+#endif
+

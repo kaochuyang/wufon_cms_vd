@@ -17,7 +17,11 @@ class junli_vd
         bool vClearMsg(MESSAGEOK *messageIn, unsigned short int msgID);
         int  open_port_process(char* tty_name);
         void junli_wrong_record(MESSAGEOK messageIn,int junli_length);
+        void report_to_center_VD_alive();
     private:
+        int alive_count,text_ID;
+        bool vd_alive_mark;
+
 };
 
 #endif // JUNLI_VD_H

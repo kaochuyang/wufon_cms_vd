@@ -1,0 +1,193 @@
+//---------------------------------------------------------------------------
+#include "SCREENRecordCycle.h"
+#include "SCREENMain.h"
+#include "SCREENLockdb.h"
+#include "LCD240x128.h"
+#include "SMEM.h"
+#include "SCREENABOErr.h"
+
+#include "CDataToMessageOK.h"
+#include "WRITEJOB.h"
+
+
+SCREENRecordCycle screenRecordCycle;
+//---------------------------------------------------------------------------
+SCREENRecordCycle::SCREENRecordCycle(void)
+{
+    LoadBitmapFromFile();
+    InitDispWord();
+}
+//---------------------------------------------------------------------------
+SCREENRecordCycle::~SCREENRecordCycle(void)
+{
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKeyWork(BYTE key)
+{
+try {
+    switch (key) {
+        case 0x81:
+          DoKey1Work();
+        break;
+        case 0x82:
+          DoKey2Work();
+        break;
+        case 0x83:
+          DoKey3Work();
+        break;
+        case 0x84:
+          DoKey4Work();
+        break;
+        case 0x85:
+          DoKey5Work();
+        break;
+        case 0x90:     //ESC,F1
+          DoKeyF1Work();
+        break;
+        case 0x93:
+          DoKeyF4Work();
+        break;
+        case 0x94://UP
+          DoKeyUPWork();
+        break;
+        case 0x95://DOWN
+          DoKeyDOWNWork();
+        break;
+        case 0x98:
+          DoKeyEnterWork();
+        break;
+        default:
+        break;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::LoadBitmapFromFile(void)
+{
+try {
+    FILE *bitmap;
+    bitmap=fopen("//cct//bitmap//backGround//4_4_recordcycle.bit","rb");
+    if (bitmap) {
+        fread(recordCycleBitmap,3840,1,bitmap);
+        fclose(bitmap);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DisplayRecordCycle(void)
+{
+try {
+    smem.SetcFace(cRECORDCYCLE);
+    smem.vWriteMsgToDOM("Enter Record Cycle Screen");
+    lcd240x128.DISPLAY_GRAPHIC(0,recordCycleBitmap,128,30);
+
+    int temp=smem.vGet92VDTimeGap();
+    if (temp==60) recordCycle=1;
+    else if (temp==120) recordCycle=2;
+    else if (temp==180) recordCycle=3;
+    else if (temp==240) recordCycle=4;
+    else if (temp==300) recordCycle=5;
+    else recordCycle=1;
+
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[recordCycle],record.height,record.width/8);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::InitDispWord(void)
+{
+try {
+    record.X=104;
+    record.Y=60;
+    record.width=24;
+    record.height=24;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKey1Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[1],record.height,record.width/8);
+    recordCycle=1;
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKey2Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[2],record.height,record.width/8);
+    recordCycle=2;
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKey3Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[3],record.height,record.width/8);
+    recordCycle=3;
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKey4Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[4],record.height,record.width/8);
+    recordCycle=4;
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKey5Work(void)
+{
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[5],record.height,record.width/8);
+    recordCycle=5;
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKeyF1Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKeyF4Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKeyUPWork(void)
+{
+    recordCycle++;
+    if (recordCycle>5)  recordCycle=5;
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[recordCycle],record.height,record.width/8);
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKeyDOWNWork(void)
+{
+    recordCycle--;
+    if (recordCycle<1)  recordCycle=1;
+    lcd240x128.DISPLAY_GRAPHIC_XY(record.X,record.Y,word24x24[recordCycle],record.height,record.width/8);
+}
+//---------------------------------------------------------------------------
+void SCREENRecordCycle::DoKeyEnterWork(void)
+{
+try {
+    if (smem.GetDbOperStat()==0 || smem.vLoadCenterConnectStatus()==false) {
+        if (smem.vGet0FCommandSet()>1) {    //Advance Command 0»P1³£¬OBase
+            if (recordCycle>=1 && recordCycle<=5) {
+
+                unsigned char data[3];
+                data[0] = 0x6F;
+                data[1] = 0x14;
+                data[2] = recordCycle;
+
+                MESSAGEOK _MSG;
+                _MSG = oDataToMessageOK.vPackageINFOTo92Protocol(data, 3,false);
+                _MSG.InnerOrOutWard=cComingFromScreen;
+                writeJob.WriteWorkByMESSAGEOUT(_MSG);
+
+                char message[200]={0};
+                sprintf(message,"Set Record Cycle-TimeGap:%#d",recordCycle);
+                smem.vWriteMsgToDOM(message);
+
+                screenMain.DisplayMain();
+            }
+        } else {
+            smem.SetLastFace(cRECORDCYCLE);
+            screenABOErr.DisplayABOErr();
+        }
+    } else {
+        smem.SetLastFace(cRECORDCYCLE);
+        screenLockdb.DisplayLockdb();
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------

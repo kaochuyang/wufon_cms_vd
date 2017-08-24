@@ -1,0 +1,34 @@
+#ifndef SCREENRealStatH
+#define SCREENRealStatH
+
+#include "SCREEN.h"
+//---------------------------------------------------------------------------
+class SCREENRealStat:public SCREEN
+{
+    public:
+        SCREENRealStat(void);
+        ~SCREENRealStat(void);
+
+        void DisplayRealStat(void);                                             //顯示
+        void DoKeyWork(BYTE);                                                   //根據KEY的值作事
+        void DisplaySSXD(int,SSXDLaneContent *,int,int,int,int,int,int);                                                 
+
+    private:
+
+        BYTE realStatBitmap[3840];                                              //底圖
+
+        DISP_WORD date[6];
+        DISP_WORD time[6];
+        DISP_WORD volume[8][3];
+        DISP_WORD speed[8][3];
+        DISP_WORD occupy[8][3];
+
+        void LoadBitmapFromFile(void);                                          //將底圖Load進記憶體
+        void InitDispWord(void);                                                //初始化此畫面的座標等參數        
+
+        void DoKeyF1Work(void);
+        void DoKeyF4Work(void);        
+};
+//---------------------------------------------------------------------------
+extern SCREENRealStat screenRealStat;
+#endif

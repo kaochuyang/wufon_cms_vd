@@ -1,0 +1,189 @@
+//---------------------------------------------------------------------------
+#include "SCREENRealStat.h"
+#include "SCREENMain.h"
+#include "LCD240x128.h"
+#include "SMEM.h"
+
+SCREENRealStat screenRealStat;
+//---------------------------------------------------------------------------
+SCREENRealStat::SCREENRealStat(void)
+{
+    LoadBitmapFromFile();
+    InitDispWord();
+}
+//---------------------------------------------------------------------------
+SCREENRealStat::~SCREENRealStat(void)
+{
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::DoKeyWork(BYTE key)              //已過濾,進來的是0x80~0x98之間,5X5按鍵
+{
+try {
+    switch (key) {
+        case 0x90:
+             DoKeyF1Work();
+        break;
+        case 0x93:
+             DoKeyF4Work();
+        break;
+        default:
+        break;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::LoadBitmapFromFile(void)
+{
+try {
+    FILE *bitmap;
+    bitmap=fopen("//cct//bitmap//backGround//4_7_realstat.bit","rb");
+    if (bitmap) {
+        fread(realStatBitmap,3840,1,bitmap);
+        fclose(bitmap);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::DisplayRealStat(void)
+{
+try {
+    smem.SetcFace(cREALSTAT);
+    smem.vWriteMsgToDOM("Enter Real Status Screen");
+    lcd240x128.DISPLAY_GRAPHIC(0,realStatBitmap,128,30);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::DisplaySSXD(int laneCount,SSXDLaneContent * ssXDLaneContent,int year,int month,int day,int hour,int min,int sec)
+{
+try {
+    if (smem.GetcFace()==cREALSTAT) {
+        int cVolume=0,cSpeed=0,cOccupy=0;
+        BYTE space[16]={0};
+
+        lcd240x128.DISPLAY_GRAPHIC_XY(date[0].X,date[0].Y,word8x16[year/10],date[0].height,date[0].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(date[1].X,date[1].Y,word8x16[year%10],date[1].height,date[1].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(date[2].X,date[2].Y,word8x16[month/10],date[2].height,date[2].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(date[3].X,date[3].Y,word8x16[month%10],date[3].height,date[3].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(date[4].X,date[4].Y,word8x16[day/10],date[4].height,date[4].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(date[5].X,date[5].Y,word8x16[day%10],date[5].height,date[5].width/8);
+
+        lcd240x128.DISPLAY_GRAPHIC_XY(time[0].X,time[0].Y,word8x16[hour/10],time[0].height,time[0].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(time[1].X,time[1].Y,word8x16[hour%10],time[1].height,time[1].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(time[2].X,time[2].Y,word8x16[min/10],time[2].height,time[2].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(time[3].X,time[3].Y,word8x16[min%10],time[3].height,time[3].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(time[4].X,time[4].Y,word8x16[sec/10],time[4].height,time[4].width/8);
+        lcd240x128.DISPLAY_GRAPHIC_XY(time[5].X,time[5].Y,word8x16[sec%10],time[5].height,time[5].width/8);
+
+
+        for (int i=0;i<8;i++) {
+             if (i<laneCount) {
+                 cVolume=ssXDLaneContent[i].Volume;
+                 cSpeed=ssXDLaneContent[i].AverageSpeed;
+                 cOccupy=ssXDLaneContent[i].Occupancy;
+
+                 lcd240x128.DISPLAY_GRAPHIC_XY(volume[i][0].X,volume[i][0].Y,word8x16[(cVolume%1000)/100],volume[i][0].height,volume[i][0].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(volume[i][1].X,volume[i][1].Y,word8x16[(cVolume%100)/10],volume[i][1].height,volume[i][1].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(volume[i][2].X,volume[i][2].Y,word8x16[cVolume%10],volume[i][2].height,volume[i][2].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(speed[i][0].X,speed[i][0].Y,word8x16[(cSpeed%1000)/100],speed[i][0].height,speed[i][0].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(speed[i][1].X,speed[i][1].Y,word8x16[(cSpeed%100)/10],speed[i][1].height,speed[i][1].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(speed[i][2].X,speed[i][2].Y,word8x16[cSpeed%10],speed[i][2].height,speed[i][2].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(occupy[i][0].X,occupy[i][0].Y,word8x16[(cOccupy%1000)/100],occupy[i][0].height,occupy[i][0].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(occupy[i][1].X,occupy[i][1].Y,word8x16[(cOccupy%100)/10],occupy[i][1].height,occupy[i][1].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(occupy[i][2].X,occupy[i][2].Y,word8x16[cOccupy%10],occupy[i][2].height,occupy[i][2].width/8);
+             } else {
+                 lcd240x128.DISPLAY_GRAPHIC_XY(volume[i][0].X,volume[i][0].Y,space,volume[i][0].height,volume[i][0].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(volume[i][1].X,volume[i][1].Y,space,volume[i][1].height,volume[i][1].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(volume[i][2].X,volume[i][2].Y,space,volume[i][2].height,volume[i][2].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(speed[i][0].X,speed[i][0].Y,space,speed[i][0].height,speed[i][0].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(speed[i][1].X,speed[i][1].Y,space,speed[i][1].height,speed[i][1].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(speed[i][2].X,speed[i][2].Y,space,speed[i][2].height,speed[i][2].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(occupy[i][0].X,occupy[i][0].Y,space,occupy[i][0].height,occupy[i][0].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(occupy[i][1].X,occupy[i][1].Y,space,occupy[i][1].height,occupy[i][1].width/8);
+                 lcd240x128.DISPLAY_GRAPHIC_XY(occupy[i][2].X,occupy[i][2].Y,space,occupy[i][2].height,occupy[i][2].width/8);
+             }
+        }
+    }
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::InitDispWord(void)
+{
+try {
+    for (int i=0;i<6;i++) {
+         if (i==0 || i==1) {
+             date[i].X=104+i*8;
+             date[i].Y=3;
+         } else if (i==2 || i==3) {
+             date[i].X=128+(i-2)*8;
+             date[i].Y=3;
+         }  else if (i==4 || i==5) {
+             date[i].X=152+(i-4)*8;
+             date[i].Y=3;
+         }
+         date[i].width=8;
+         date[i].height=16;
+    }
+
+
+    for (int i=0;i<6;i++) {
+         if (i==0 || i==1) {
+             time[i].X=176+i*8;
+             time[i].Y=3;
+         } else if (i==2 || i==3) {
+             time[i].X=200+(i-2)*8;
+             time[i].Y=3;
+         }  else if (i==4 || i==5) {
+             time[i].X=224+(i-4)*8;
+             time[i].Y=3;
+         }
+         time[i].width=8;
+         time[i].height=16;
+    }
+
+    for (int i=0;i<8;i++) {
+         for (int j=0;j<3;j++) {
+              if (i>=0 && i<=3) {
+                  volume[i][j].X=32+j*8;
+                  volume[i][j].Y=42+i*17;
+              } else if (i>=4 && i<=7) {
+                  volume[i][j].X=152+j*8;
+                  volume[i][j].Y=42+(i-4)*17;
+              }
+              volume[i][j].width=8;
+              volume[i][j].height=16;
+
+              if (i>=0 && i<=3) {
+                  speed[i][j].X=64+j*8;
+                  speed[i][j].Y=42+i*17;
+              } else if (i>=4 && i<=7) {
+                  speed[i][j].X=184+j*8;
+                  speed[i][j].Y=42+(i-4)*17;
+              }
+              speed[i][j].width=8;
+              speed[i][j].height=16;
+
+              if (i>=0 && i<=3) {
+                  occupy[i][j].X=96+j*8;
+                  occupy[i][j].Y=42+i*17;
+              } else if (i>=4 && i<=7) {
+                  occupy[i][j].X=216+j*8;
+                  occupy[i][j].Y=42+(i-4)*17;
+              }
+              occupy[i][j].width=8;
+              occupy[i][j].height=16;
+         }
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::DoKeyF1Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENRealStat::DoKeyF4Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------

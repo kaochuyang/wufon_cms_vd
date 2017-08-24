@@ -84,16 +84,26 @@ int main(int argc, char* argv[])
         int readSelectLength=0;                                                     //§PÂ_Åª¨ìªºªø«×
 
         PARSETRAFFIC parseAABB;                                                     //¸ÑªR©Ò¦³AABB¶}ÀYAACCµ²§Àªºª«¥ó
-        PARSERTMS parseRtms;                                                        //¸ÑªRRTMSªºª«¥ó
-        PARSESS parseSS;                                                            //¸ÑªRSmartSensorªºª«¥ó
-        PARSENMEA parseNMEA;
         tsUDPMappingLCN _sUDPMappingTMP;
         tsUDPInfo _sUDPMappingInfoTMP;
 
 
-smem.junli_object.open_port_process("/dev/ttyUSB0");
-smem.junbo_object.open_port_process("/dev/ttyS1");
+        /*  smem.junli_object.open_port_process("/dev/ttyUSB0");
+         smem.junbo_object.initial_junbo_control("/dev/ttyUSB1");*/
+        //  smem.power_object.open_port_process("/dev/ttyUSB0");
 
+
+
+
+        //smem.junli_object.open_port_process("/dev/ttyS1");
+        //smem.junbo_object.initial_junbo_control("/dev/ttyS0");
+//        smem.power_object.open_port_process("/dev/ttyS3");
+
+        /* if (smem.power_object.power_control_port.OpenRs232Port("/dev/ttyS3", 9600, false)>0)
+              {
+                  printf("open power_control_port-%s  Success!!\n","/dev/ttyS3");
+              }
+              else printf("open power_control_port Fail!!\n");*/
 
         int iCom2Type;
         iCom2Type = smem.vGetINTData(Com2_TYPE);
@@ -151,7 +161,7 @@ smem.junbo_object.open_port_process("/dev/ttyS1");
         }
         else
         {
-            if (smem.centerPort.SetConnDevice(DEVICECENTER92))
+            /*if (smem.centerPort.SetConnDevice(DEVICECENTER92))
                 if ((tempmax=smem.centerPort.OpenRs232Port("/dev/ttyS10",9600, false))>0)
                 {
                     if (tempmax>maxport)
@@ -160,18 +170,39 @@ smem.junbo_object.open_port_process("/dev/ttyS1");
                     }
                     printf("open CenterPort-/dev/ttyS10 (fdValue:%d) Success!!\n",tempmax);
                 }
-                else printf("open CenterPort Fail!!\n");
+                else printf("open CenterPort Fail!!\n");*/
         }
 
 
         //¶}±ÒKEYPAD³q°T°ð
-        if (smem.keypadPort.SetConnDevice(DEVICEKEYPAD))
-            if ((tempmax=smem.keypadPort.OpenRs232Port("/dev/ttyS2",9600,false))>0)
+        /*        if (smem.keypadPort.SetConnDevice(DEVICEKEYPAD))
+                    if ((tempmax=smem.keypadPort.OpenRs232Port("/dev/ttyS4",9600,false))>0)
+                    {
+                        if (tempmax>maxport)  maxport=tempmax;
+                        printf("open KeypadPort-/dev/ttyS4 (fdValue:%d) Success!!\n",tempmax);
+                    }
+                    else printf("open KeypadPort Fail!!\n");
+
+
+        /*
+
+                  if (smem.power_port.SetConnDevice(DEVICETRAFFICLIGHT))
+                    if ((tempmax=smem.power_port.OpenRs232Port("/dev/ttyS3",9600,false))>0)
+                    {
+                        if (tempmax>maxport)  maxport=tempmax;
+                        printf("open power_port-/dev/ttyS3 (fdValue:%d) Success!!\n",tempmax);
+                    }
+                    else printf("open power_port Fail!!\n");
+
+        */    if (smem.lightPort.SetConnDevice(DEVICETRAFFICLIGHT))
+            if ((tempmax=smem.lightPort.OpenRs232Port("/dev/ttyS3",9600,false))>0)
             {
                 if (tempmax>maxport)  maxport=tempmax;
-                printf("open KeypadPort-/dev/ttyS2 (fdValue:%d) Success!!\n",tempmax);
+                printf("open TrafficLightPort-/dev/ttyS2 (fdValue:%d) Success!!\n",tempmax);
             }
-            else printf("open KeypadPort Fail!!\n");
+            else printf("open LightPort Fail!!\n");
+
+
 
 
 
@@ -206,33 +237,34 @@ smem.junbo_object.open_port_process("/dev/ttyS1");
         //¶}±ÒUDP SOCKET ³q°T°ð
         //¶}±Ò»P¥æ³q±±¨î¤¤¤ß³q°TªºUDP SOCKET
 
-int newmax=0;
-newmax=maxport;
-printf("maxport=%d\n",maxport);
+        int newmax=0;
+        newmax=maxport;
+        printf("maxport=%d\n",maxport);
         if (smem.centerSocket.SetConnDevice(DEVICECENTER92))
             if ((tempmax=smem.centerSocket.OpenUdpSocket(localIP1,localPort1,distIP0,distPort0))>0)
-            {   printf("tempmax=%d\n",tempmax);
+            {
+                printf("tempmax=%d\n",tempmax);
                 if (tempmax>maxport)  maxport=tempmax;
                 printf("open CenterSocket-%s:%d (fdValue:%d) Success!!\n",localIP1,localPort1,tempmax);
             }
             else printf("open CenterSocket-%s:%d Fail!!\n",localIP1,localPort1);
-printf("maxport=%d\n",maxport);
+        printf("maxport=%d\n",maxport);
 
 
 
-        maxport=maxport+newmax+1;                                                          //important
+        maxport=maxport+1;                                                          //important
 
-printf("maxport=%d\n",maxport);
+        printf("maxport=%d\n",maxport);
         //¶}±ÒIO ³q°T°ð
         //LPT1(0x378) LCD­±ªO
 //ICOPBUG
 //    if (lcd240x128.GetAuthority(0x278)) {                                       //±o¨ìkernalÅv­­,¥i¥H±±¨îLPT1
-        if (lcd240x128.GetAuthority(0x378))                                         //±o¨ìkernalÅv­­,¥i¥H±±¨îLPT1
-        {
-            lcd240x128.GRAPHIC_MODE();                                              //±NLcd³]©w¬°Graphicµe­±
-            //OTMARKPRINTF  printf("LCD GetKernalAuthority Successful!!\n");
-        }
-        else printf("LCD GetKernalAuthority Fail!!\n");
+        /*      if (lcd240x128.GetAuthority(0x378))                                         //±o¨ìkernalÅv­­,¥i¥H±±¨îLPT1
+              {
+                  lcd240x128.GRAPHIC_MODE();                                              //±NLcd³]©w¬°Graphicµe­±
+                  //OTMARKPRINTF  printf("LCD GetKernalAuthority Successful!!\n");
+              }
+              else printf("LCD GetKernalAuthority Fail!!\n");*/
 
         //Digital Input Output
         if (digitalIO.GetAuthority(0x200,0x208))
@@ -250,7 +282,7 @@ printf("maxport=%d\n",maxport);
 
 
         //OT Fix 950727   LCN0000
-        SendRequestToKeypad();                                                      //°Ýkeypad¥Ø«e­±ªO³]©w
+        //    SendRequestToKeypad();                                                      //°Ýkeypad¥Ø«e­±ªO³]©w
 
         printf("Main 2 OK! \n");
 
@@ -266,22 +298,18 @@ printf("maxport=%d\n",maxport);
 
             FD_ZERO(&readfs);
             if(smem.revAPP_socket.GetPortAlreadyOpen())FD_SET(smem.revAPP_socket.Getfd(),&readfs);//for revAPP
-
             //join rs232 fd_set
-            if (smem.centerPort.GetPortAlreadyOpen()) FD_SET(smem.centerPort.Getfd(),&readfs);
-
-
-            if (smem.keypadPort.GetPortAlreadyOpen()) FD_SET(smem.keypadPort.Getfd(),&readfs);
-
-
+            //      if (smem.centerPort.GetPortAlreadyOpen()) FD_SET(smem.centerPort.Getfd(),&readfs);
+           // if(smem.power_port.GetPortAlreadyOpen())FD_SET(smem.power_port.Getfd(),&readfs);
+            //      if (smem.keypadPort.GetPortAlreadyOpen()) FD_SET(smem.keypadPort.Getfd(),&readfs);
             if (smem.centerSocket.GetPortAlreadyOpen()) FD_SET(smem.centerSocket.Getfd(),&readfs);
-
-  if(smem.junli_object.junli_port.GetPortAlreadyOpen())FD_SET(smem.junli_object.junli_port.Getfd(),&readfs);
-  if(smem.junbo_object.junbo_cms_port.GetPortAlreadyOpen())FD_SET(smem.junbo_object.junbo_cms_port.Getfd(),&readfs);
-
+            if(smem.junli_object.junli_port.GetPortAlreadyOpen())FD_SET(smem.junli_object.junli_port.Getfd(),&readfs);
+            if(smem.junbo_object.junbo_cms_port.GetPortAlreadyOpen())FD_SET(smem.junbo_object.junbo_cms_port.Getfd(),&readfs);
+            if (smem.lightPort.GetPortAlreadyOpen()) FD_SET(smem.lightPort.Getfd(),&readfs);
 
             timeout.tv_sec=60;                                                      //timeout¬í¼Æ
             timeout.tv_usec=0;                                                      //³o­Ó¬O²@¬í,¼È¤£¨Ï¥Î
+
 
             rec=select(maxport,&readfs,NULL,NULL,&timeout);                         //wait block for read
 
@@ -291,66 +319,66 @@ printf("maxport=%d\n",maxport);
             }
             else if (rec==0)                                                        //Select Time Out
             {
-                //OTMARKPRINTF  printf("Select Time Out!!\n");
+                printf("Select Time Out!!\n");
             }
             else
             {
 
 
-                if (smem.centerPort.GetPortAlreadyOpen())                           //port¬O§_¤w¶}±Ò
-                {
-                    if (FD_ISSET(smem.centerPort.Getfd(),&readfs))                  //port¬O§_¦³¸ê®Æ
-                    {
-                        readSelectLength=smem.centerPort.Rs232Read();               //±Nrs232¸ê®Æq1`Åª¶ibuffer¤¤
-                        if (readSelectLength>0)
-                        {
-                            if(smem.vGetCommEnable() == true)
-                            {
-                                //OT20110526
-                                smem.vSetLastGetProtocolTime();
-                                parseAABB.ParseBlock(readSelectLength,smem.centerPort.block,smem.centerPort.messageIn,&smem.centerPort.lastPacketIndex,&smem.centerPort.maxMessageIndex);
-                                parseAABB.CheckSum(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                parseAABB.DecideProtocol(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn,smem.centerPort.GetConnDevice());
-                                parseAABB.vJudgeProtocolAndCheckLength(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                parseAABB.CheckReasonable(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                parseAABB.AssignLcn(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                readJob.SetInterfaceAndReadFlag(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn,cRS232);
-                                readJob.vCheckIfBcastingForwardToUDP(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                readJob.CheckLcn(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                readJob.SetCenterComm(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                readJob.DoWorkByMESSAGEIN(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
-                                parseAABB.EchoToGUI(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn,"/dev/ttyS10");
-                                parseAABB.MoveLastData(&smem.centerPort.maxMessageIndex,&smem.centerPort.lastPacketIndex,smem.centerPort.messageIn);
-                            }
-                        }
-                    }
-                }
+                /*      if (smem.centerPort.GetPortAlreadyOpen())                           //port¬O§_¤w¶}±Ò
+                      {
+                          if (FD_ISSET(smem.centerPort.Getfd(),&readfs))                  //port¬O§_¦³¸ê®Æ
+                          {
+                              readSelectLength=smem.centerPort.Rs232Read();               //±Nrs232¸ê®Æq1`Åª¶ibuffer¤¤
+                              if (readSelectLength>0)
+                              {
+                                  if(smem.vGetCommEnable() == true)
+                                  {
+                                      //OT20110526
+                                      smem.vSetLastGetProtocolTime();
+                                      parseAABB.ParseBlock(readSelectLength,smem.centerPort.block,smem.centerPort.messageIn,&smem.centerPort.lastPacketIndex,&smem.centerPort.maxMessageIndex);
+                                      parseAABB.CheckSum(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      parseAABB.DecideProtocol(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn,smem.centerPort.GetConnDevice());
+                                      parseAABB.vJudgeProtocolAndCheckLength(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      parseAABB.CheckReasonable(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      parseAABB.AssignLcn(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      readJob.SetInterfaceAndReadFlag(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn,cRS232);
+                                      readJob.vCheckIfBcastingForwardToUDP(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      readJob.CheckLcn(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      readJob.SetCenterComm(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      readJob.DoWorkByMESSAGEIN(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn);
+                                      parseAABB.EchoToGUI(&smem.centerPort.maxMessageIndex,smem.centerPort.messageIn,"/dev/ttyS10");
+                                      parseAABB.MoveLastData(&smem.centerPort.maxMessageIndex,&smem.centerPort.lastPacketIndex,smem.centerPort.messageIn);
+                                  }
+                              }
+                          }
+                      }*/
 
-                if (smem.keypadPort.GetPortAlreadyOpen())
-                {
-                    if (FD_ISSET(smem.keypadPort.Getfd(),&readfs))
-                    {
-                        readSelectLength=smem.keypadPort.Rs232Read();
-                        if (readSelectLength>0)
-                        {
-
-//OT20111116
-                            if(smem.vGetCommEnable() == true)
+                /*            if (smem.keypadPort.GetPortAlreadyOpen())
                             {
-                                parseAABB.ParseBlock(readSelectLength,smem.keypadPort.block,smem.keypadPort.messageIn,&smem.keypadPort.lastPacketIndex,&smem.keypadPort.maxMessageIndex);
-                                parseAABB.CheckSum(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
-                                parseAABB.DecideProtocol(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn,smem.keypadPort.GetConnDevice());
-                                parseAABB.CheckReasonable(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
-                                parseAABB.AssignLcn(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
-                                readJob.SetInterfaceAndReadFlag(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn,cRS232);
-                                readJob.SetKeypadComm(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
-                                readJob.DoWorkByMESSAGEIN(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
-                                parseAABB.EchoToGUI(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn,"/dev/ttyS2");
-                                parseAABB.MoveLastData(&smem.keypadPort.maxMessageIndex,&smem.keypadPort.lastPacketIndex,smem.keypadPort.messageIn);
-                            }
-                        }
-                    }
-                }
+                                if (FD_ISSET(smem.keypadPort.Getfd(),&readfs))
+                                {
+                                    readSelectLength=smem.keypadPort.Rs232Read();
+                                    if (readSelectLength>0)
+                                    {
+
+                //OT20111116
+                                        if(smem.vGetCommEnable() == true)
+                                        {
+                                            parseAABB.ParseBlock(readSelectLength,smem.keypadPort.block,smem.keypadPort.messageIn,&smem.keypadPort.lastPacketIndex,&smem.keypadPort.maxMessageIndex);
+                                            parseAABB.CheckSum(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
+                                            parseAABB.DecideProtocol(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn,smem.keypadPort.GetConnDevice());
+                                            parseAABB.CheckReasonable(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
+                                            parseAABB.AssignLcn(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
+                                            readJob.SetInterfaceAndReadFlag(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn,cRS232);
+                                            readJob.SetKeypadComm(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
+                                            readJob.DoWorkByMESSAGEIN(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn);
+                                            parseAABB.EchoToGUI(&smem.keypadPort.maxMessageIndex,smem.keypadPort.messageIn,"/dev/ttyS4");
+                                            parseAABB.MoveLastData(&smem.keypadPort.maxMessageIndex,&smem.keypadPort.lastPacketIndex,smem.keypadPort.messageIn);
+                                        }
+                                    }
+                                }
+                            }*/
 
 
 
@@ -386,7 +414,7 @@ printf("maxport=%d\n",maxport);
                         }
                     }
                 }
-                 if (smem.junli_object.junli_port.GetPortAlreadyOpen())
+                if (smem.junli_object.junli_port.GetPortAlreadyOpen())
                 {
                     if (smem.junli_object.junli_port.Getfd(),&readfs)
                     {
@@ -394,7 +422,7 @@ printf("maxport=%d\n",maxport);
                         if (readSelectLength>0)
                         {
 
-                        smem.junli_object.parse_junli(readSelectLength,smem.junli_object.junli_port.block,smem.junli_object.junli_port.messageIn,&smem.junli_object.junli_port.lastPacketIndex);
+                            smem.junli_object.parse_junli(readSelectLength,smem.junli_object.junli_port.block,smem.junli_object.junli_port.messageIn,&smem.junli_object.junli_port.lastPacketIndex);
                         }
                     }
                 }
@@ -406,19 +434,19 @@ printf("maxport=%d\n",maxport);
                         readSelectLength=smem.junbo_object.junbo_cms_port.Rs232Read();
                         if(readSelectLength>0)
                         {
-                            for(int i =0; i<readSelectLength; i++)
-                                printf("%x ",smem.junbo_object.junbo_cms_port.block[i]);
+                            /*  for(int i =0; i<readSelectLength; i++)
+                                  printf("%x ",smem.junbo_object.junbo_cms_port.block[i]);*/
 
-                            printf("\n\n");
+                            //  printf("\n\n");
 
                             smem.junbo_object.ParseBlock(readSelectLength,smem.junbo_object.junbo_cms_port.block,smem.junbo_object.junbo_cms_port.messageIn,
-                                                          &smem.junbo_object.junbo_cms_port.lastPacketIndex);
+                                                         &smem.junbo_object.junbo_cms_port.lastPacketIndex);
 
                         }
                     }
 
                 }
-
+ /*****************************************************************/
                 if(smem.revAPP_socket.GetPortAlreadyOpen())
                 {
                     if(FD_ISSET(smem.revAPP_socket.Getfd(),&readfs))
@@ -433,6 +461,8 @@ printf("maxport=%d\n",maxport);
                             {
                                 int rev_select=0;
                                 revAPP_messagein=smem.o_Junbo_light.revAPP_packet(readSelectLength,smem.revAPP_socket.block);
+
+
                                 if(revAPP_messagein.packet[0]==0x5F)
                                 {
                                     switch(revAPP_messagein.packet[1])
@@ -473,26 +503,79 @@ printf("maxport=%d\n",maxport);
                                 {
                                     switch(revAPP_messagein.packet[1])
                                     {
+                                    case(0xb7):
+                                        smem.power_object.report_power_reboot();
+                                        smem.vWriteMsgToDOM("report_power_reboot by app");
+
+
+                                        break;
+                                    case (0x5a):
+                                        smem.junbo_object.query_modual_state();
+                                        smem.vWriteMsgToDOM("query_modual_state by app");
+
+
+                                    case (0x16):
+
+
+                                        smem.power_object.power_reset(revAPP_messagein.packet[2],(int)revAPP_messagein.packet[3]);
+                                        smem.vWriteMsgToDOM("power_reset by app");
+                                        break;
+
+                                    case (0x17):
+                                        oRev_protocol_0F.VD_CMS_reboot_0F17(revAPP_messagein.packet[2]);
+                                        smem.vWriteMsgToDOM("write VD_CMS_reboot_0F17 by app");
+                                        break;
+                                    case (0x19):
+                                        smem.junbo_object.brightness_control(revAPP_messagein.packet[2]);
+                                        smem.vWriteMsgToDOM("write brightness_control by app");
+                                        break;
+                                    case(0x29):
+                                        smem.junbo_object.report_light_brightness();
+                                        smem.vWriteMsgToDOM("report_light_brightness by app");
+                                        break;
+
+                                        break;
+                                    case(0x1b):
+                                        smem.junbo_object.report_module_state_to_revapp();
+                                        smem.vWriteMsgToDOM("report_module_state_to_revapp by app");
+                                        break;
+
+                                    case (0x1c):
+                                        smem.junbo_object.light_timeout_control(revAPP_messagein.packet[2]);
+                                        smem.vWriteMsgToDOM("light_timeout_control by app");
+                                        break;
+                                    case(0x1d):
+                                        smem.junbo_object.report_light_timeout();
+                                        smem.vWriteMsgToDOM("report_light_timeout by app");
+                                        break;
+
                                     case (0x10):
+                                        smem.vWriteMsgToDOM("vRebootIPC_0F10_revAPP by app");
                                         oRev_protocol_0F.vRebootIPC_0F10_revAPP(revAPP_messagein);
                                         break;
+
                                     case (0x4a):
+                                        smem.vWriteMsgToDOM("WriteNetworkSetConfirm_RevAPP by app");
                                         smem.disk.WriteNetworkSetConfirm_RevAPP(revAPP_messagein);
                                         break;
                                     case (0x18):
+                                        smem.vWriteMsgToDOM("dispalyLCN_NetworkIP_to_RevAPP by app");
                                         smem.disk.dispalyLCN_NetworkIP_to_RevAPP();
                                         break;
                                     case(0xc1):
+                                        smem.vWriteMsgToDOM("vReportIPCTime_0FC2_revAPP by app");
                                         oRev_protocol_0F.vReportIPCTime_0FC2_revAPP();
                                         printf("hello\n\n\n");
                                         break;
                                     case(0x01):
+                                        smem.vWriteMsgToDOM("check link state by app");
                                         if((revAPP_messagein.packet[2]==0x02)&&(revAPP_messagein.packet[3]=0x03))
                                             oRev_protocol_0F.check_link_revAPP();
                                         else printf("check link packet miss\n");
 
                                         break;
                                     default:
+                                        smem.vWriteMsgToDOM("wrong revAPP 0F protocol!! by app");
                                         printf("wrong revAPP 0F protocol!!\n");
                                         break;
                                     }
@@ -503,18 +586,21 @@ printf("maxport=%d\n",maxport);
                         }
                     }
                 }
-
+ /********************************************************************/
             }
 
         }
 
 
         //Ãö³¬RS232,422,485 ³q°T°ð
-        if (smem.centerPort.CloseRs232Port()) printf("Close CenterPort Successful!!\n");
+        /*  if (smem.centerPort.CloseRs232Port()) printf("Close CenterPort Successful!!\n");
 
-        if (smem.keypadPort.CloseRs232Port()) printf("Close KeypadPort Successful!!\n");
+          if (smem.keypadPort.CloseRs232Port()) printf("Close KeypadPort Successful!!\n");*/
 
         if (smem.centerSocket.CloseUdpSocket()) printf("Close CenterSocket Successful!!\n");
+        if(smem.junbo_object.junbo_cms_port.CloseRs232Port())printf("Close junbo_cms_port Successful!!\n");
+        if(smem.junli_object.junli_port.CloseRs232Port())printf("Close junli_port Successful!!\n");
+//        if(smem.power_object.power_control_port.CloseRs232Port())printf("Close power_control_port Successful!!\n");
 
         //Ãö³¬IO ³q°T°ð
         lcd240x128.ReleaseAuthority();
@@ -526,3 +612,4 @@ printf("maxport=%d\n",maxport);
     }
     catch (...) {}
 }
+

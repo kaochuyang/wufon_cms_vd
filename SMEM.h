@@ -8,6 +8,7 @@
 #include "junbo_light_control.h"
 #include "junli_vd.h"
 #include "junbo_cms.h"
+#include "power_reboot_group.h"
 #include <pthread.h>
 //---------------------------------------------------------------------------
 typedef struct MESSAGEWAITREPONSE {
@@ -19,6 +20,17 @@ typedef struct MESSAGEWAITREPONSE {
 } MESSAGEWAITREPONSE;
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
+class light_time_control
+{
+    public:
+    light_time_control(void);
+    ~light_time_control(void);
+    int light_flash_time;
+    bool store_time(int time_sec);
+    bool read_time();
+
+};
+
 class SMEM
 {
     public:
@@ -26,18 +38,23 @@ class SMEM
         ~SMEM(void);
 junbo_light_control o_Junbo_light;
 
-
+    light_time_control light_time;
+bool _0F80_packet(BYTE PROTOCOL_TYPE[2]);
 
     typedef  struct junbo_to_light
     {   unsigned char ID;
         unsigned char command;
         unsigned char parameter;
     };
-    junbo_to_light record_light[9],record_state[9],record_timeout[9],record_brightness[9];
+    junbo_to_light record_light[9],record_state[3][4],record_timeout[9],record_brightness[9];
 
-           junli_vd junli_object;
+        junli_vd junli_object;
         junbo_cms junbo_object;
+        power_reboot_group power_object;
+        RS232 power_port;
+          UDP revAPP_socket;
 
+        int count_vd_alive;
         STORAGE disk;                                                           //寫檔案用
         /*OTCombo0713*/
 //        RS232 centerPort,lightPort,ssPort,keypadPort,testerPort,rtmsPort;       //交控中心,Light,SmartSensor,面板,手提測試機,RTMS
@@ -53,7 +70,7 @@ junbo_light_control o_Junbo_light;
 
         UDP revSyncSocket;
 
-        UDP revAPP_socket;
+
 
 
 //OTSS++

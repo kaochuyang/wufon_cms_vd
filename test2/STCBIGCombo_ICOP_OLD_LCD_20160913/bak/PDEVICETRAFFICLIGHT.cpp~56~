@@ -1,0 +1,108 @@
+//---------------------------------------------------------------------------
+#include "PDEVICETRAFFICLIGHT.h"
+#include "SMEM.h"
+#include "WRITEJOB.h"
+
+#include "CDataToMessageOK.h"
+
+#include "CSTC.h"
+
+#include "CSTORINI.h"
+
+#include <stdio.h>
+//---------------------------------------------------------------------------
+PDEVICETRAFFICLIGHT::PDEVICETRAFFICLIGHT(void)
+{
+}
+//---------------------------------------------------------------------------
+PDEVICETRAFFICLIGHT::~PDEVICETRAFFICLIGHT(void)
+{
+}
+//---------------------------------------------------------------------------
+bool PDEVICETRAFFICLIGHT::DoWorkViaPDevice(MESSAGEOK message)
+{
+try {
+    char cTMP[128];
+    unsigned char ucRet;
+    switch (message.packet[2]) {
+            case 0x46:                                                          //down board(LCX-405) autoruning, last step
+              smem.vSetUCData(TC_Redcount_Display_Enable, 1);
+              ucRet = smem.vGetUCData(TC_Redcount_Booting_Display_Enable);           // this machine have autorun 8051 IC
+              if(ucRet == 1) {
+                smem.vSetUCData(TC_Redcount_Booting_Display_Enable, 0);
+              }
+
+              smem.vWriteMsgToDOM("From AutoRun To TC");
+              stc.vGetLCX405ControlPower();
+              smem.vSetBOOLData(TC_SignalConflictError, false);
+
+              oStorINI.vSaveIntToINI("LightCtlBoard", "AutoRun51", 1);
+
+              //OT980420, let redcount display open.
+//move to stc.vGetLCX405ControlPower()              smem.vSetUCData(TC_Redcount_Display_Enable, 1);
+            break;
+
+            case 0x45:                                                          //GreenColfiect
+              sprintf(cTMP, "Get GreenColfiect:%02X,%02X,%02X", message.packet[3], message.packet[4], message.packet[5]);
+              smem.vWriteMsgToDOM(cTMP);
+              printf("%s\n", cTMP);
+              smem.vSetBOOLData(TC_SignalConflictError, true);
+              smem.vSetSignalConflictErrorVar(message.packet[3], message.packet[4], message.packet[5]);
+
+              //OT980420, let redcount display close.
+
+printf("Lock_to_Set_Control_Strategy by TRAFFICELIGHT!!!\n");
+printf("Lock_to_Set_Control_Strategy by TRAFFICELIGHT!!!\n");
+printf("Lock_to_Set_Control_Strategy by TRAFFICELIGHT!!!\n");
+
+              stc.Lock_to_Set_Control_Strategy(STRATEGY_FLASH);
+              smem.vSetUCData(TC_Redcount_Display_Enable, 0);
+            break;
+
+            case 0x48:
+              smem.vTrafficLightAckAdd();
+            break;
+
+            case 0x44:                                                          //Error Happen, not send WDT.
+              smem.vWriteMsgToDOM("From AutoRun To TC, No WDT, do nothing");
+            break;
+
+            case 0x61:                                                          //Get W77E58 Ver
+              smem.vSetW77E58FWVer(0, message.packet[3]);
+              oStorINI.vSaveIntToINI("LightCtlBoard", "FWVerYear", message.packet[3]);
+              smem.vSetW77E58FWVer(1, message.packet[4]);
+              oStorINI.vSaveIntToINI("LightCtlBoard", "FWVerMonth", message.packet[4]);
+              smem.vSetW77E58FWVer(2, message.packet[5]);
+              oStorINI.vSaveIntToINI("LightCtlBoard", "FWVerDay", message.packet[5]);
+              bzero(cTMP, 128);
+              sprintf(cTMP, "Ask, W77E58 FW Ver:%02d-%02d-%02d", message.packet[3], message.packet[4], message.packet[5]);
+              smem.vWriteMsgToDOM(cTMP);
+            break;
+
+            case 0x62:                                                          //When booting, Get W77E58 Ver
+              smem.vSetW77E58FWVer(0, message.packet[3]);
+              smem.vSetW77E58FWVer(1, message.packet[4]);
+              smem.vSetW77E58FWVer(2, message.packet[5]);
+              bzero(cTMP, 128);
+              sprintf(cTMP, "TrafficBoard W77E58 Booting, FW Ver:%02d-%02d-%02d", message.packet[3], message.packet[4], message.packet[5]);
+              smem.vWriteMsgToDOM(cTMP);
+            break;
+
+            case 0x63:                                                          //booting WDT, Get W77E58 Ver
+              smem.vSetW77E58FWVer(0, message.packet[3]);
+              smem.vSetW77E58FWVer(1, message.packet[4]);
+              smem.vSetW77E58FWVer(2, message.packet[5]);
+              bzero(cTMP, 128);
+              sprintf(cTMP, "TrafficBoard W77E58 WDT Start, FW Ver:%02d-%02d-%02d", message.packet[3], message.packet[4], message.packet[5]);
+              smem.vWriteMsgToDOM(cTMP);
+            break;
+
+            default:
+//too much              smem.vWriteMsgToDOM("W77E58 Get unknow msg");
+            break;
+    }
+    return true;
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------

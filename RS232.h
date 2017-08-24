@@ -28,7 +28,7 @@ class RS232:public IODEVICE
         int OpenRs232Port(char *,int,bool);                                     //開通訊埠(device name,baudrate,is even parity)
         bool CloseRs232Port(void);                                              //關通訊埠
         int Rs232Read(void);                                                    //讀通訊埠(read buffer)
-        bool Rs232Write(BYTE *,int,char *);                                     //寫通訊埠(write array,write length,device name)
+        bool Rs232Write(BYTE *writeMessage,int length,char *deviceName);                                     //寫通訊埠(write array,write length,device name)
 
 
     private:

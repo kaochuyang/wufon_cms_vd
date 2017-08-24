@@ -1,0 +1,17 @@
+//---------------------------------------------------------------------------
+
+#include "var.h"
+//---------------------------------------------------------------------------
+class PDEVICETRAFFICLIGHT
+{
+    public:
+
+        PDEVICETRAFFICLIGHT(void);
+        ~PDEVICETRAFFICLIGHT(void);
+        bool DoWorkViaPDevice(MESSAGEOK);                                       //根據PDevice來的封包作事情
+
+    private:
+
+
+};
+//---------------------------------------------------------------------------

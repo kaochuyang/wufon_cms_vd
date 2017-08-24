@@ -176,8 +176,12 @@ int CSTC::iDynSeg_SegCount;
 int CSTC::iDynSeg_PlanID;
 
 
-//tt static time_t now;
-//tt static struct tm* currenttime;
+
+
+
+
+
+
 //----------------------------------------------------------
 //**********************************************************
 //****                   Constructor
@@ -2931,18 +2935,18 @@ unsigned short CSTC::vStartReverseLaneInStep0(time_t timeIn, int *iRetTmpSec)   
                 ucTmp = smem.vGetUCData(revDefaultVehWay);
                 if(ucTmp == 1)    //default to inTown
                 {
-                    usiReverseLight = 0x003C;
-                    smem.o_Junbo_light.default_dir_mark=1;//2017 07 10 kaochu
+          usiReverseLight = 0x003C;
+           //         smem.o_Junbo_light.default_dir_mark=1;//2017 07 10 kaochu
                 }
                 else if(ucTmp == 2)
                 {
                     usiReverseLight = 0x00C3;
-                    smem.o_Junbo_light.default_dir_mark=2;//2017 07 10 kaochu
+              //      smem.o_Junbo_light.default_dir_mark=2;//2017 07 10 kaochu
                 }
                 else if(ucTmp == 3)
                 {
                     usiReverseLight = 0x0033;
-                    smem.o_Junbo_light.default_dir_mark=3;//2017 07 10 kaochu
+                 //   smem.o_Junbo_light.default_dir_mark=3;//2017 07 10 kaochu
                 }
             }
 

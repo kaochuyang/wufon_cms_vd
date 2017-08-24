@@ -1,0 +1,2984 @@
+//---------------------------------------------------------------------------
+#include "SMEM.h"
+#include "WRITEJOB.h"
+#include "CDataToMessageOK.h"
+#include "CTIMER.h"
+
+#include "CSTC.h"
+
+#include "DIGITALIO.h"
+
+#include <string.h>
+#include <stdlib.h>
+SMEM smem;
+//---------------------------------------------------------------------------
+SMEM::SMEM(void)
+{
+try {
+
+    pthread_mutex_init(&mutexSmem,NULL);
+
+    InitialSMem();
+
+    bConnectWithCenter = true;
+    bConnectWithCenterStatus = true;
+
+    for(int i = 0 ; i <MSGWAITREPONSECOUNT; i++)
+      msgWaitResponse[i].sequence = INVAILDVALUE;
+
+    localIp1_1 = 192;
+    localIp1_2 = 168;
+    localIp1_3 = 1;
+    localIp1_4 = 101;
+    localPort1 = 6003;
+    //\uFFFD\uFFFD嚙踝蕭192.168.1.101:6003
+    distIp0_1 = 192;
+    distIp0_2 = 168;
+    distIp0_3 = 1;
+    distIp0_4 = 102;
+    dist0Port = 6003;
+    //\uFFFD\uFFFD嚙踝蕭192.168.1.102:6003
+    distIp1 = 192;
+    distIp2 = 168;
+    distIp3 = 1;
+    distIp4 = 1;
+    distPort= 5003;
+    //\uFFFD\uFFFD嚙踝蕭192.168.1.1:5003
+
+
+    siTransmitType[0] = cSTOPSENDTIME;                                                      //In VD TransmitType[0] = 0; //page 6-42
+    siTransmitType[1] = 5;                                                          //5sec，編號為3
+    siTransmitType[2] = cSTOPSENDTIME;
+    siTransmitType[3] = cSTOPSENDTIME;
+    siTransmitType[4] = cSTOPSENDTIME;
+
+    lLastRebootSec = 0;
+
+//92COMM
+    ucCommandSet = 0x03;
+    for (int i=0;i<6;i++) password[i]='0';  //暫存from順欽code
+    operMode = 0;
+    HWCycleCode = 0x05;
+    vRead92COMMFromDisk();
+
+//OTCombo
+    vRead92TCSettingFromDisk();
+
+    startTime=time(NULL);
+
+    vReadCCJDynCtlFromStorage();
+
+    printf("SMEM Init. OK!\n");
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+SMEM::~SMEM(void)
+{
+}
+//---------------------------------------------------------------------------
+void SMEM::InitialSMem(void)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+
+    cFace=cLOGO;                                                                //空白頁面
+    lastFace=cMAIN;
+    address=0;
+    operMode=99;                                                                //最初沒有值,待鍵盤輸入後才有值的意義
+    dbOperStat=0;
+
+    iAdjudicateReturnAddressBCDorHEX = cHEX;
+
+    ssComm=false;
+
+    keypadReturn=false;
+    lastKeypadTime=time(NULL);
+
+
+    for (int i=0;i<6;i++) password[i]='0';  //暫存
+
+    iFirmwareYear = 2008;
+    iFirmwareMonth = 11;
+    iFirmwareDay = 17;
+    //OT Debug 0706
+    iFirmwareCompanyID = 0xF0;
+
+//here select ICOP & ARBOR
+    iFirmwareFirstVersion = 1;
+//    iFirmwareFirstVersion = 6;
+    iFirmwareSecondVersion = 9;
+
+    iSmem92TC_PhaseUpdateFlag = 0;                                              //更新用flag
+    bSmem92TC_TransmitCycle5F0F_ChangeFlag = false;
+    bSmem92TC_TransmitCycle5F03_ChangeFlag = false;
+
+    iSmem92TC_SignalLightStatus_5F0F_IntervalTime = 5;
+    iSmem92TC_SignalStepStatus_5F03_IntervalTime = 5;
+
+    ucSmem92TC_ControlStrategy = 0x01;
+    iSmem92TC_EffectTime = 3;
+    bSmem92TC_ChangePlanOneTime5F18_ChangeFlag = false;
+
+    //OTADD
+    for(int i = 0; i < 255; i++) {                                                //先假設全部資料都沒有
+      bSmemTC_PhaseAlive[i] = false;
+      bSmemTC_PlanAlive[i] = false;
+      bSmemTC_SegTypeAlive[i] = false;
+    }
+
+    bTCDoorStatus = false;
+    bHaveTCDoorSwitch = false;
+    bTCSignalConflictError = false;
+    bSmem92TC_SubPhaseOfPhasePlanIncorrent = false;
+
+    long lTmpTime = 0;                                                          //最後重開機時間
+    disk.vReadLastAliveTimeStampFile(&lTmpTime);
+    lTmpTime;
+
+    pthread_mutex_unlock(&mutexSmem);
+
+    smem.vSetLastResetTime(lTmpTime);                                           //把重開機時間放到smem裡
+
+    vReadUDPMappingLCNDataFromStorage();                                        //讀IP資料
+
+//OT Debug 951121
+    vReadLCNFromDisk();
+    address = uiLCNUsingStorage;
+
+    iSmemTC_RedCountVer = TC_RedCountVerHK;                                     //default setting to old ver
+
+    for(int i = 0; i < 8; i ++)
+      usiWayMappingRedCount[i] = i;
+
+      //OT Debug Direct
+    usiSignamMapMappingDir[dirN] = lightOut1;
+    usiSignamMapMappingDir[dirE] = lightOut2;
+    usiSignamMapMappingDir[dirS] = lightOut3;
+    usiSignamMapMappingDir[dirW] = lightOut4;
+    usiSignamMapMappingDir[dirNE] = lightOut5;
+    usiSignamMapMappingDir[dirES] = lightOut6;
+    usiSignamMapMappingDir[dirSW] = lightOut7;
+    usiSignamMapMappingDir[dirWN] = lightOut8;
+    usiSignamMapMappingLightBoard[0] = 0;
+    usiSignamMapMappingLightBoard[1] = 1;
+    usiSignamMapMappingLightBoard[2] = 2;
+    usiSignamMapMappingLightBoard[3] = 3;
+    usiSignamMapMappingLightBoard[4] = 4;
+    usiSignamMapMappingLightBoard[5] = 5;
+
+//    iSmem_Com2Type = Com2IsTesterPort;
+    iSmem_Com2Type = Com2IsGPSPort;                                             //寫死的
+//    iSmem_Com2Type = Com2IsPassingPort;                                     //寫死的
+//    iSmem_Com2Type = Com2IsRedCount;
+//    iSmem_Com2Type = Com2IsTainanPeopleLight;
+
+    disk.vReadMotherBoardTypeFromFile(&ucMBType);
+    disk.vReadCom2TypeFromFile(&iSmem_Com2Type);
+
+    bSmemTC_PlanAlive[0x80] = true;
+    bSmemTC_PlanAlive[0xFF] = true;
+
+    for(int i = 0; i < 14; i++) {
+      ucSignalLightStatus[i] = 0x0;
+    }
+
+//OT Debug 0523
+    bTC_ActuateTypeFunctionEnable = true;
+    bSmemTC_CCT_In_LongTanu_ActuateType_Switch = false;                                 //龍潭特別觸動, 1 cycle change execplan
+    usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID = 1;                               //when actuating, change to this plan
+
+    //OT Pass
+    for(int i = 0; i < 256; i++) {
+      ucACKW2W[i] = 0;
+    }
+    ucPassMode_0F8E8F = 0;
+    usiPassServerLCN = 0;                                                    //for test
+
+    usiScreenCopyPlanID = INVAILDVALUE;
+    usiScreenCopySegID = INVAILDVALUE;
+
+    vLoadLast92TC_5F15Time();
+
+    bSignalDriverStatus = true;
+
+    /* chain */
+    vClearChildChainStruct();
+
+    ucTC92_5F31Manual = 0;
+    ucTC92_5F31TOD = 0;
+    ucTC92_5F31StartSubPhaseId = 0;
+    ucTC92_5F31EndSubPhaseId = 0;
+    ucTC92_5F32StartSubPhaseId = 0;
+    ucTC92_5F32EndSubPhaseId = 0;
+    ucTC_MotherChainStartStepId = 0;
+    ucTC_MotherChainEndStepId = 0;
+    for(int i = 0; i < 64; i++) {
+      siTC92_5F33StartOffset[i] = 0;
+      siTC92_5F33EndOffset[i] = 0;
+    }
+    smem.vReadChainDataFromStroage();
+
+    bGPSSyncStatus = false;                                                     //when booting, sync time by GPS
+
+    b92VDUpdateDB_b0 = false;  //For TC
+    b92VDUpdateDB_b1 = false;
+    b92VDUpdateDB_b2 = false;
+    b92VDUpdateDB_b3 = false;
+
+    bEnableSendStepToCCJ = false;
+
+    bNextStepForceEnable = false;
+
+    //for test
+//    disk.vWriteCom2TypeFromFile(0);
+//    disk.vWriteMotherBoardTypeFromFile(1);
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::vGetAdjudicateReturnAddressBCDorHEX(void)
+{
+try {
+  int iTMP=0;
+  pthread_mutex_lock(&mutexSmem);
+  iTMP=iAdjudicateReturnAddressBCDorHEX;
+  pthread_mutex_unlock(&mutexSmem);
+  return iTMP;
+} catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetAdjudicateReturnAddressBCDorHEX(int iTMP)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  iAdjudicateReturnAddressBCDorHEX=iTMP;
+  vSave92COMMToDisk();                                                          //SaveToDOM
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+} catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetcFace(void)
+{
+try {
+    int tempFace=0;
+    pthread_mutex_lock(&mutexSmem);
+    tempFace=cFace;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempFace;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetcFace(int face)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    cFace=face;
+    printf("[printfMsg] screen Enter face:%d\n", face);
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetLastFace(void)
+{
+try {
+    int tempFace=0;
+    pthread_mutex_lock(&mutexSmem);
+    tempFace=lastFace;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempFace;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetLastFace(int face)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    lastFace=face;
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetAddress(void)
+{
+try {
+    int tempAddress=0;
+    pthread_mutex_lock(&mutexSmem);
+    tempAddress=address;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempAddress;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetAddress(int lcn)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    if(bEnableLCNUsingStorage) address = uiLCNUsingStorage;                     //From DOM
+    else address=lcn;                                                           //From Control panel
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetOperMode(void)
+{
+try {
+    bool tempOpenMode;
+    pthread_mutex_lock(&mutexSmem);
+    tempOpenMode=operMode;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempOpenMode;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetOperMode(int mode)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    operMode=mode;
+    vSave92COMMToDisk();                                                        //SaveToDOM
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetSequence(void)
+{
+try {
+    int tempSequence;
+    pthread_mutex_lock(&mutexSmem);
+    tempSequence=sequence;
+    sequence++;                                          //被人取走後流水號要加一
+    if (sequence>=256) sequence=0;                       //流水號只有一個BYTE,所以最多到255
+    pthread_mutex_unlock(&mutexSmem);
+    return tempSequence;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::GetKeypadReturn(void)
+{
+try {
+    bool tempKeypadReturn;
+    pthread_mutex_lock(&mutexSmem);
+    tempKeypadReturn=keypadReturn;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempKeypadReturn;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetKeypadReturn(bool kr)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    keypadReturn=kr;
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+char * SMEM::GetPassword(void)
+{
+try {
+    char tempPassword[6];
+    pthread_mutex_lock(&mutexSmem);
+    for (int i=0;i<6;i++)  tempPassword[i]=password[i];
+    pthread_mutex_unlock(&mutexSmem);
+//    return tempPassword;  //cause error?
+    return password;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetPassword(char p1,char p2,char p3,char p4,char p5,char p6)
+{
+try {
+    if ((p1=='0'||p1=='1'||p1=='2'||p1=='3'||p1=='4'||p1=='5'||p1=='6'||p1=='7'||p1=='8'||p1=='9'||p1=='A'||p1=='B'||p1=='C'||p1=='D'||p1=='E'||p1=='F') &&
+        (p2=='0'||p2=='1'||p2=='2'||p2=='3'||p2=='4'||p2=='5'||p2=='6'||p2=='7'||p2=='8'||p2=='9'||p2=='A'||p2=='B'||p2=='C'||p2=='D'||p2=='E'||p2=='F') &&
+        (p3=='0'||p3=='1'||p3=='2'||p3=='3'||p3=='4'||p3=='5'||p3=='6'||p3=='7'||p3=='8'||p3=='9'||p3=='A'||p3=='B'||p3=='C'||p3=='D'||p3=='E'||p3=='F') &&
+        (p4=='0'||p4=='1'||p4=='2'||p4=='3'||p4=='4'||p4=='5'||p4=='6'||p4=='7'||p4=='8'||p4=='9'||p4=='A'||p4=='B'||p4=='C'||p4=='D'||p4=='E'||p4=='F') &&
+        (p5=='0'||p5=='1'||p5=='2'||p5=='3'||p5=='4'||p5=='5'||p5=='6'||p5=='7'||p5=='8'||p5=='9'||p5=='A'||p5=='B'||p5=='C'||p5=='D'||p5=='E'||p5=='F') &&
+        (p6=='0'||p6=='1'||p6=='2'||p6=='3'||p6=='4'||p6=='5'||p6=='6'||p6=='7'||p6=='8'||p6=='9'||p6=='A'||p6=='B'||p6=='C'||p6=='D'||p6=='E'||p6=='F'))
+    {
+      pthread_mutex_lock(&mutexSmem);
+      password[0]=p1;
+      password[1]=p2;
+      password[2]=p3;
+      password[3]=p4;
+      password[4]=p5;
+      password[5]=p6;
+      vSave92COMMToDisk();                                                      //SaveToDOM
+      pthread_mutex_unlock(&mutexSmem);
+      return true;
+    } else return false;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetDbOperStat(void)
+{
+try {
+    int tempOperStat;
+    pthread_mutex_lock(&mutexSmem);
+    tempOperStat=dbOperStat;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempOperStat;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetDbOperStat(int dbOper)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    dbOperStat=dbOper;
+    vSave92COMMToDisk();                                                        //SaveToDOM
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::GetSSComm(void)
+{
+try {
+    bool tempSSComm;
+    pthread_mutex_lock(&mutexSmem);
+    tempSSComm=ssComm;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempSSComm;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetSSComm(bool scomm)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    ssComm = scomm;
+    ssCommTime = time(NULL);
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+time_t SMEM::vGetSSCommTime(void)
+{
+try {
+    time_t _TMP;
+    pthread_mutex_lock(&mutexSmem);
+    _TMP = ssCommTime;
+    pthread_mutex_unlock(&mutexSmem);
+    return _TMP;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+time_t SMEM::GetLastKeypadTime(void)
+{
+try {
+    time_t tempTimer;
+    pthread_mutex_lock(&mutexSmem);
+    tempTimer=lastKeypadTime;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempTimer;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetLastKeypadTime(void)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    lastKeypadTime=time(NULL);
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+
+
+//---------------------------------------------------------------------------
+time_t SMEM::GetStartTime(void)
+{
+try {
+    time_t tempTime;
+    pthread_mutex_lock(&mutexSmem);
+    tempTime=startTime;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempTime;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetWaitMsg(int seq,BYTE * packet,int length)
+{
+try {
+    bool alreadyWait=false;
+    pthread_mutex_lock(&mutexSmem);
+    for (int i=0;i<MSGWAITREPONSECOUNT;i++) {
+         if (msgWaitResponse[i].sequence==seq)
+             alreadyWait=true;
+    }
+
+    if (alreadyWait==false) {
+        for (int i=0;i<MSGWAITREPONSECOUNT;i++) {
+             if (msgWaitResponse[i].sequence==INVAILDVALUE) {
+                 msgWaitResponse[i].sequence=seq;
+                 for (int j=0;j<length;j++) msgWaitResponse[i].packet[j]=packet[j];
+                 msgWaitResponse[i].length=length;
+                 msgWaitResponse[i].retryCount=0;
+                 msgWaitResponse[i].sendTime=time(NULL);
+                 break;
+             }
+        }
+    }
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::ClearWaitMsg(int seq)
+{
+try {
+    MESSAGEOK _MSG;
+    bool bOldStatus;
+    pthread_mutex_lock(&mutexSmem);
+    for (int i=0;i<MSGWAITREPONSECOUNT;i++) {
+         if (msgWaitResponse[i].sequence==seq)
+         {
+           msgWaitResponse[i].sequence=INVAILDVALUE;
+//         set 連線flag & 改變InterVal
+           bConnectWithCenter = bConnectWithCenterStatus;                       //vSaveCenterConnectStatus(true);
+           bConnectWithCenterStatus = true;                                     //vSaveCenterConnectStatus(true);
+           bOldStatus = bConnectWithCenter;                                     //bOldStatus = vGetCenterConnectOldStatus();                           //取得上次狀態
+           if(bOldStatus == false) {                                            //當上次為斷線
+
+           printf("%s[MESSAGE]%s Connect with Traffic Control Center!!!\n", ColorRed, ColorNormal);
+
+/* OT Debug 0706 disable SmartSensor */
+/*
+             bSKStatus = false;                                                 //vSetSS_SKStatus(false);                                            //重試時用的
+             //   vSyncSSTimeInterVal();
+
+             pthread_mutex_unlock(&mutexSmem);
+             _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(siTransmitType[1]);                //設定SmartSensor
+             _MSG.InnerOrOutWard = cOutWard;
+             writeJob.WritePhysicalOut(_MSG.packet,_MSG.packetLength,DEVICESS);
+             pthread_mutex_lock(&mutexSmem);
+
+             ssCommTime = time(NULL);                                           //for SmartSensor Connect adj?
+*/
+           }
+         }
+    }
+    pthread_mutex_unlock(&mutexSmem);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::GetConnectCenterStatus(void)
+{
+try {
+    bool tempCCStatus;
+    pthread_mutex_lock(&mutexSmem);
+    tempCCStatus=bConnectWithCenterStatus;
+    pthread_mutex_unlock(&mutexSmem);
+    return tempCCStatus;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetLastResetTime(long lLastResetSec)
+{
+try {
+    struct tm *tm = localtime(&lLastResetSec);
+    pthread_mutex_lock(&mutexSmem);
+    ResetTime.Year = tm->tm_year - 11;
+    ResetTime.Month = tm->tm_mon + 1;
+    ResetTime.Day = tm->tm_mday;
+    ResetTime.Hour = tm->tm_hour;
+    ResetTime.Min = tm->tm_min;
+    ResetTime.Sec = tm->tm_sec;
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+YMDHMS SMEM::vGetLastResetTime(void)
+{
+try {
+    YMDHMS tmp;
+    pthread_mutex_lock(&mutexSmem);
+    tmp = ResetTime;
+    pthread_mutex_unlock(&mutexSmem);
+    return tmp;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetSimIntervalTime(itimerspec _SimInterVal)
+{
+try {
+   pthread_mutex_lock(&mutexSmem);
+   bSimIntervalTimeChange = true;                                           //給CTIMER做檢查
+   _ShareSimCycle = _SimInterVal;  //save struct in Share mem
+   pthread_mutex_unlock(&mutexSmem);
+   return true;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vGetSimIntervalTimeChangeStatus()
+{
+try {
+  bool bTMP;
+  pthread_mutex_lock(&mutexSmem);
+  bTMP = bSimIntervalTimeChange;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetSimIntervalTimeChangeStatus(bool bTMP)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  bSimIntervalTimeChange = bTMP;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSet0FHardwareCycle(itimerspec _HWCycleReportIntervalIN)
+{
+try {
+   pthread_mutex_lock(&mutexSmem);
+    bHWCycleReportIntervalChange = true;                                        //給CTIMER做檢查
+   _HWCycleReportInterval = _HWCycleReportIntervalIN;  //save struct in Share mem
+   vSave92COMMToDisk();                                                   //SAVE to DOM
+   pthread_mutex_unlock(&mutexSmem);
+   return true;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vGet0FHardwareCycleChangeStatus()
+{
+try {
+  bool bTMP;
+  pthread_mutex_lock(&mutexSmem);
+  bTMP = bHWCycleReportIntervalChange;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSet0FHardwareCycleChangeStatus(bool bTMP)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  bHWCycleReportIntervalChange = bTMP;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+
+//----------------------------------------------------------------------
+itimerspec SMEM::vGet0FHardwareCycle(void)
+{
+try {
+    itimerspec _tmp;
+    pthread_mutex_lock(&mutexSmem);
+    _tmp = _HWCycleReportInterval;
+    pthread_mutex_unlock(&mutexSmem);
+    return _tmp;
+  } catch(...) {}
+}
+//----------------------------------------------------------------------
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGetHardwareStatus(int iWhatByte)
+{
+try {
+    unsigned char ucTMPByte3, ucTMPByte4, ucTMP;
+    ucTMPByte3 = 0x00;                                                          //init
+    ucTMPByte4 = 0x00;
+    pthread_mutex_lock(&mutexSmem);
+
+    ucTMPByte3 += 0x40;                                                       //bit14
+
+    if(bConnectWithCenterStatus == true) {
+      ucTMPByte3 += 0x01;                                                       //bit8
+    }
+    else {
+      ucTMPByte3 += 0x80;                                                       //bit15
+    }
+
+/* disable signal conflict error */
+/*
+    if(_DIOByte.switchBit.b1 == true ||                                         //signal conflict error
+       _DIOByte.switchBit.b2 == true ||
+       _DIOByte.switchBit.b3 == true ||
+       _DIOByte.switchBit.b4 == true ||
+       _DIOByte.switchBit.b5 == true ||
+       _DIOByte.switchBit.b6 == true    )
+      ucTMPByte3 += 0x08;
+*/
+    if(bTCSignalConflictError == true) {                                        //signal conflict error 2
+       ucTMPByte3 += 0x08;
+    }
+
+//    if(_DIOByte.switchBit.b1 == true)
+//      ucTMPByte3 += 0x02;                                                       //bit9
+
+    if(bTCDoorStatus == true && bHaveTCDoorSwitch == true)
+      ucTMPByte3 += 0x02;                                                       //bit9
+
+    if(bSignalDriverStatus == false) ucTMPByte4 += 0x40;
+
+
+    if(iWhatByte == 3)
+      ucTMP = ucTMPByte3;
+    else if (iWhatByte == 4)
+      ucTMP = ucTMPByte4;
+    else
+      ucTMP = 0;
+    pthread_mutex_unlock(&mutexSmem);
+    return ucTMP;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetHWCycleCodeFor_0F14_0FC4(unsigned char ucIN)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    HWCycleCode = ucIN;
+    vSave92COMMToDisk();                                                        //SAVE to DOM
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGetHWCycleCodeFor_0F14_0FC4(void)
+{
+try {
+    unsigned char ucTMP;
+    pthread_mutex_lock(&mutexSmem);
+    ucTMP = HWCycleCode;
+    pthread_mutex_unlock(&mutexSmem);
+    return ucTMP;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSet0FCommandSet(unsigned char ucIN)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    ucCommandSet = ucIN;
+    vSave92COMMToDisk();
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGet0FCommandSet(void)
+{
+try {
+    unsigned char ucTMP;
+    pthread_mutex_lock(&mutexSmem);
+    ucTMP = ucCommandSet;
+    pthread_mutex_unlock(&mutexSmem);
+    return ucTMP;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSyncSSInfo(SmartSensorINFO _SSInfoInSS)
+{
+try {
+    if(1) {                                                                       //no log
+         pthread_mutex_lock(&mutexSmem);
+         _SSInfoInShareMem = _SSInfoInSS;
+         pthread_mutex_unlock(&mutexSmem);
+    }
+    return true;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vCheckConnectStatus(void)
+{
+try {
+  int i = 0;
+  int NotSendSEQCount = 0;
+  bool bOldStatus;
+  MESSAGEOK _MSG;
+  time_t NowSec = time(NULL);
+    pthread_mutex_lock(&mutexSmem);
+    for(i = 0 ; i < MSGWAITREPONSECOUNT; i++)
+    {
+      if (msgWaitResponse[i].sequence != INVAILDVALUE)
+      {
+        NotSendSEQCount++;
+
+      //OTMARKPRINTF  printf("%s[Message] There are data in %d seq:%d, and retry count %d\n%s", ColorRed, i, msgWaitResponse[i].sequence, msgWaitResponse[i].retryCount, ColorNormal);
+
+
+//re send msg
+//        if( (NowSec - msgWaitResponse[i].sendTime) >= 5) {                      // more then 5 sec
+        if( (NowSec - msgWaitResponse[i].sendTime) >= 3) {                      // more then 5 sec
+             msgWaitResponse[i].retryCount++;
+             msgWaitResponse[i].sendTime = NowSec;
+             pthread_mutex_unlock(&mutexSmem);
+             writeJob.WritePhysicalOut(msgWaitResponse[i].packet,msgWaitResponse[i].length,DEVICECENTER92);
+             pthread_mutex_lock(&mutexSmem);
+        }
+
+//test by OT        if (NotSendSEQCount > 1 && msgWaitResponse[i].retryCount >= 5) {
+//        if (NotSendSEQCount > 1 && msgWaitResponse[i].retryCount >= 3) {
+        if (msgWaitResponse[i].retryCount >= 3) {
+            //set 斷線flag & 改變InterVal
+            //          vSaveCenterConnectStatus(false);                                      //將現在狀態設為斷線
+            bConnectWithCenter = bConnectWithCenterStatus;
+            bConnectWithCenterStatus = false;
+            //          bOldStatus = vGetCenterConnectOldStatus();                              //取得上次狀態
+            bOldStatus = bConnectWithCenter;
+            if(bOldStatus) {                                                      //當上次為連線時，重設IntervalTime
+
+            //OTMARKPRINTF  printf("%s[MESSAGE]%s Disconnect with Traffic Control Center!!!\n", ColorRed, ColorNormal);
+
+/* OT Debug 0706 disable SS */
+/*
+              bSKStatus = false;
+
+              pthread_mutex_unlock(&mutexSmem);
+              _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(siTimeGap);
+
+              _MSG.InnerOrOutWard = cOutWard;
+               writeJob.WritePhysicalOut(_MSG.packet,_MSG.packetLength,DEVICESS);
+              pthread_mutex_lock(&mutexSmem);
+
+              ssCommTime = time(NULL);                                          //for SmartSensor
+*/
+            }
+         }
+//OT         if(msgWaitResponse[i].retryCount >= 6) {
+         if(msgWaitResponse[i].retryCount >= 4) {
+           msgWaitResponse[i].sequence = INVAILDVALUE;
+           msgWaitResponse[i].retryCount = 0;
+}
+
+       }
+      }
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+  }
+catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetTimeInterVal(int connected, int disconnected)
+{
+try{
+    bool bConnecting, bConnectingStatus;
+    pthread_mutex_lock(&mutexSmem);
+
+    if(connected != INVAILDVALUE ) siTransmitType[1] = connected;               //若為999則不設定
+
+    if(disconnected != INVAILDVALUE ) siTimeGap = disconnected;       //若為999則不設定
+
+
+    fprintf(stderr, "%sSend TimeInterval change to T[1]:%d, TimeGap:%d.%s\n", ColorRed, siTransmitType[1], siTimeGap, ColorNormal);
+
+
+    bConnecting = bConnectWithCenter;
+    bConnectingStatus = bConnectWithCenterStatus;
+    pthread_mutex_unlock(&mutexSmem);
+
+  //OTMARKPRINTF  printf("[MESSAGE] SetTimeIntervalOK!\n");
+
+//  vSyncSSTimeInterVal();
+  } catch(...) {}
+}
+//should add get status for 92vd
+/*
+//---------------------------------------------------------------------------
+bool SMEM::vSyncSSTimeInterVal()
+{
+try {
+    bool bConnecting, bConnectingStatus;
+    int connected, disconnected;
+    pthread_mutex_lock(&mutexSmem);
+
+    connected = siTransmitType[1];
+
+    disconnected = siTimeGap;
+
+    bConnecting = bConnectWithCenter;
+    bConnectingStatus = bConnectWithCenterStatus;
+    pthread_mutex_unlock(&mutexSmem);
+
+    MESSAGEOK _MSG;
+    if(bConnectingStatus) {                                                     //如果現在是連線才更改Interval
+       _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(connected);                //設定SmartSensor
+
+     //OTMARKPRINTF  printf("[MESSAGE] Now in connect mode, set time interval is %d\n", connected);
+
+    } else {
+       _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(disconnected);
+
+     //OTMARKPRINTF  printf("[MESSAGE] Now in disconnect mode, set time interval is %d\n", disconnected);
+
+    }
+    _MSG.InnerOrOutWard = cOutWard;
+    writeJob.WritePhysicalOut(_MSG.packet,_MSG.packetLength,DEVICESS);
+  } catch(...) {}
+}
+*/
+//---------------------------------------------------------------------------
+bool SMEM::vLoadCenterConnectStatus(void)
+{
+try {
+    bool status;
+    pthread_mutex_lock(&mutexSmem);
+    status = bConnectWithCenterStatus;
+    pthread_mutex_unlock(&mutexSmem);
+    return status;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSaveCenterConnectStatus(bool status)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    //OT Debug 0706
+    if(bConnectWithCenterStatus != status && bConnectWithCenter == bConnectWithCenterStatus) {
+      bConnectWithCenter=bConnectWithCenterStatus;
+      bConnectWithCenterStatus=status;
+    }
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch(...) {}
+}
+//----------------------------------------------------------------------
+DATA_Bit SMEM::Get_DIOByte(void)
+{
+try {
+    DATA_Bit temp;
+    pthread_mutex_lock(&mutexSmem);
+    temp=_DIOByte;
+    pthread_mutex_unlock(&mutexSmem);
+    return temp;
+  } catch(...) {}
+}
+//----------------------------------------------------------------------
+SmartSensorINFO SMEM::vGetSSInfo(void)
+{
+try {
+    SmartSensorINFO _SSInfo;
+    if(1) {                                                                       //check log!?
+         pthread_mutex_lock(&mutexSmem);
+         _SSInfo = _SSInfoInShareMem;
+         pthread_mutex_unlock(&mutexSmem);
+    }
+    return _SSInfo;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+//---------------------------------------------------------------------------
+bool SMEM::vGetCenterConnectOldStatus(void)
+{
+try{
+    bool bTMP;
+    pthread_mutex_lock(&mutexSmem);
+    bTMP = bConnectWithCenter;
+    pthread_mutex_unlock(&mutexSmem);
+    return bTMP;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSet_DIOByte(DATA_Bit _tmpINDIO)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    _OldDIOByte = _DIOByte;
+    _DIOByte = _tmpINDIO;
+    pthread_mutex_unlock(&mutexSmem);
+  } catch(...) {}
+}
+//----------------------------------------------------------------------
+DATA_Bit SMEM::Get_OldDIOByte(void)
+{
+try {
+    DATA_Bit temp;
+    pthread_mutex_lock(&mutexSmem);
+    temp=_OldDIOByte;
+    pthread_mutex_unlock(&mutexSmem);
+    return temp;
+  } catch(...) {}
+}
+//----------------------------------------------------------------------
+bool SMEM::vSave92COMMToDisk(void)
+{
+try {
+    int iToro[8] = {0};
+    disk.vWrite92COMMSettingFile(ucCommandSet,
+                                 password,
+                                 dbOperStat,
+                                 HWCycleCode,
+                                 iToro,
+                                 iAdjudicateReturnAddressBCDorHEX,
+                                 usiWayMappingRedCount,
+                                 //OT Pass
+                                 ucPassMode_0F8E8F,
+                                 usiPassServerLCN,
+                                 //OT Debug Direct
+                                 usiSignamMapMappingDir,
+                                 usiSignamMapMappingLightBoard,
+//OT961211 new add IP editor
+                                 localIp1_1,localIp1_2,localIp1_3,localIp1_4,localPort1,
+                                 distIp0_1,distIp0_2,distIp0_3,distIp0_4,dist0Port,
+                                 distIp1,distIp2,distIp3,distIp4,distPort
+
+                                 );
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vRead92COMMFromDisk(void)
+{
+try {
+    int iToro[8];
+    disk.vRead92COMMSettingFile( &ucCommandSet,
+                                 password,
+                                 &dbOperStat,
+                                 &HWCycleCode,
+                                 iToro,
+                                 &iAdjudicateReturnAddressBCDorHEX,
+                                 usiWayMappingRedCount,
+                                 //OT Pass
+                                 &ucPassMode_0F8E8F,
+                                 &usiPassServerLCN,
+                                 //OT Debug Direct
+                                 usiSignamMapMappingDir,
+                                 usiSignamMapMappingLightBoard,
+//OT961211 new add IP editor
+                                 &localIp1_1,&localIp1_2,&localIp1_3,&localIp1_4,&localPort1,
+                                 &distIp0_1,&distIp0_2,&distIp0_3,&distIp0_4,&dist0Port,
+                                 &distIp1,&distIp2,&distIp3,&distIp4,&distPort
+
+                                 );
+    return true;
+  } catch (...) {}
+}
+
+
+//OTCombo
+//---------------------------------------------------------------------------
+bool SMEM::vSave92TCSettingToDisk(void)
+{
+try {
+    disk.vWrite92TCSettingFile( ucSmem92TC_ControlStrategy,
+                                iSmem92TC_SignalLightStatus_5F0F_IntervalTime,
+                                iSmem92TC_SignalStepStatus_5F03_IntervalTime,
+                                iSmemTC_RedCountVer,
+//OT Debug 0523
+                                bTC_ActuateTypeFunctionEnable,
+                                usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID,
+                                ucActuatePhaseExtend,
+                                usiActuateVDID
+                               );
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vRead92TCSettingFromDisk(void)
+{
+try {
+    disk.vRead92TCSettingFile(  &ucSmem92TC_ControlStrategy,
+                                &iSmem92TC_SignalLightStatus_5F0F_IntervalTime,
+                                &iSmem92TC_SignalStepStatus_5F03_IntervalTime,
+                                &iSmemTC_RedCountVer,
+                                //OT Debug 0523
+                                &bTC_ActuateTypeFunctionEnable,
+                                &usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID,
+                                &ucActuatePhaseExtend,
+                                &usiActuateVDID
+                               );
+
+    return true;
+  } catch (...) {}
+}
+
+
+//---------------------------------------------------------------------------
+bool SMEM::vGet0F11CommuncationResetChangeStatus()
+{
+try {
+  bool bTMP;
+  pthread_mutex_lock(&mutexSmem);
+  bTMP = b0F11CommuncationResetChangeStatus;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//----------------------------------------------------------------------
+bool SMEM::vSet0F11CommuncationResetChangeStatus(bool bTMP)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  b0F11CommuncationResetChangeStatus = bTMP;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//----------------------------------------------------------------------
+bool SMEM::vGet0F16LockDBRequestStatus()
+{
+try {
+  bool bTMP;
+  pthread_mutex_lock(&mutexSmem);
+  bTMP = b0F11CommuncationResetChangeStatus;
+  bTMP = b0F16LockDBRequestStatus;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//----------------------------------------------------------------------
+bool SMEM::vSet0F16LockDBRequestStatus(bool bTMP)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  b0F16LockDBRequestStatus = bTMP;
+  pthread_mutex_unlock(&mutexSmem);
+  return bTMP;
+} catch(...){}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSaveShareMemoryDataToDOM()
+{
+try {
+
+  unsigned short int iCurrentPhaseID  = stc.vGetUSIData(CSTC_exec_plan_phase_order);
+  unsigned short int iCurrentPlanID   = stc.vGetUSIData(CSTC_exec_plan_plan_ID);
+  stc.Lock_to_Load_Plan_for_Panel(iCurrentPlanID);
+  stc.Lock_to_Load_Phase_for_Panel(iCurrentPhaseID);
+
+  char cTMP[128];
+  bzero(cTMP, 128);
+
+  char cTransmitChar[65535];
+  bzero(cTransmitChar, 65535);
+
+  fprintf(stderr, "%s[Message] Recode SMEM Data to DOM,%s\n", ColorRed, ColorNormal);
+
+  pthread_mutex_lock(&mutexSmem);
+
+  sprintf(cTMP, "[TC]\n");
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   iCurrentPlanID: %d\n", iCurrentPlanID);
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   iCurrentPhaseID: %d\n", iCurrentPhaseID);
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   CurrentSubphase: %d / %d\n", stc.vGetUSIData(CSTC_exec_phase_current_subphase) + 1, stc._panel_phase._subphase_count);
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   CurrentStep: %d\n", stc.vGetUSIData(CSTC_exec_phase_current_subphase_step));
+  strcat(cTransmitChar, cTMP);
+//  sprintf(cTMP, "d   CurrentStepTotal: %d\n", stc._panel_phase._total_step_count);
+//  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "d   StepSec: %d\n", stc.vGetStepTime());
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   iAdjudicateReturnAddressBCDorHEX: %d\n", iAdjudicateReturnAddressBCDorHEX);
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   address: %d\n", address);
+  strcat(cTransmitChar, cTMP);
+
+  sprintf(cTMP, "d   iFirmware: %d %d %d %x\n", iFirmwareYear, iFirmwareMonth, iFirmwareDay, iFirmwareCompanyID);
+  strcat(cTransmitChar, cTMP);
+
+/*
+  sprintf(cTMP, "l   _ShareSimCycle.it_value.tv_sec: %d\n", _ShareSimCycle.it_value.tv_sec);
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "d   _ShareSimCycle.it_interval.tv_sec: %d\n", _ShareSimCycle.it_interval.tv_sec);
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "l   _HWCycleReportInterval.it_value.tv_sec: %d\n", _HWCycleReportInterval.it_value.tv_sec);
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "d   _HWCycleReportInterval.it_interval.tv_sec: %d\n", _HWCycleReportInterval.it_interval.tv_sec);
+  strcat(cTransmitChar, cTMP);
+*/
+  sprintf(cTMP, "x   HWCycleCode: 0x%x\n", HWCycleCode);
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "x   ucCommandSet: 0x%x\n", ucCommandSet);
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "x   _DIOByte.DBit: 0x%x\n", _DIOByte.DBit);
+/*
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "s   _SSInfoInShareMem.cMultiDropID: %s\n", _SSInfoInShareMem.cMultiDropID);
+*/
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "d   bConnectWithCenter: %d\n", bConnectWithCenter);
+  strcat(cTransmitChar, cTMP);
+  sprintf(cTMP, "d   bConnectWithCenterStatus: %d\n", bConnectWithCenterStatus);
+  strcat(cTransmitChar, cTMP);
+
+  pthread_mutex_unlock(&mutexSmem);
+
+  disk.vWriteShareMEMALLFile(cTransmitChar);
+
+}catch(...){}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vWriteMsgToDOM(char *cString)
+{
+try {
+      char temp[300]={0};
+      strcpy(temp,cString);
+      disk.vWriteMsgToFile(temp);
+      return true;
+    } catch(...) {}
+}
+//----------------------------------------------------------------------
+//OTCombo
+unsigned char SMEM::vGetUCData(const int iSelect)
+{
+try {
+  unsigned char ucTMP;
+  switch(iSelect) {
+
+    case(TC92_ucControlStrategy):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSmem92TC_ControlStrategy;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(200):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[0];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(201):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[1];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(202):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[2];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(203):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[3];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(204):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[4];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(205):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[5];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(206):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[6];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(207):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[7];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(208):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[8];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(209):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[9];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(210):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[10];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(211):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[11];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(212):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[12];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(213):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucSignalLightStatus[13];
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_5F31Manual):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC92_5F31Manual;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F31TOD):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC92_5F31TOD;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F31StartSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC92_5F31StartSubPhaseId;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F31EndSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC92_5F31EndSubPhaseId;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F32StartSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC92_5F32StartSubPhaseId;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F32EndSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC92_5F32EndSubPhaseId;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC_MotherChainStartStepId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC_MotherChainStartStepId;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC_MotherChainEndStepId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC_MotherChainEndStepId;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC_KeyPadP6Value):
+      pthread_mutex_lock(&mutexSmem);
+      ucTMP = ucTC_KeyPadP6Value;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    default:
+      ucTMP = 0;
+      break;
+  }
+  return ucTMP;
+} catch (...) {}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vSetUCData(const int iSelect, const unsigned char ucTMP)
+{
+try {
+  switch(iSelect) {
+
+    case(TC92_ucControlStrategy):
+      pthread_mutex_lock(&mutexSmem);
+      ucSmem92TC_ControlStrategy = ucTMP;
+      vSave92TCSettingToDisk();
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(200):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[0] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(201):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[1] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(202):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[2] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(203):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[3] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(204):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[4] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(205):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[5] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(206):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[6] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(207):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[7] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(208):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[8] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(209):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[9] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(210):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[10] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(211):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[11] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(212):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[12] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(213):
+      pthread_mutex_lock(&mutexSmem);
+      ucSignalLightStatus[13] = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_GreenConflictDetFromCSTC):
+      pthread_mutex_lock(&mutexSmem);
+      ucGreenConflictDetFromCSTC = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC_GreenConflictDetFromDIO):
+      pthread_mutex_lock(&mutexSmem);
+      ucGreenConflictDetFromDIO = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_5F31Manual):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC92_5F31Manual = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F31TOD):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC92_5F31TOD = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      smem.vWriteChainDataFromStroage();
+    break;
+
+    case(TC92_5F31StartSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC92_5F31StartSubPhaseId = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F31EndSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC92_5F31EndSubPhaseId = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      smem.vWriteChainDataFromStroage();
+    break;
+
+    case(TC92_5F32StartSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC92_5F32StartSubPhaseId = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC92_5F32EndSubPhaseId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC92_5F32EndSubPhaseId = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      smem.vWriteChainDataFromStroage();
+    break;
+
+    case(TC_MotherChainStartStepId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC_MotherChainStartStepId = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(TC_MotherChainEndStepId):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC_MotherChainEndStepId = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      smem.vWriteChainDataFromStroage();
+    break;
+
+    case(TC_KeyPadP6Value):
+      pthread_mutex_lock(&mutexSmem);
+      ucTC_KeyPadP6Value = ucTMP;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    default:
+      return false;
+      break;
+  }
+  return true;
+} catch (...) {}
+}
+
+//----------------------------------------------------------------------
+int SMEM::vGetINTData(const int iSelect)
+{
+try {
+  int iRet;
+  switch(iSelect) {
+
+    case(TC92_iEffectTime):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmem92TC_EffectTime;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_iUpdatePhaseData):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmem92TC_PhaseUpdateFlag;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92SignalLightStatus_5F0F_IntervalTime):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmem92TC_SignalLightStatus_5F0F_IntervalTime;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92SignalStepStatus_5F03_IntervalTime):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmem92TC_SignalStepStatus_5F03_IntervalTime;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_PlanOneTime5F18_PlanID):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmem92TC_ChangePlanOneTime5F18_PlanID;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_RedCountVer):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmemTC_RedCountVer;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(Com2_TYPE):
+      pthread_mutex_lock(&mutexSmem);
+      iRet = iSmem_Com2Type;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+      //OT Debug 0410
+          case(TC92_5F1C_SPID):
+            pthread_mutex_lock(&mutexSmem);
+            iRet = iSmemTC_SPID;
+            pthread_mutex_unlock(&mutexSmem);
+            break;
+          case(TC92_5F1C_SID):
+            pthread_mutex_lock(&mutexSmem);
+            iRet = iSmemTC_SID;
+            pthread_mutex_unlock(&mutexSmem);
+            break;
+          case(TC92_5F1C_ET):
+            pthread_mutex_lock(&mutexSmem);
+            iRet = iSmemTC_ET;
+            pthread_mutex_unlock(&mutexSmem);
+            break;
+
+    default:
+      iRet = 0;
+      break;
+  }
+
+  return iRet;
+} catch (...) {}
+}
+//----------------------------------------------------------------------
+bool SMEM::vSetINTData(const int iSelect, const int iTMP)
+{
+try {
+  switch(iSelect) {
+
+    case(TC92_iEffectTime):
+      pthread_mutex_lock(&mutexSmem);
+      iSmem92TC_EffectTime = iTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_iUpdatePhaseData):
+      pthread_mutex_lock(&mutexSmem);
+      iSmem92TC_PhaseUpdateFlag = iTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92SignalLightStatus_5F0F_IntervalTime):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_TransmitCycle5F0F_ChangeFlag = true;
+      iSmem92TC_SignalLightStatus_5F0F_IntervalTime = iTMP;
+      vSave92TCSettingToDisk();
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92SignalStepStatus_5F03_IntervalTime):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_TransmitCycle5F03_ChangeFlag = true;
+      iSmem92TC_SignalStepStatus_5F03_IntervalTime = iTMP;
+      vSave92TCSettingToDisk();
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_PlanOneTime5F18_PlanID):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_ChangePlanOneTime5F18_ChangeFlag = true;
+      iSmem92TC_ChangePlanOneTime5F18_PlanID = iTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_RedCountVer):
+      pthread_mutex_lock(&mutexSmem);
+      iSmemTC_RedCountVer = iTMP;
+      vSave92TCSettingToDisk();
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug 0410
+    case(TC92_5F1C_SPID):
+      pthread_mutex_lock(&mutexSmem);
+      iSmemTC_SPID = iTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC92_5F1C_SID):
+      pthread_mutex_lock(&mutexSmem);
+      iSmemTC_SID = iTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC92_5F1C_ET):
+      pthread_mutex_lock(&mutexSmem);
+      iSmemTC_ET = iTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(Com2_TYPE):
+      pthread_mutex_lock(&mutexSmem);
+//      iSmem_Com2Type = iTMP;
+      disk.vWriteCom2TypeFromFile(iTMP);
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+
+
+    default:
+      return false;
+      break;
+  }
+
+  return true;
+} catch (...) {}
+}
+
+
+//OOOO
+//OT Debug 0523
+//----------------------------------------------------------------------
+unsigned short int SMEM::vGetUSIData(const int iSelect)
+{
+try {
+  unsigned short int usiRet;
+  switch(iSelect) {
+
+    case(TC_CCT_In_LongTanu_ActuateType_Switch):
+      pthread_mutex_lock(&mutexSmem);
+      usiRet = usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_ActuateVDID):
+      pthread_mutex_lock(&mutexSmem);
+      usiRet = usiActuateVDID;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+
+
+    default:
+      usiRet = 0;
+      break;
+  }
+
+  printf("smem.vGet: %d\n" ,usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID);
+
+  return usiRet;
+} catch (...) {}
+}
+//----------------------------------------------------------------------
+bool SMEM::vSetUSIData(const int iSelect, const unsigned short int usiTMP)
+{
+try {
+  switch(iSelect) {
+
+    case(TC_CCT_In_LongTanu_ActuateType_Switch):
+      pthread_mutex_lock(&mutexSmem);
+      usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID = usiTMP;
+      vSave92TCSettingToDisk();
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_ActuateVDID):
+      pthread_mutex_lock(&mutexSmem);
+      usiActuateVDID = usiTMP;
+      vSave92TCSettingToDisk();
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+
+    default:
+      return false;
+      break;
+  }
+
+  return true;
+} catch (...) {}
+}
+
+
+//----------------------------------------------------------------------
+bool SMEM::vGetBOOLData(const int iSelect)
+{
+try {
+  bool bRet;
+  switch(iSelect) {
+
+    case(TC92_TransmitCycle5F03_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bSmem92TC_TransmitCycle5F03_ChangeFlag;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC92_TransmitCycle5F0F_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bSmem92TC_TransmitCycle5F0F_ChangeFlag;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_PlanOneTime5F18_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bSmem92TC_ChangePlanOneTime5F18_ChangeFlag;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_DoorStatus_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bTCDoorStatus;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_SignalConflictError):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bTCSignalConflictError;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_SubPhaseOfPhasePlanIncorrent):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bSmem92TC_SubPhaseOfPhasePlanIncorrent;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug 0523
+    case(TC_CCT_In_LongTanu_ActuateType_Switch):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bSmemTC_CCT_In_LongTanu_ActuateType_Switch;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC_CCT_In_LongTanu_ActuateType_FunctionEnable):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bTC_ActuateTypeFunctionEnable;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug Signal 951116
+    case(TC_SIGNAL_NEXT_STEP_OK):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bTC_SIGNAL_NEXT_STEP_OK;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug Signal 951116
+    case(TC_SIGNAL_DRIVER_UNIT):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bSignalDriverStatus;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(GPS_SYNC):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bGPSSyncStatus;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_CCTActuate_TOD_Running):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bActuateRunningFlag;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_Actuate_By_TFD):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bActuateByTFD;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(CCJ_SendStepToCCJ):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bEnableSendStepToCCJ;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(NextStepForceEnable):
+      pthread_mutex_lock(&mutexSmem);
+      bRet = bNextStepForceEnable;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+
+    default:
+      bRet = false;
+      break;
+  }
+  return bRet;
+} catch (...) {}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vSetBOOLData(const int iSelect, const bool bTMP)
+{
+try {
+  switch(iSelect) {
+
+    case(TC92_TransmitCycle5F0F_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_TransmitCycle5F0F_ChangeFlag = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC92_TransmitCycle5F03_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_TransmitCycle5F03_ChangeFlag = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_PlanOneTime5F18_Change):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_ChangePlanOneTime5F18_ChangeFlag = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_DoorStatus_Change):
+      pthread_mutex_lock(&mutexSmem);
+      if(bTMP != bTCDoorStatus) bTCDoorStatus = bTMP;
+      if(bTMP == false && bHaveTCDoorSwitch == false) bHaveTCDoorSwitch = true;     // only when have switch, can get low voltage signal
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_SignalConflictError):
+      pthread_mutex_lock(&mutexSmem);
+      bTCSignalConflictError = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC92_SubPhaseOfPhasePlanIncorrent):
+      pthread_mutex_lock(&mutexSmem);
+      bSmem92TC_SubPhaseOfPhasePlanIncorrent = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug 0523
+    case(TC_CCT_In_LongTanu_ActuateType_Switch):
+      pthread_mutex_lock(&mutexSmem);
+      bSmemTC_CCT_In_LongTanu_ActuateType_Switch = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+    case(TC_CCT_In_LongTanu_ActuateType_FunctionEnable):
+      pthread_mutex_lock(&mutexSmem);
+      bTC_ActuateTypeFunctionEnable = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug Signal 951116
+    case(TC_SIGNAL_NEXT_STEP_OK):
+      pthread_mutex_lock(&mutexSmem);
+      bTC_SIGNAL_NEXT_STEP_OK = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+//OT Debug Signal 951116
+    case(TC_SIGNAL_DRIVER_UNIT):
+      pthread_mutex_lock(&mutexSmem);
+      bSignalDriverStatus = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(GPS_SYNC):
+      pthread_mutex_lock(&mutexSmem);
+      bGPSSyncStatus = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_CCTActuate_TOD_Running):
+      pthread_mutex_lock(&mutexSmem);
+      bActuateRunningFlag = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(TC_Actuate_By_TFD):
+      pthread_mutex_lock(&mutexSmem);
+      bActuateByTFD = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(CCJ_SendStepToCCJ):
+      pthread_mutex_lock(&mutexSmem);
+      bEnableSendStepToCCJ = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+    case(NextStepForceEnable):
+      pthread_mutex_lock(&mutexSmem);
+      bNextStepForceEnable = bTMP;
+      pthread_mutex_unlock(&mutexSmem);
+      break;
+
+
+    default:
+      return false;
+      break;
+  }
+
+  return true;
+} catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSaveLastAliveStatus(void)                                           //當SS斷線時，用interval來紀錄時間toDOM
+{
+try {
+    time_t NowSec = time(NULL);
+    disk.vWriteLastAliveTimeStampFile(NowSec);
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+int SMEM::vGetFirmwareInfo_0FC3(const int iSwitch)                                       // 0: Year, 1: Month, 2: Day, 3: CompanyID. 4: FirstVersion, 5: SecondVersion
+{
+try {
+  int iTmp;
+  pthread_mutex_lock(&mutexSmem);
+  switch(iSwitch) {
+    case(0):
+      iTmp = iFirmwareYear;
+      break;
+    case(1):
+      iTmp = iFirmwareMonth;
+      break;
+    case(2):
+      iTmp = iFirmwareDay;
+      break;
+    case(3):
+      iTmp = iFirmwareCompanyID;
+      break;
+    case(4):
+      iTmp = iFirmwareFirstVersion;
+      break;
+    case(5):
+      iTmp = iFirmwareSecondVersion;
+      break;
+  }
+  pthread_mutex_unlock(&mutexSmem);
+
+  return iTmp;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vGetTCPhasePlanSegTypeData(const int iSwitch, const int iNumber)
+{
+try {
+  bool bTmp;
+  pthread_mutex_lock(&mutexSmem);
+  switch(iSwitch) {
+    case(TC_Phase):
+      bTmp = bSmemTC_PhaseAlive[iNumber];
+      break;
+
+    case(TC_Plan):
+      bTmp = bSmemTC_PlanAlive[iNumber];
+      break;
+
+    case(TC_SegType):
+      bTmp = bSmemTC_SegTypeAlive[iNumber];
+      break;
+
+    default:
+      bTmp = false;
+      break;
+    }
+    pthread_mutex_unlock(&mutexSmem);
+
+    return bTmp;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSetTCPhasePlanSegTypeData(const int iSwitch, const int iNumber, const bool bStat)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  switch(iSwitch) {
+    case(TC_Phase):
+      bSmemTC_PhaseAlive[iNumber] = bStat;
+      break;
+
+    case(TC_Plan):
+      bSmemTC_PlanAlive[iNumber] = bStat;
+      break;
+
+    case(TC_SegType):
+      bSmemTC_SegTypeAlive[iNumber] = bStat;
+      break;
+
+    default:
+      break;
+    }
+    pthread_mutex_unlock(&mutexSmem);
+
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vReadUDPMappingLCNDataFromStorage()
+{
+try{
+
+  for(int i = 0; i < MaxOpenUDPPort; i++)
+  {
+    bzero(_sUDPMappingLCN[i].cLocalIP, sizeof(_sUDPMappingLCN[i].cLocalIP));
+    bzero(_sUDPMappingLCN[i].cRemoteIP, sizeof(_sUDPMappingLCN[i].cRemoteIP));
+    _sUDPMappingLCN[i].iListenPort = 0;
+    _sUDPMappingLCN[i].iSendPort = 0;
+    _sUDPMappingLCN[i].iMachineLCN = 0;
+  }
+
+  FILE *IP_FD=NULL;
+
+  char cReadString[255];
+  char cTMP[255];
+  int iTMP;
+  int iTMPPtr;
+  int iSection;
+
+  int iStrLen;
+  int iLine = 0;
+
+  bzero(cReadString, sizeof(cReadString));
+  bzero(cTMP, sizeof(cTMP));
+
+  IP_FD = fopen("//cct//Data//SETTING//IP.txt" , "r"); //fopen return NULL if file not exist
+  if(IP_FD) {
+  //OTMARKPRINTF  printf("open ok\n");
+
+    while(fscanf(IP_FD, "%s", cReadString)!=EOF) {
+       iTMPPtr = 0;
+       iSection = 0;
+
+       iStrLen = strlen(cReadString);
+
+       for(int i = 0 ;i < strlen(cReadString); i++)
+       {
+         if(cReadString[i] != ':' && cReadString[i] != '\n' ) {
+           cTMP[iTMPPtr] = cReadString[i];
+           iTMPPtr++;
+         }
+         else
+         {
+           if(iSection == 0) {
+             strncpy( _sUDPMappingLCN[iLine].cLocalIP, cTMP, 15);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].cLocalIP:%s\n", iLine, _sUDPMappingLCN[iLine].cLocalIP);
+           }
+
+           if(iSection == 1) {
+             _sUDPMappingLCN[iLine].iListenPort = atoi(cTMP);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].iListenPort:%d\n", iLine, _sUDPMappingLCN[iLine].iListenPort);
+           }
+
+           if(iSection == 2) {
+             strncpy( _sUDPMappingLCN[iLine].cRemoteIP, cTMP, 15);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].cRemoteIP:%s\n", iLine, _sUDPMappingLCN[iLine].cRemoteIP);
+           }
+
+           if(iSection == 3) {
+             _sUDPMappingLCN[iLine].iSendPort = atoi(cTMP);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].iSendPort:%d\n", iLine, _sUDPMappingLCN[iLine].iSendPort);
+           }
+
+           if(iSection == 4) {
+             _sUDPMappingLCN[iLine].iMachineLCN = atoi(cTMP);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].iMachineLCN:%d\n", iLine, _sUDPMappingLCN[iLine].iMachineLCN);
+           }
+           iSection++;
+           iTMPPtr = 0;
+           bzero(cTMP, sizeof(cTMP));
+         }
+       }
+       iLine++;
+    }
+  }
+
+//OT Debug 0523
+  else {
+  //OTMARKPRINTF  printf("open failure\n");
+  }
+
+  //printfMsg
+  for(int i = 0 ; i < MaxOpenUDPPort; i++) {
+    printf("%s:%d %s:%d %d\n",
+    _sUDPMappingLCN[i].cLocalIP,
+    _sUDPMappingLCN[i].iListenPort,
+    _sUDPMappingLCN[i].cRemoteIP,
+    _sUDPMappingLCN[i].iSendPort,
+    _sUDPMappingLCN[i].iMachineLCN);
+  }
+
+  if(IP_FD)
+    fclose( IP_FD );
+
+//OTMARKPRINTF  printf("");
+
+  return true;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+tsUDPMappingLCN SMEM::vGetUDPMappingLCNData(int iSelect)
+{
+try{
+  tsUDPMappingLCN _sTMP;
+
+  pthread_mutex_lock(&mutexSmem);
+  _sTMP = _sUDPMappingLCN[iSelect];
+  pthread_mutex_unlock(&mutexSmem);
+
+  return _sTMP;
+}catch(...){}
+}
+
+
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vGetWayMappingRedCount(unsigned short int usiQuery)
+{
+try{
+  unsigned short int usiTMP;
+  pthread_mutex_lock(&mutexSmem);
+  usiTMP = usiWayMappingRedCount[usiQuery];
+  pthread_mutex_unlock(&mutexSmem);
+  return usiTMP;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vSetWayMappingRedCount(unsigned short int usiSet, unsigned short int usiVar)
+{
+try{
+  pthread_mutex_lock(&mutexSmem);
+  usiWayMappingRedCount[usiSet] = usiVar;
+  if(usiSet>=7) vSave92COMMToDisk();                                                      //SaveToDOM
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+
+//OT PASS
+//---------------------------------------------------------------------------
+bool SMEM::vSetACK_W2W(unsigned char ucSEQ, unsigned char ucDevFlow)
+{
+try{
+
+  pthread_mutex_lock(&mutexSmem);
+  ucACKW2W[ucSEQ] = ucDevFlow;
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGetACK_W2W(unsigned char ucSEQ)
+{
+try{
+  unsigned char ucRet;
+  pthread_mutex_lock(&mutexSmem);
+  ucRet = ucACKW2W[ucSEQ];
+  pthread_mutex_unlock(&mutexSmem);
+  return ucRet;
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetPassMode(unsigned char ucMode)
+{
+try{
+
+  pthread_mutex_lock(&mutexSmem);
+  ucPassMode_0F8E8F = ucMode;
+  // should write to file
+  vSave92COMMToDisk();
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGetPassMode(void)
+{
+try{
+  unsigned char ucRet;
+  pthread_mutex_lock(&mutexSmem);
+  ucRet = ucPassMode_0F8E8F;
+  pthread_mutex_unlock(&mutexSmem);
+  return ucRet;
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetPassServerLCN(unsigned short int usiPSL)
+{
+try{
+
+  pthread_mutex_lock(&mutexSmem);
+  usiPassServerLCN = usiPSL;
+  // should write to file
+  vSave92COMMToDisk();
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vGetPassServerLCN(void)
+{
+try{
+  unsigned short int usiRet;
+  pthread_mutex_lock(&mutexSmem);
+  usiRet = usiPassServerLCN;
+  pthread_mutex_unlock(&mutexSmem);
+  return usiRet;
+}catch(...){}
+}
+
+
+//OT Debug Direct
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vGetSignamMapMappingDir(unsigned short int usiQuery)
+{
+try{
+  unsigned short int usiTMP;
+  pthread_mutex_lock(&mutexSmem);
+  usiTMP = usiSignamMapMappingDir[usiQuery];
+  pthread_mutex_unlock(&mutexSmem);
+  return usiTMP;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vSetSignamMapMappingDir(unsigned short int usiSet, unsigned short int usiVar)
+{
+try{
+  pthread_mutex_lock(&mutexSmem);
+  usiSignamMapMappingDir[usiSet] = usiVar;
+  if(usiSet>=7) vSave92COMMToDisk();                                                          //SaveToDOM
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vGetSignamMapMappingLightBoard(unsigned short int usiQuery)
+{
+try{
+  unsigned short int usiTMP;
+  pthread_mutex_lock(&mutexSmem);
+  usiTMP = usiSignamMapMappingLightBoard[usiQuery];
+  pthread_mutex_unlock(&mutexSmem);
+  return usiTMP;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+unsigned short int SMEM::vSetSignamMapMappingLightBoard(unsigned short int usiSet, unsigned short int usiVar)
+{
+try{
+  pthread_mutex_lock(&mutexSmem);
+  usiSignamMapMappingLightBoard[usiSet] = usiVar;
+  if(usiSet>=5) vSave92COMMToDisk();                                            //SaveToDOM
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+
+//----------------------------------------------------------------------
+unsigned short int SMEM::vGetScreenCopyPlanID(void)
+{
+try {
+    unsigned short int usiTMP;
+    pthread_mutex_lock(&mutexSmem);
+    usiTMP = usiScreenCopyPlanID;
+    pthread_mutex_unlock(&mutexSmem);
+    return usiTMP;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetScreenCopyPlanID(unsigned short int usiIN)
+{
+try{
+  pthread_mutex_lock(&mutexSmem);
+  usiScreenCopyPlanID = usiIN;
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+//----------------------------------------------------------------------
+unsigned short int SMEM::vGetScreenCopySegID(void)
+{
+try {
+    unsigned short int usiTMP;
+    pthread_mutex_lock(&mutexSmem);
+    usiTMP = usiScreenCopySegID;
+    pthread_mutex_unlock(&mutexSmem);
+    return usiTMP;
+  } catch(...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vSetScreenCopySegID(unsigned short int usiIN)
+{
+try{
+  pthread_mutex_lock(&mutexSmem);
+  usiScreenCopySegID = usiIN;
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vReadCCJDynCtlFromStorage()
+{
+try{
+
+  bzero(_sCCJDynCtl.cLocalIP, sizeof(_sCCJDynCtl.cLocalIP));
+  bzero(_sCCJDynCtl.cRemoteIP, sizeof(_sCCJDynCtl.cRemoteIP));
+  _sCCJDynCtl.iListenPort = 0;
+  _sCCJDynCtl.iSendPort = 0;
+  _sCCJDynCtl.iMachineLCN = 0;
+
+  FILE *IP_FD=NULL;
+
+  char cReadString[255];
+  char cTMP[255];
+  int iTMP;
+  int iTMPPtr;
+  int iSection;
+
+  int iStrLen;
+
+  bzero(cReadString, sizeof(cReadString));
+  bzero(cTMP, sizeof(cTMP));
+
+  IP_FD = fopen("//cct//Data//SETTING//CCJDynCtlIP.txt" , "r"); //fopen return NULL if file not exist
+  if(IP_FD) {
+  //OTMARKPRINTF  printf("open ok\n");
+
+    while(fscanf(IP_FD, "%s", cReadString)!=EOF) {
+       iTMPPtr = 0;
+       iSection = 0;
+
+       iStrLen = strlen(cReadString);
+
+       for(int i = 0 ;i < strlen(cReadString); i++)
+       {
+         if(cReadString[i] != ':' && cReadString[i] != '\n' ) {
+           cTMP[iTMPPtr] = cReadString[i];
+           iTMPPtr++;
+         }
+         else
+         {
+           if(iSection == 0) {
+             strncpy( _sCCJDynCtl.cLocalIP, cTMP, 15);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].cLocalIP:%s\n", iLine, _sUDPMappingLCN[iLine].cLocalIP);
+           }
+
+           if(iSection == 1) {
+             _sCCJDynCtl.iListenPort = atoi(cTMP);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].iListenPort:%d\n", iLine, _sUDPMappingLCN[iLine].iListenPort);
+           }
+
+           if(iSection == 2) {
+             strncpy( _sCCJDynCtl.cRemoteIP, cTMP, 15);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].cRemoteIP:%s\n", iLine, _sUDPMappingLCN[iLine].cRemoteIP);
+           }
+
+           if(iSection == 3) {
+             _sCCJDynCtl.iSendPort = atoi(cTMP);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].iSendPort:%d\n", iLine, _sUDPMappingLCN[iLine].iSendPort);
+           }
+
+           if(iSection == 4) {
+             _sCCJDynCtl.iMachineLCN = atoi(cTMP);
+           //OTMARKPRINTF  printf("_sUDPMappingLCN[%d].iMachineLCN:%d\n", iLine, _sUDPMappingLCN[iLine].iMachineLCN);
+           }
+           iSection++;
+           iTMPPtr = 0;
+           bzero(cTMP, sizeof(cTMP));
+         }
+       }
+       printf("CCJ IP:%s Read OK\n", _sCCJDynCtl.cRemoteIP);
+    }
+  }
+
+//OT Debug 0523
+  else {
+  //OTMARKPRINTF  printf("open failure\n");
+  }
+
+  //printfMsg
+    printf("%s:%d %s:%d %d\n",
+    _sCCJDynCtl.cLocalIP,
+    _sCCJDynCtl.iListenPort,
+    _sCCJDynCtl.cRemoteIP,
+    _sCCJDynCtl.iSendPort,
+    _sCCJDynCtl.iMachineLCN);
+
+  if(IP_FD)
+    fclose( IP_FD );
+
+
+  return true;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+tsUDPMappingLCN SMEM::vGetCCJDynCtlIPData(void)
+{
+try{
+  tsUDPMappingLCN _sTMP;
+
+  pthread_mutex_lock(&mutexSmem);
+  _sTMP = _sCCJDynCtl;
+  pthread_mutex_unlock(&mutexSmem);
+
+  return _sTMP;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vReadLCNFromDisk(void)
+{
+try {
+    disk.vReadLCNFromFile(  &bEnableLCNUsingStorage,
+                                &uiLCNUsingStorage
+                               );
+
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSaveLast92TC_5F15Time(void)
+{
+try {
+    time_t TC5F15Sec = time(NULL);
+    lLast92TC_5F15Time = TC5F15Sec;
+    disk.vWriteLast92TC_5F15Time(TC5F15Sec);
+    return true;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vLoadLast92TC_5F15Time(void)
+{
+try {
+    time_t TC5F15Sec;
+    disk.vReadLast92TC_5F15Time(&TC5F15Sec);
+    lLast92TC_5F15Time = TC5F15Sec;
+
+    return true;
+  } catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+YMDHMS SMEM::vGetLast92TC_5F15Time(void)
+{
+try {
+    YMDHMS tmp;
+    struct tm *tm = localtime(&lLast92TC_5F15Time);
+    pthread_mutex_lock(&mutexSmem);
+    tmp.Year = tm->tm_year - 11;
+    tmp.Month = tm->tm_mon + 1;
+    tmp.Day = tm->tm_mday;
+    tmp.Hour = tm->tm_hour;
+    tmp.Min = tm->tm_min;
+    tmp.Sec = tm->tm_sec;
+    pthread_mutex_unlock(&mutexSmem);
+
+    return tmp;
+  } catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vCmpGreenConflict(void)
+{
+try {
+    bool bRet = false;
+    pthread_mutex_lock(&mutexSmem);
+    if(ucGreenConflictDetFromDIO == 0xFF) { bRet = true; }
+    else if(ucGreenConflictDetFromDIO == 192) { bRet = true; }
+    else if(ucGreenConflictDetFromDIO == ucGreenConflictDetFromCSTC) { bRet = true; }
+    pthread_mutex_unlock(&mutexSmem);
+
+//    printf("[OTMsg] GreenConflictDec %X %X\n", ucGreenConflictDetFromCSTC, ucGreenConflictDetFromDIO);
+    return bRet;
+  } catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+sChildChain SMEM::vGetChildChainStruct(void)
+{
+try {
+  sChildChain sCCTMP;
+  pthread_mutex_lock(&mutexSmem);
+  sCCTMP = sSMEMChildChain;
+  pthread_mutex_unlock(&mutexSmem);
+  return sCCTMP;
+} catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSetChildChainStruct(sChildChain sCCSet)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  sSMEMChildChain = sCCSet;
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+} catch(...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vClearChildChainStruct(void)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  sSMEMChildChain.bHaveReasonableChildChainSignal = false;
+  sSMEMChildChain.oldStartTime = 0;
+  sSMEMChildChain.newStartTime = 0;
+  sSMEMChildChain.oldEndTime = 0;
+  sSMEMChildChain.newEndTime = 0;
+  sSMEMChildChain.iChainCycle = 0;
+  sSMEMChildChain.iStartKeepTime = 0;
+  sSMEMChildChain.iEndKeepTime = 0;
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+} catch(...) {}
+}
+
+//----------------------------------------------------------------------
+int SMEM::vGetChainOffset(const int type, const int iSelect)
+{
+try {
+  int iRet;
+  switch(type) {
+
+    case(1):                                                                    //Start
+      pthread_mutex_lock(&mutexSmem);
+      iRet = siTC92_5F33StartOffset[iSelect];
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(2):                                                                    //End
+      pthread_mutex_lock(&mutexSmem);
+      iRet = siTC92_5F33EndOffset[iSelect];
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    default:
+    break;
+  }
+  return iRet;
+} catch(...) {}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vSetChainOffset(const int type, const int iSelect, short int iValue)
+{
+try {
+  int iRet;
+  switch(type) {
+
+    case(1):                                                                    //Start
+      pthread_mutex_lock(&mutexSmem);
+      siTC92_5F33StartOffset[iSelect] = iValue;
+      pthread_mutex_unlock(&mutexSmem);
+    break;
+
+    case(2):                                                                    //End
+      pthread_mutex_lock(&mutexSmem);
+      siTC92_5F33EndOffset[iSelect] = iValue;
+      pthread_mutex_unlock(&mutexSmem);
+      smem.vWriteChainDataFromStroage();
+    break;
+
+    default:
+      return false;
+    break;
+  }
+  return true;
+} catch(...) {}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vWriteDIO(unsigned char cDigitalOUT)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+  ucSendDigitalIO = cDigitalOUT;
+  pthread_mutex_unlock(&mutexSmem);
+
+  digitalIO.WriteDigitalIO(cDigitalOUT);
+  return true;
+} catch(...) {}
+}
+
+//----------------------------------------------------------------------
+unsigned char SMEM::vGetWriteDIO(void)
+{
+try {
+  unsigned char ucRet;
+  pthread_mutex_lock(&mutexSmem);
+  ucRet = ucSendDigitalIO;
+  pthread_mutex_unlock(&mutexSmem);
+  return ucRet;
+
+} catch(...) {}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vWriteChainDataFromStroage(void)
+{
+try {
+  disk.vWriteChainSettFile(ucTC92_5F31Manual,
+                           ucTC92_5F31TOD,
+                           ucTC92_5F31StartSubPhaseId,
+                           ucTC92_5F31EndSubPhaseId,
+                           ucTC92_5F32StartSubPhaseId,
+                           ucTC92_5F32EndSubPhaseId,
+                           ucTC_MotherChainStartStepId,
+                           ucTC_MotherChainEndStepId,
+                           siTC92_5F33StartOffset,
+                           siTC92_5F33EndOffset
+                         ) ;
+
+  return true;
+
+} catch(...) {}
+}
+
+//----------------------------------------------------------------------
+bool SMEM::vReadChainDataFromStroage(void)
+{
+try {
+  disk.vReadChainSettFile( &ucTC92_5F31Manual,
+                           &ucTC92_5F31TOD,
+                           &ucTC92_5F31StartSubPhaseId,
+                           &ucTC92_5F31EndSubPhaseId,
+                           &ucTC92_5F32StartSubPhaseId,
+                           &ucTC92_5F32EndSubPhaseId,
+                           &ucTC_MotherChainStartStepId,
+                           &ucTC_MotherChainEndStepId,
+                           siTC92_5F33StartOffset,
+                           siTC92_5F33EndOffset
+                         ) ;
+
+  return true;
+
+} catch(...) {}
+}
+
+
+//---------------------------------------------------------------------------
+bool SMEM::SetLocalIP1(int idx,int value)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    switch (idx) {
+        case 1:    localIp1_1=value;    break;
+        case 2:    localIp1_2=value;    break;
+        case 3:    localIp1_3=value;    break;
+        case 4:    localIp1_4=value;    break;
+        case 5:    localPort1=value;    break;
+        default:
+        break;
+    }
+    vSave92COMMToDisk();
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetdistIp0(int idx,int value)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    switch (idx) {
+        case 1:    distIp0_1=value;    break;
+        case 2:    distIp0_2=value;    break;
+        case 3:    distIp0_3=value;    break;
+        case 4:    distIp0_4=value;    break;
+        case 5:    dist0Port=value;    break;
+        default:
+        break;
+    }
+    vSave92COMMToDisk();
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::SetDistIP(int idx,int value)
+{
+try {
+    pthread_mutex_lock(&mutexSmem);
+    switch (idx) {
+        case 1:    distIp1=value;    break;
+        case 2:    distIp2=value;    break;
+        case 3:    distIp3=value;    break;
+        case 4:    distIp4=value;    break;
+        case 5:    distPort=value;    break;
+        default:
+        break;
+    }
+    vSave92COMMToDisk();
+    pthread_mutex_unlock(&mutexSmem);
+    return true;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetLocalIP1(int idx)
+{
+try {
+
+    int temp=0;
+    pthread_mutex_lock(&mutexSmem);
+    switch (idx) {
+        case 1:    temp=localIp1_1;    break;
+        case 2:    temp=localIp1_2;    break;
+        case 3:    temp=localIp1_3;    break;
+        case 4:    temp=localIp1_4;    break;
+        case 5:    temp=localPort1;    break;
+        default:   temp=0;    break;
+    }
+    pthread_mutex_unlock(&mutexSmem);
+    return temp;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetdistIp0(int idx)
+{
+try {
+    int temp=0;
+    pthread_mutex_lock(&mutexSmem);
+    switch (idx) {
+        case 1:    temp=distIp0_1;    break;
+        case 2:    temp=distIp0_2;    break;
+        case 3:    temp=distIp0_3;    break;
+        case 4:    temp=distIp0_4;    break;
+        case 5:    temp=dist0Port;    break;
+        default:   temp=0;    break;
+    }
+    pthread_mutex_unlock(&mutexSmem);
+    return temp;
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+int SMEM::GetDistIP(int idx)
+{
+try {
+    int temp=0;
+    pthread_mutex_lock(&mutexSmem);
+    switch (idx) {
+        case 1:    temp=distIp1;    break;
+        case 2:    temp=distIp2;    break;
+        case 3:    temp=distIp3;    break;
+        case 4:    temp=distIp4;    break;
+        case 5:    temp=distPort;    break;
+        default:   temp=0;    break;
+    }
+    pthread_mutex_unlock(&mutexSmem);
+    return temp;
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+void SMEM::vSendRequestToKeypad(void)
+{
+try {
+  MESSAGEOK messageOut;
+  messageOut.protocol=PROTOCOLKEYPAD;
+  messageOut.packetLength=6;
+  messageOut.cksStatus=true;
+  messageOut.success=true;
+  messageOut.ReadorWrite=cWRITE;
+
+  messageOut.packet[0]=0xAA;
+  messageOut.packet[1]=0xBB;
+  messageOut.packet[2]=0x03;
+  messageOut.packet[3]=0xAA;
+  messageOut.packet[4]=0xCC;
+  messageOut.packet[5]=0;
+  for (int i=0;i<5;i++) messageOut.packet[5]^=messageOut.packet[i];
+
+//  writeJob.WriteWorkByMESSAGEOUT(messageOut);
+  writeJob.WritePhysicalOut(messageOut.packet, 6, DEVICEKEYPAD);
+
+  } catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSetMotherBoardType(unsigned char ucMBTypeIn)
+{
+try{
+
+  pthread_mutex_lock(&mutexSmem);
+//  ucMBType = ucMBTypeIn;
+//Only Read from boot
+  disk.vWriteMotherBoardTypeFromFile(ucMBTypeIn);
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGetMotherBoardType(void)
+{
+try{
+  unsigned char ucRet;
+  pthread_mutex_lock(&mutexSmem);
+//  disk.vReadMotherBoardTypeFromFile(&ucMBType);
+  ucRet = ucMBType;
+  pthread_mutex_unlock(&mutexSmem);
+  return ucRet;
+}catch(...){}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSetActuatePhaseExtend(unsigned char ucIn)
+{
+try{
+
+  pthread_mutex_lock(&mutexSmem);
+  ucActuatePhaseExtend = ucIn;
+  vSave92TCSettingToDisk();
+  pthread_mutex_unlock(&mutexSmem);
+  return true;
+
+}catch(...){}
+}
+//---------------------------------------------------------------------------
+unsigned char SMEM::vGetActuatePhaseExtend(void)
+{
+try{
+  unsigned char ucRet;
+  pthread_mutex_lock(&mutexSmem);
+  ucRet = ucActuatePhaseExtend;
+  pthread_mutex_unlock(&mutexSmem);
+  return ucRet;
+}catch(...){}
+}
+
+//----------------------------------------------------------
+bool SMEM::vSendTimerUpdateToCCJ_5F9E(void)
+{
+try {
+
+  unsigned char data[5];
+  MESSAGEOK _MsgOK;
+
+  data[0] = 0x5F;
+  data[1] = 0x9E;
+
+  _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 2, true);
+  _MsgOK.InnerOrOutWard = cOutWard;
+  writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECCJDYNCTL);
+
+  return true;
+
+  return 0;
+} catch (...) {}
+}
+
+//---------------------------------------------------------------------------
+bool SMEM::vSetVDUpdateDB(int iTMP, bool bStatus)
+{
+try {
+  pthread_mutex_lock(&mutexSmem);
+
+  if(iTMP == 0) { b92VDUpdateDB_b0 = bStatus; b92VDUpdateDB_Status = true; }
+  if(iTMP == 1) { b92VDUpdateDB_b1 = bStatus; b92VDUpdateDB_Status = true; }
+  if(iTMP == 2) { b92VDUpdateDB_b2 = bStatus; b92VDUpdateDB_Status = true; }
+  if(iTMP == 3) { b92VDUpdateDB_b3 = bStatus; b92VDUpdateDB_Status = true; }
+  if(iTMP == 888) { b92VDUpdateDB_Status = bStatus; }
+
+  pthread_mutex_unlock(&mutexSmem);
+
+  printf("[OT Msg] VDUpdateDB refresh, now: %X\n", b92VDUpdateDB_Status);
+
+  return true;
+} catch (...) {}
+}
+//---------------------------------------------------------------------------
+bool SMEM::vGetVDUpdateDB(int iTMP)
+{
+try {
+  bool iRet;
+  pthread_mutex_lock(&mutexSmem);
+  if(iTMP == 888)
+    iRet = b92VDUpdateDB_Status;
+  else if(iTMP == 0)
+    iRet = b92VDUpdateDB_b0;
+  else if(iTMP == 1)
+    iRet = b92VDUpdateDB_b1;
+  else if(iTMP == 2)
+    iRet = b92VDUpdateDB_b2;
+  else if(iTMP == 3)
+    iRet = b92VDUpdateDB_b3;
+  pthread_mutex_unlock(&mutexSmem);
+
+  return iRet;
+} catch (...) {}
+}
+
+
