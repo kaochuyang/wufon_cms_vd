@@ -29,7 +29,7 @@ class UDP:public IODEVICE
         bool GetPortAlreadyOpen(void);                                          //判斷此埠是否已開啟
         int GetConnDevice(void);                                                //獲得此埠所連接的設備
         bool SetConnDevice(int);                                                //設定此埠所連接的設備
-        int OpenUdpSocket(char *local_ip,int listen_port,char *send_ip,int send_port);                               //開通訊埠(localhost,listen port,remotehost,remote port)
+        int OpenUdpSocket(char *,int,char *,int);                               //開通訊埠(localhost,listen port,remotehost,remote port)
         bool CloseUdpSocket(void);                                              //關通訊埠
         int  UdpRead(void);                                                     //讀通訊埠(read buffer)
         bool UdpSend(BYTE *,int,char *);                                        //寫通訊埠(write array,write length,device name)

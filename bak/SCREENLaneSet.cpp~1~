@@ -1,0 +1,293 @@
+//Base指令
+//---------------------------------------------------------------------------
+#include "SCREENLaneSet.h"
+#include "SCREENMain.h"
+#include "SCREENLockdb.h"
+#include "LCD240x128.h"
+#include "SMEM.h"
+
+SCREENLaneSet screenLaneSet;
+//---------------------------------------------------------------------------
+SCREENLaneSet::SCREENLaneSet(void)
+{
+    LoadBitmapFromFile();
+    InitDispWord();
+    cPosition=0;
+    for (int i=0;i<8;i++) laneValue[i]=i;
+}
+//---------------------------------------------------------------------------
+SCREENLaneSet::~SCREENLaneSet(void)
+{
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyWork(BYTE key)              //已過濾,進來的是0x80~0x98之間,5X5按鍵
+{
+try {
+    switch (key) {
+        case 0x80:
+             DoKey0Work();
+        break;
+        case 0x81:
+             DoKey1Work();
+        break;
+        case 0x82:
+             DoKey2Work();
+        break;
+        case 0x83:
+             DoKey3Work();
+        break;
+        case 0x84:
+             DoKey4Work();
+        break;
+        case 0x85:
+             DoKey5Work();
+        break;
+        case 0x86:
+             DoKey6Work();
+        break;
+        case 0x87:
+             DoKey7Work();
+        break;
+
+        case 0x90:
+             DoKeyF1Work();
+        break;
+        case 0x91:
+             DoKeyF2Work();
+        break;
+        case 0x92:
+        break;
+        case 0x93:
+             DoKeyF4Work();
+        break;
+        case 0x94://UP
+        case 0x95://DOWN
+        break;
+        case 0x96://LEFT
+             DoKeyLEFTWork();
+        break;
+        case 0x97://RIGHT
+             DoKeyRIGHTWork();
+        break;
+        case 0x98:
+             DoKeyEnterWork();
+        break;
+        default:
+        break;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::LoadBitmapFromFile(void)
+{
+try {
+    FILE *bitmap;
+    bitmap=fopen("//cct//bitmap//backGround//4_6_laneset.bit","rb");
+    if (bitmap) {
+        fread(laneSetBitmap,3840,1,bitmap);
+        fclose(bitmap);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DisplayLaneSet(void)
+{
+try {
+    smem.SetcFace(cLANESET);
+    smem.vWriteMsgToDOM("Enter Lane Setup Screen");
+    lcd240x128.DISPLAY_GRAPHIC(0,laneSetBitmap,128,30);
+
+    laneCount=smem.vGetVDInterValData_6F0F_LaneCount();
+
+    for (int x=0;x<8;x++) laneValue[x]=smem.GetSSMapping92VD(x);
+
+    for (int y=7;y>=laneCount;y--)
+         clearSelectPoint16x16(title[y].X,title[y].Y,title[y].height,title[y].width/8);
+
+    for (int i=0;i<laneCount;i++) lcd240x128.DISPLAY_GRAPHIC_XY(lane[i].X,lane[i].Y,word16x16[laneValue[i]],lane[i].height,lane[i].width/8);
+
+    cPosition=0;
+    setCursor16x16(lane[cPosition].X,lane[cPosition].Y+16);
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::InitDispWord(void)
+{
+try {
+    for (int i=0;i<8;i++) {
+         title[i].X=48+i*24;
+         title[i].Y=36;
+         title[i].width=16;
+         title[i].height=16;
+    }
+
+    for (int i=0;i<8;i++) {
+         lane[i].X=48+i*24;
+         lane[i].Y=64;
+         lane[i].width=16;
+         lane[i].height=16;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey0Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=0;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[0],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey1Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=1;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[1],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey2Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=2;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[2],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey3Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=3;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[3],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey4Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=4;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[4],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey5Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=5;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[5],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey6Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=6;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[6],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKey7Work(void)
+{
+    if (laneCount>0) {
+        laneValue[cPosition]=7;
+        lcd240x128.DISPLAY_GRAPHIC_XY(lane[cPosition].X,lane[cPosition].Y,word16x16[7],lane[cPosition].height,lane[cPosition].width/8);
+        DoKeyRIGHTWork();
+    }
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyF1Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyF2Work(void)
+{
+try {
+    for (int i=0;i<8;i++) {
+         laneValue[i]=INVAILDVALUE;
+         clearSelectPoint16x16(lane[i].X,lane[i].Y,lane[i].height,lane[i].width/8);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyF4Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyEnterWork(void)
+{
+try {
+    if (smem.GetDbOperStat()==0 || smem.vLoadCenterConnectStatus()==false) {
+        for (int i=laneCount;i<8;i++) laneValue[i]=INVAILDVALUE;         //先寫上999
+        //最小值為0,最大值為laneCount-1,不能有重覆
+        int min=999,max=0;
+        for (int i=0;i<8;i++) {
+             if (laneValue[i]<min) min=laneValue[i];
+             if (laneValue[i]>max && laneValue[i]!=INVAILDVALUE) max=laneValue[i];
+        }
+
+        bool diffValue=true;
+        int temp=0,count=0;
+
+        for (int i=0;i<8;i++) {
+             if (laneValue[i]!=INVAILDVALUE) {
+                 temp=laneValue[i];
+                 for (int j=0;j<8;j++)
+                 if (temp==laneValue[j]) count++;
+                 if (count>1) diffValue=false;
+                 count=0;
+             }
+        }
+
+        if (min==0 && max==laneCount-1 && diffValue) {
+            for (int i=laneCount;i<8;i++) laneValue[i]=i;
+
+          //OTMARKPRINTF  printf("%d:%d:%d:%d:%d:%d:%d:%d\n",laneValue[0],laneValue[1],laneValue[2],laneValue[3],laneValue[4],laneValue[5],laneValue[6],laneValue[7]);
+
+            smem.SetSSMapping92VD(laneValue[0],laneValue[1],laneValue[2],laneValue[3],laneValue[4],laneValue[5],laneValue[6],laneValue[7]);
+            char message[200]={0};
+            sprintf(message,"Set Lane To %#d-%#d-%#d-%#d-%#d-%#d-%#d-%#d",laneValue[0],laneValue[1],laneValue[2],laneValue[3],laneValue[4],laneValue[5],laneValue[6],laneValue[7]);
+            smem.vWriteMsgToDOM(message);
+
+            screenMain.DisplayMain();
+        }
+
+    } else {
+        smem.SetLastFace(cLANESET);
+        screenLockdb.DisplayLockdb();
+    }
+
+  } catch (...) {}
+}
+//------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyLEFTWork(void)
+{
+try {
+    clearCursor16x16(lane[cPosition].X,lane[cPosition].Y+16);
+    if (cPosition==0) cPosition=1;
+    cPosition--;
+    setCursor16x16(lane[cPosition].X,lane[cPosition].Y+16);
+  } catch (...) {}
+}
+//------------------------------------------------------------------------
+void SCREENLaneSet::DoKeyRIGHTWork(void)
+{
+try {
+    if (laneCount>0) {
+        clearCursor16x16(lane[cPosition].X,lane[cPosition].Y+16);
+        cPosition++;
+        if (cPosition>=laneCount) cPosition=laneCount-1;
+        setCursor16x16(lane[cPosition].X,lane[cPosition].Y+16);
+    }
+  } catch (...) {}
+}
+//------------------------------------------------------------------------

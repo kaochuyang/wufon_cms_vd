@@ -2,7 +2,6 @@
 
 #ifndef PTRAFFIC92TCH
 #define PTRAFFIC92TCH
-#include "CReverseTime.h"
 
 #include "var.h"
 #include "SMEM.h"
@@ -23,13 +22,11 @@ class PTRAFFIC92TC
         bool vQueryReverseTimeData5F41(MESSAGEOK);
         bool vQueryReverseTimeData5F42(MESSAGEOK);
 
-        bool vWriteReverseTimeData5F11_revAPP(MESSAGEOK DataMessageIn);
+           bool vWriteReverseTimeData5F11_revAPP(MESSAGEOK DataMessageIn);
         bool vWriteReverseTimeData5F12_revAPP(MESSAGEOK DataMessageIn);
         bool vQueryReverseTimeData5F41_revAPP(MESSAGEOK DataMessageIn);
         bool vQueryReverseTimeData5F42_revAPP(MESSAGEOK DataMessageIn);
         bool revseg_send_to_revAPP();
-
-
 
 
 

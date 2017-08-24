@@ -1,0 +1,309 @@
+#include "screenRedCountHWCheckSel.h"
+#include "LCD240x128.h"
+#include "SCREENMain.h"
+
+#include "screenRedCountHWCheck.h"
+#include "screenRedCountMenu.h"
+
+#include <stdio.h>
+#include "SMEM.h"
+//---------------------------------------------------------------------------
+ScreenRedCountHWCheckSel screenRedCountHWCheckSel;
+//---------------------------------------------------------------------------
+ScreenRedCountHWCheckSel::ScreenRedCountHWCheckSel(void)
+{
+    loadBitmapFromFile();
+    initDispWord();
+    cPosition=0;
+}
+//---------------------------------------------------------------------------
+ScreenRedCountHWCheckSel::~ScreenRedCountHWCheckSel(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::loadBitmapFromFile(void)
+{
+try {
+    FILE *bitmap;
+    bitmap=fopen("//cct//bitmap//backGround//TC5F//RedCountHWCheckSelect.bit","rb");
+    if (bitmap) {
+        fread(RedCountHWCheckSelBitmap,3840,1,bitmap);
+        fclose(bitmap);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::DisplayRedCountHWCheckSel(void)
+{
+try {
+    smem.SetcFace(cREDCOUNTHWCHECKSEL);
+    lcd240x128.DISPLAY_GRAPHIC(0,RedCountHWCheckSelBitmap,128,30);
+    DisplaySetSegtype(0);
+    cPosition=0;
+    setCursor24x24(redCountHWCheckSel.X,redCountHWCheckSel.Y+24);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::initDispWord(void)
+{
+         redCountHWCheckSel.X=96;
+         redCountHWCheckSel.Y=68;
+         redCountHWCheckSel.width=24;
+         redCountHWCheckSel.height=24;
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::DisplaySetSegtype(int a)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[a],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp = a;
+  } catch (...){}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyWork(BYTE key)
+{
+try {
+    switch (key) {
+        case 0x80:
+          doKey0Work();
+        break;
+        case 0x81:
+          doKey1Work();
+        break;
+        case 0x82:
+          doKey2Work();
+        break;
+        case 0x83:
+          doKey3Work();
+        break;
+        case 0x84:
+          doKey4Work();
+        break;
+        case 0x85:
+          doKey5Work();
+        break;
+        case 0x86:
+          doKey6Work();
+        break;
+        case 0x87:
+          doKey7Work();
+        break;
+        case 0x88:
+          doKey8Work();
+        break;
+        case 0x89:
+          doKey9Work();
+        break;
+        case 0x8A:
+          doKeyAWork();
+        break;
+        case 0x8B:
+          doKeyBWork();
+        break;
+        case 0x8C:
+          doKeyCWork();
+        break;
+        case 0x8D:
+          doKeyDWork();
+        break;
+        case 0x8E:
+          doKeyEWork();
+        break;
+        case 0x8F:
+          doKeyFWork();
+        break;
+        case 0x90:
+          doKeyF1Work();
+        break;
+        case 0x91:
+          doKeyF2Work();
+        break;
+        case 0x92:
+          doKeyF3Work();
+        break;
+        case 0x93:
+          doKeyF4Work();
+        break;
+        case 0x94:
+          doKeyUPWork();
+        break;
+        case 0x95:
+          doKeyDOWNWork();
+        break;
+        case 0x96:
+          doKeyLEFTWork();
+        break;
+        case 0x97:
+          doKeyRIGHTWork();
+        break;
+        case 0x98:
+          doKeyEnterWork();
+        break;
+        default:
+        break;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey0Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[0],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp = 0;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey1Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[1],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp = 0x01;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey2Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[2],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x02;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey3Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[3],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x03;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey4Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[4],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x04;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey5Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[5],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x05;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey6Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[6],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp = 0x06;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey7Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[7],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x07;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey8Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[8],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x08;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKey9Work(void)
+{
+try {
+    lcd240x128.DISPLAY_GRAPHIC_XY(redCountHWCheckSel.X,redCountHWCheckSel.Y,word24x24[9],redCountHWCheckSel.height,redCountHWCheckSel.width/8);
+    redCountHWCheckTmp=0x09;
+    doKeyRIGHTWork();
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyAWork(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyBWork(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyCWork(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyDWork(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyEWork(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyFWork(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyF1Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyF2Work(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyF3Work(void)
+{
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyF4Work(void)
+{
+    screenRedCountMenu.DisplayRedCountMenu();
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyUPWork(void)
+{
+    DisplaySetSegtype(redCountHWCheckTmp);
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyDOWNWork(void)
+{
+    DisplaySetSegtype(redCountHWCheckTmp);
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyLEFTWork(void)
+{
+try {
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyRIGHTWork(void)
+{
+try {
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void ScreenRedCountHWCheckSel::doKeyEnterWork(void)
+{
+    int x=redCountHWCheckTmp;
+//    if (x>=0 && x<=4) {
+     screenRedCountHWCheck.DisplayRedCountHWCheck(x);
+//    }
+}
+//---------------------------------------------------------------------------

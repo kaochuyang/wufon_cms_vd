@@ -175,14 +175,10 @@ try {
 
     int sendLength=0;
     pthread_mutex_lock(&mutexUdp);
-
-
     if (alreadyOpen) sendLength=sendto(udpfd,writeMessage,length,0,(struct sockaddr *)&send_addr,sizeof(send_addr));
-
-   // printf("11  sendLength=%d\n",sendLength);
     pthread_mutex_unlock(&mutexUdp);
 
-    if (sendLength==-1) return false;
+    if (sendLength==-1)  return false;
     else if (sendLength==length){
 
         char tempBuff[256],buff[2048]="";

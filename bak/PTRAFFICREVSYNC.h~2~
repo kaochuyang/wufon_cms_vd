@@ -1,0 +1,23 @@
+//---------------------------------------------------------------------------
+
+#ifndef PTRAFFICREVSYNCH
+#define PTRAFFICREVSYNCH
+
+#include "var.h"
+//---------------------------------------------------------------------------
+class PTRAFFICREVSYNC
+{
+    public:
+
+        PTRAFFICREVSYNC(void);
+        ~PTRAFFICREVSYNC(void);
+        bool DoWorkViaPDevice(MESSAGEOK);                                       //根據PDevice來的封包作事情
+
+        bool vSetRevStatus(MESSAGEOK);
+        bool vAckTCConn(MESSAGEOK, bool);
+
+    private:
+
+};
+//---------------------------------------------------------------------------
+#endif

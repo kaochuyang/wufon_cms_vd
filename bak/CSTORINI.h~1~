@@ -1,0 +1,25 @@
+#ifndef CStorINIH
+#define CStorINIH
+
+#include "inifile.h"
+#include "var.h"
+
+//--------------------------------------------------------------------------
+class CStorINI
+{
+    public:
+      CStorINI(void);
+      ~CStorINI(void);
+
+      int vLoadIntFromINI(char *, char *, int);
+      bool vSaveIntToINI(char *, char *, int);
+
+      int vLoadFloatFromINI(char *, char *, float);
+      bool vSaveFloatToINI(char *, char *, float);
+
+    private:
+      CIniFile ini;
+};
+//--------------------------------------------------------------------------
+extern CStorINI oStorINI;
+#endif

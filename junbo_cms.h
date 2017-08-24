@@ -14,6 +14,7 @@
 class junbo_cms
 {
 public:
+static pthread_mutex_t _junbo_mutex;
     junbo_cms();
     virtual ~junbo_cms();
 

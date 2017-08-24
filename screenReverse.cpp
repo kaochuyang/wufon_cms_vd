@@ -301,12 +301,12 @@ try {
       bCheck = false;
   }
 
- /* if(tmpReverseTimeInfo.usiGreenTime > 255)
+  if(tmpReverseTimeInfo.usiGreenTime > 255)
     bCheck = false;
   if(tmpReverseTimeInfo.usiClearTime > 999)
     bCheck = false;
   if(tmpReverseTimeInfo.usiFlashGreen > 255)
-    bCheck = false;*///kaochu
+    bCheck = false;
 
   if(iRevInCitySec != iRevInCityEndSec) {
     if( (iRevInCityEndSec - iRevInCitySec) <= (tmpReverseTimeInfo.usiGreenTime + tmpReverseTimeInfo.usiClearTime + tmpReverseTimeInfo.usiFlashGreen) )

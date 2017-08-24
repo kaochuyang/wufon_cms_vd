@@ -289,16 +289,7 @@ try {
     if( packet[7]==(const BYTE)0x5F && packet[8]==(const BYTE)0x80 ) { bSetResendFlag = false; }
     */
 BYTE Send_packet[7];
-int aa=0;
     switch (device) {
-            case revAPP:
-
-          //  printf("into writejob revAPP\n");
-                 if (smem.revAPP_socket.GetPortAlreadyOpen()) {
-                       statusUdp=smem.revAPP_socket.UdpSend(packet,length,"revAPP_Socket");
-                   }
-
-            break;
 
             case DEVICECENTER92:                                                //92年版交控中心
 
@@ -358,7 +349,7 @@ int aa=0;
 
 //                 printf("smem.centerPort.GetPortAlreadyOpen():%d,iPacketLcn:%d\n", smem.centerPort.GetPortAlreadyOpen(), iPacketLcn);
                  if (smem.centerPort.GetPortAlreadyOpen() && (iPacketLcn != 0) ) {
-                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS10");
+                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS0");
 //                 if (smem.centerSocket.GetPortAlreadyOpen())
 //                     statusUdp=smem.centerSocket.UdpSend(packet,length,"192.168.1.101:6003");
                  //寫回中心的也要寫回路口測試機
@@ -398,11 +389,93 @@ int aa=0;
 
             break;
 
+//OTSS++
+            case DEVICESS:                                                      //SMART SENSOR
+                 if (smem.ssPort.GetPortAlreadyOpen())
+                     statusRs232=smem.ssPort.Rs232Write(packet,length,"/dev/ttyN1");
+                 statusUdp=true;
+            break;
+//OTSS--
 
+            case DEVICEKEYPAD:                                                  //東生面板控制鍵盤
+                 if (smem.keypadPort.GetPortAlreadyOpen())
+                     statusRs232=smem.keypadPort.Rs232Write(packet,length,"/dev/ttyS2");
+                     printf("402 !!\n");
+                 statusUdp=true;
+            break;
+
+/*OTCombo0713
+            case DEVICETESTER92:                                                //92年版現場手提測試機
+                 if (smem.testerPort.GetPortAlreadyOpen())
+                     statusRs232=smem.testerPort.Rs232Write(packet,length,"/dev/ttyS3");
+                 if (smem.testerSocket.GetPortAlreadyOpen())
+                     statusUdp=smem.testerSocket.UdpSend(packet,length,"192.168.1.102:6003");
+                 //寫回路口測試機的也要寫回中心
+            break;
+*/
             case DEVICETRAFFICLIGHT:                                            //建程紅綠燈RS232控制板
-printf(" I AM in the side \n");
+            /*
+                 ucTmpLight[0] = 0x55;
+                 ucTmpLight[1] = 0x55;
+                 ucTmpLight[2] = 0x55;
+                 ucTmpLight[3] = 0x55;
+                 ucTmpLight[4] = 0x55;
+                 ucTmpLight[5] = 0x55;
+                 ucTmpLight[6] = 0x55;
+                 ucTmpLight[7] = 0x55;
+                 ucTmpLight[8] = 0x55;
+                 ucTmpLight[9] = 0x55;
+                 ucTmpLight[10] = 0x55;
+                 ucTmpLight[11] = 0x55;
+                 ucTmpLight[12] = 0x55;
+                 ucTmpLight[13] = 0x55;
+                 ucTmpLight[14] = 0x55;
+                 ucTmpLight[15] = 0x55;
+                 ucTmpLight[16] = 0x55;
+                 ucTmpLight[17] = 0x55;
+                 ucTmpLight[18] = 0x55;
+                 ucTmpLight[19] = 0x55;
+                 ucTmpLight[20] = 0x55;
+                 smem.lightPort.Rs232Write(ucTmpLight, 10,"dev-EmptyTrafficLight");
+              */
 
-                                                Send_packet[0]='$';//STX
+             /*    if (smem.lightPort.GetPortAlreadyOpen()) {
+                   printf("Send writeJob DEVICETRAFFICLIGHT.\n");
+
+                   for(int i = 0; i < 12; i++) {
+                     ucTmpLight[i] = 0;
+                   }
+
+                   if(packet[2] == 0x13) {  //Do nothing
+                   } else {
+
+                     for(int i = 0; i < 6; i++) {
+                       iRet = smem.vGetSignamMapMappingLightBoard(i);
+                       ucTmpLight[i*2   ] = packet[iRet*2 + 3];
+                       ucTmpLight[i*2 +1] = packet[iRet*2 + 4];
+                     }
+/*
+                   for(int i = 0; i < 6; i++) {
+                     iRet = smem.vGetSignamMapMappingLightBoard(i);
+                     ucTmpLight[iRet*2] = packet[i*2 + 3];
+                     ucTmpLight[iRet*2 + 1] = packet[i*2 + 4];
+                   }
+*/
+              /*       for(int i = 0; i < 12; i++) {
+                       packet[i+3] = ucTmpLight[i];
+                     }
+                     packet[20] = 0;
+                     for (int i = 0; i < 20; i++) {
+                       packet[20] ^= packet[i];
+                     }
+
+                   }
+                     statusRs232=smem.lightPort.Rs232Write(packet, length, "/dev/ttyS3" );
+//                     smem.lightPort.Rs232Write(ucTmpLight, 2,"dev-EmptyTrafficLight");
+//                     usleep(40000);                                             //delay 0.04sec
+
+                 }*/
+                                        Send_packet[0]='$';//STX
        Send_packet[1]='F';
         Send_packet[2]=',';//interval
         Send_packet[3]=0x30+0;//Reset time 0~9
@@ -413,13 +486,91 @@ printf("hello F\n");
 
       //  power_control_port.Rs232Write(Send_packet,7,device_name);
     //     writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);
-    aa=write(smem.power_port.Getfd(),Send_packet,7);
-                // statusRs232=smem.power_port.Rs232Write(Send_packet,7,"/dev/ttyS3");
-printf("aa=%d\n",aa);
+                 statusRs232=smem.lightPort.Rs232Write(Send_packet,7,"/dev/ttyS3");
                  statusUdp=true;
-                 printf("write out \n ");
             break;
 
+            case DEVICEREDCOUNTVER94:
+                 ucTmpLight[0] = 0x55;
+                 ucTmpLight[1] = 0x55;
+                 ucTmpLight[2] = 0x55;
+                 ucTmpLight[3] = 0x55;
+                 ucTmpLight[4] = 0x55;
+                 ucTmpLight[5] = 0x55;
+                 ucTmpLight[6] = 0x55;
+                 ucTmpLight[7] = 0x55;
+                 ucTmpLight[8] = 0x55;
+                 ucTmpLight[9] = 0x55;
+                 ucTmpLight[10] = 0x55;
+                 ucTmpLight[11] = 0x55;
+                 ucTmpLight[12] = 0x55;
+                 ucTmpLight[13] = 0x55;
+                 ucTmpLight[14] = 0x55;
+                 ucTmpLight[15] = 0x55;
+                 ucTmpLight[16] = 0x55;
+                 ucTmpLight[17] = 0x55;
+                 ucTmpLight[18] = 0x55;
+                 ucTmpLight[19] = 0x55;
+                 ucTmpLight[20] = 0x55;
+
+                 if (smem.redCountPort.GetPortAlreadyOpen()) {
+//Disable                    smem.redCountPort.Rs232Write(ucTmpLight, 13, "dev-EmptyRedCount");
+                   statusRs232 = smem.redCountPort.Rs232Write(packet,length,"dev-RedCount");
+//Disable, will afferic return message                   smem.redCountPort.Rs232Write(ucTmpLight, 2,"dev-EmptyRedCount");
+//                   statusRs232 = smem.redCountPort.Rs232Write(packet,length,"dev-RedCount");
+                   statusUdp=true;
+                 }
+            break;
+
+            case DEVICEREDCOUNTVERHK:
+                 if (smem.redCountPort.GetPortAlreadyOpen()) {
+                   ucTmpLight[0] = 0x55;
+                   ucTmpLight[1] = 0x55;
+                   ucTmpLight[2] = 0x55;
+                   ucTmpLight[3] = 0x55;
+                   ucTmpLight[4] = 0x55;
+                   ucTmpLight[5] = 0x55;
+                   ucTmpLight[6] = 0x55;
+                   ucTmpLight[7] = 0x55;
+                   ucTmpLight[8] = 0x55;
+                   ucTmpLight[9] = 0x55;
+//Disable                   smem.redCountPort.Rs232Write(ucTmpLight, 10,"dev-EmptyRedCount");
+                   statusRs232 = smem.redCountPort.Rs232Write(packet,length,"dev-RedCount");
+//                   smem.redCountPort.Rs232Write(ucTmpLight, 10,"dev-EmptyRedCount");
+                   statusUdp=true;
+                 }
+            break;
+
+            case DEVICEREDCOUNTVERCCT97:
+                 if (smem.redCountPort.GetPortAlreadyOpen()) {
+                   ucTmpLight[0] = 0x55;
+                   ucTmpLight[1] = 0x55;
+                   ucTmpLight[2] = 0x55;
+                   ucTmpLight[3] = 0x55;
+                   ucTmpLight[4] = 0x55;
+                   ucTmpLight[5] = 0x55;
+                   ucTmpLight[6] = 0x55;
+                   ucTmpLight[7] = 0x55;
+                   ucTmpLight[8] = 0x55;
+                   ucTmpLight[9] = 0x55;
+                   ucTmpLight[10] = 0x55;
+                   ucTmpLight[11] = 0x55;
+                   ucTmpLight[12] = 0x55;
+                   ucTmpLight[13] = 0x55;
+                   ucTmpLight[14] = 0x55;
+                   ucTmpLight[15] = 0x55;
+                   ucTmpLight[16] = 0x55;
+                   ucTmpLight[17] = 0x55;
+                   ucTmpLight[18] = 0x55;
+                   ucTmpLight[19] = 0x55;
+                   ucTmpLight[20] = 0x55;
+
+//Disable                   smem.redCountPort.Rs232Write(ucTmpLight, 13,"dev-EmptyRedCount");
+                   statusRs232 = smem.redCountPort.Rs232Write(packet,length,"dev-RedCount");
+//                   smem.redCountPort.Rs232Write(ucTmpLight, 10,"dev-EmptyRedCount");
+                   statusUdp=true;
+                 }
+            break;
 
             case DEVICETAINANPEOPLELIGHT:                                                //92年版交控中心
               if (smem.com2Port.GetPortAlreadyOpen())
@@ -525,7 +676,7 @@ try {
                  iTCLCN = smem.GetAddress();
 
                  if (smem.centerPort.GetPortAlreadyOpen() && (iPacketLcn != 0) )
-                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS10");
+                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS0");
 
 
                  if(smem.vGetINTData(Com2_TYPE) == Com2IsTesterPort) {
@@ -552,13 +703,13 @@ try {
 
             case DEVICEKEYPAD:                                                  //東生面板控制鍵盤
                  if (smem.keypadPort.GetPortAlreadyOpen())
-                     statusRs232=smem.keypadPort.Rs232Write(packet,length,"/dev/ttyS4");
+                     statusRs232=smem.keypadPort.Rs232Write(packet,length,"/dev/ttyS2");
                  statusUdp=true;
             break;
 
             case DEVICETRAFFICLIGHT:                                            //建程紅綠燈RS232控制板
-                 if (smem.power_port.GetPortAlreadyOpen())
-                     statusRs232=smem.power_port.Rs232Write(packet,length,"/dev/ttyS3");//kaochu 2017 08 24
+                 if (smem.lightPort.GetPortAlreadyOpen())
+                     statusRs232=smem.lightPort.Rs232Write(packet,length,"/dev/ttyS3");
                  statusUdp=true;
             break;
 

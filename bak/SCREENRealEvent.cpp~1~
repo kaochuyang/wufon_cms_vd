@@ -1,0 +1,167 @@
+//---------------------------------------------------------------------------
+#include "SCREENRealEvent.h"
+#include "SCREENMain.h"
+#include "LCD240x128.h"
+#include "SMEM.h"
+
+SCREENRealEvent screenRealEvent;
+//---------------------------------------------------------------------------
+SCREENRealEvent::SCREENRealEvent(void)
+{
+    LoadBitmapFromFile();
+    InitDispWord();
+    cSelect=0;
+    for (int i=0;i<32;i++) fill[i]=0xFF;
+}
+//---------------------------------------------------------------------------
+SCREENRealEvent::~SCREENRealEvent(void)
+{
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DoKeyWork(BYTE key)              //已過濾,進來的是0x80~0x98之間,5X5按鍵
+{
+try {
+    switch (key) {
+        case 0x90:
+             DoKeyF1Work();
+        break;
+        case 0x93:
+             DoKeyF4Work();
+        break;
+
+        case 0x96://LEFT
+          DoKeyLEFTWork();
+        break;
+        case 0x97://RIGHT
+          DoKeyRIGHTWork();
+        break;
+
+        default:
+        break;
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::LoadBitmapFromFile(void)
+{
+try {
+    FILE *bitmap;
+    bitmap=fopen("//cct//bitmap//backGround//4_8_realevent.bit","rb");
+    if (bitmap) {
+        fread(realEventBitmap,3840,1,bitmap);
+        fclose(bitmap);
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DisplayRealEvent(void)
+{
+try {
+    smem.SetcFace(cREALEVENT);
+    smem.vWriteMsgToDOM("Enter Real Event Screen");
+    lcd240x128.DISPLAY_GRAPHIC(0,realEventBitmap,128,30);
+    laneCount=smem.vGetVDInterValData_6F0F_LaneCount();
+    for (int y=7;y>=laneCount;y--)
+         clearSelectPoint16x16(title[y].X,title[y].Y,title[y].height,title[y].width/8);
+    setSelectPoint16x16(position[cSelect].X,position[cSelect].Y,position[cSelect].height,position[cSelect].width/8);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::ClearAllData(void)
+{
+try {
+    clearSelectPoint16x16(data[0].X,data[0].Y,data[0].height,data[0].width/8);
+    clearSelectPoint16x16(data[1].X,data[1].Y,data[1].height,data[1].width/8);
+    clearSelectPoint16x16(data[2].X,data[2].Y,data[2].height,data[2].width/8);
+    clearSelectPoint16x16(data[3].X,data[3].Y,data[3].height,data[3].width/8);
+    clearSelectPoint16x16(data[4].X,data[4].Y,data[4].height,data[4].width/8);
+    clearSelectPoint16x16(data[5].X,data[5].Y,data[5].height,data[5].width/8);
+    clearSelectPoint16x16(data[6].X,data[6].Y,data[6].height,data[6].width/8);
+    clearSelectPoint16x16(data[7].X,data[7].Y,data[7].height,data[7].width/8);
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DisplayEvent(int lane)
+{
+try {
+    if (smem.GetcFace()==cREALEVENT) {
+        if (cSelect==0) {
+            ClearAllData();
+            if (lane<=laneCount)
+                lcd240x128.DISPLAY_GRAPHIC_XY(data[lane-1].X,data[lane-1].Y,fill,data[lane-1].height,data[lane-1].width/8);
+        }
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DisplayPresence(DATA_Bit pres)
+{
+try {
+    if (smem.GetcFace()==cREALEVENT) {
+        if (cSelect==1) {
+            ClearAllData();
+            if (pres.switchBit.b1) lcd240x128.DISPLAY_GRAPHIC_XY(data[0].X,data[0].Y,fill,data[0].height,data[0].width/8);
+            if (pres.switchBit.b2) lcd240x128.DISPLAY_GRAPHIC_XY(data[1].X,data[1].Y,fill,data[1].height,data[1].width/8);
+            if (pres.switchBit.b3) lcd240x128.DISPLAY_GRAPHIC_XY(data[2].X,data[2].Y,fill,data[2].height,data[2].width/8);
+            if (pres.switchBit.b4) lcd240x128.DISPLAY_GRAPHIC_XY(data[3].X,data[3].Y,fill,data[3].height,data[3].width/8);
+            if (pres.switchBit.b5) lcd240x128.DISPLAY_GRAPHIC_XY(data[4].X,data[4].Y,fill,data[4].height,data[4].width/8);
+            if (pres.switchBit.b6) lcd240x128.DISPLAY_GRAPHIC_XY(data[5].X,data[5].Y,fill,data[5].height,data[5].width/8);
+            if (pres.switchBit.b7) lcd240x128.DISPLAY_GRAPHIC_XY(data[6].X,data[6].Y,fill,data[6].height,data[6].width/8);
+            if (pres.switchBit.b8) lcd240x128.DISPLAY_GRAPHIC_XY(data[7].X,data[7].Y,fill,data[7].height,data[7].width/8);
+        }
+    }
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::InitDispWord(void)
+{
+try {
+    for (int i=0;i<8;i++) {
+         title[i].X=48+i*24;
+         title[i].Y=27;
+         title[i].width=16;
+         title[i].height=16;
+
+         data[i].X=48+i*24;
+         data[i].Y=64;
+         data[i].width=16;
+         data[i].height=16;
+    }
+
+    position[0].X=16;
+    position[0].Y=108;
+    position[0].width=16;
+    position[0].height=16;
+
+    position[1].X=80;
+    position[1].Y=108;
+    position[1].width=16;
+    position[1].height=16;
+
+  } catch (...) {}
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DoKeyF1Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DoKeyF4Work(void)
+{
+    screenMain.DisplayMain();
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DoKeyLEFTWork(void)
+{
+    clearSelectPoint16x16(position[cSelect].X,position[cSelect].Y,position[cSelect].height,position[cSelect].width/8);
+    cSelect=0;
+    setSelectPoint16x16(position[cSelect].X,position[cSelect].Y,position[cSelect].height,position[cSelect].width/8);
+}
+//---------------------------------------------------------------------------
+void SCREENRealEvent::DoKeyRIGHTWork(void)
+{
+    clearSelectPoint16x16(position[cSelect].X,position[cSelect].Y,position[cSelect].height,position[cSelect].width/8);
+    cSelect=1;
+    setSelectPoint16x16(position[cSelect].X,position[cSelect].Y,position[cSelect].height,position[cSelect].width/8);
+}
+//---------------------------------------------------------------------------

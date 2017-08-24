@@ -30,15 +30,14 @@ class light_time_control
     bool read_time();
 
 };
-
 class SMEM
 {
     public:
         SMEM(void);
         ~SMEM(void);
-junbo_light_control o_Junbo_light;
+        junbo_light_control o_Junbo_light;
 
-    light_time_control light_time;
+   light_time_control light_time;
 bool _0F80_packet(BYTE PROTOCOL_TYPE[2]);
 
     typedef  struct junbo_to_light
@@ -52,7 +51,7 @@ bool _0F80_packet(BYTE PROTOCOL_TYPE[2]);
         junbo_cms junbo_object;
         power_reboot_group power_object;
         RS232 power_port;
-          UDP revAPP_socket;
+         UDP revAPP_socket;
 
         int count_vd_alive;
         STORAGE disk;                                                           //寫檔案用
@@ -69,9 +68,6 @@ bool _0F80_packet(BYTE PROTOCOL_TYPE[2]);
         RS232 revLaneManualPort;
 
         UDP revSyncSocket;
-
-
-
 
 //OTSS++
         UDP centerSocket,testerSocket,tempSocket;                               //交控中心,手提測試機,保留

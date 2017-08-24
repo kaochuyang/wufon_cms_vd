@@ -1,8 +1,10 @@
 #include "power_reboot_group.h"
 #include <stdio.h>
 #include "SMEM.h"
+#include "WRITEJOB.h"
 //#include "CTIMER.h"
 //struct timer_object power_reboot_group::power_timer;
+#include "CDataToMessageOK.h"
 
 
 power_reboot_group::power_reboot_group()
@@ -23,6 +25,7 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
 {
     try
     {
+        printf("power reset sec=%d\n",second);
 
 
         BYTE Send_packet[7];
@@ -31,12 +34,13 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
 
 
         Send_packet[0]='$';//STX
-        if((device!='C')&&(device!='F')&&(device!='V'))
+ /*       if((device!='C')&&(device!='F')&&(device!='V'))
         {
             printf("The device name is not correct!\n");
             Send_packet[1]=0x0;
         }
-        else Send_packet[1]=device;
+        else*/
+         Send_packet[1]=device;
         Send_packet[2]=',';//interval
         Send_packet[3]=0x30+(second/10);//Reset time 0~9
         Send_packet[4]=0x30+(second%10);//0~9
@@ -47,7 +51,10 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
         sprintf(cTMP, "Device %C, second=%d", device, second);
         smem.vWriteMsgToDOM(cTMP);
       //  power_control_port.Rs232Write(Send_packet,7,device_name);
-         writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);
+       //  writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);
+
+
+         smem.lightPort.Rs232Write(Send_packet,7,"/dev/ttyS3");
 
         return true;
     }

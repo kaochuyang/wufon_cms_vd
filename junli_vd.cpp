@@ -5,6 +5,8 @@
 #include <stdio.h>
 #include <signal.h>
 #include <unistd.h>
+#include "CDataToMessageOK.h"
+#include "WRITEJOB.h"
 junli_vd::junli_vd()
 {
     //ctor
@@ -80,6 +82,7 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                     if(messageIn[j].packet[1]==0xed)
                     {
                         printf("CMS MESSAGE!!\n");
+
                         smem.power_object.power_reset('F',smem.light_time.light_flash_time);//2017 08 18 kaochu
                         text_ID++;
                         if(text_ID>=4)text_ID=2;

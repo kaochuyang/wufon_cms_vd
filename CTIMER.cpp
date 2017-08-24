@@ -385,7 +385,7 @@ void intervalTimer::TimersSetting(void)
         _it2.it_interval.tv_nsec = 0;
         if ( timer_settime( _t2, 0, & _it2, NULL ) ) exit( 1 );
 
-        _it3.it_value.tv_sec = 40;
+        _it3.it_value.tv_sec = 5;
         _it3.it_value.tv_nsec = 0;
         _it3.it_interval.tv_sec = 8;
         _it3.it_interval.tv_nsec = 0;
@@ -496,7 +496,7 @@ void * intervalTimer::PTime(void *arg)
 
         TimersSetting();
         timer_reboot_create();
-
+        smem.light_time.read_time();
       smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
         printf("hello light control\n");
      //   timer_reboot_create();//kaochu 2017 08 17
@@ -556,7 +556,7 @@ void * intervalTimer::PTime(void *arg)
 
         //jacky20151210
         unsigned char RequestKeypad = 0;
-                BYTE Send_packet[7];
+                BYTE Send_packet[2];
 
         while(1)
         {
@@ -644,6 +644,7 @@ void * intervalTimer::PTime(void *arg)
                         {
                             SendRequestToKeypad();
                             RequestKeypad++;
+                            printf("10 !!!\n");
                         }
                         else if(RequestKeypad >= 5)
                         {
@@ -746,21 +747,21 @@ void * intervalTimer::PTime(void *arg)
                     break;
                 case( 12 ):
 //Remove                                   _intervalTimer.vCheckAndReSendSS_SK_Status();
-                    _intervalTimer.vCheckScreenAndDoSomething();
+              //      _intervalTimer.vCheckScreenAndDoSomething();
 
 //Remove                                    _SSLastRun = smem.vGetSSCommTime();         //æª¢æ\uFFFDSmartSensor
-                    _RunSec = time(NULL);
+                 //   _RunSec = time(NULL);
 
-                    _intervalTimer.vCheckVDUpdateDBAndDoSomething();
+                //    _intervalTimer.vCheckVDUpdateDBAndDoSomething();
 
-                    if((_RunSec - smem.GetLastKeypadTime()) > 300)    //TEST, 990325 for amegids, don't clear screen
-                    {
-                        screenNone.DisplayNone();
-                    }
+                //    if((_RunSec - smem.GetLastKeypadTime()) > 300)    //TEST, 990325 for amegids, don't clear screen
+                  //  {
+             //           screenNone.DisplayNone();
+               //     }
 
 //                                    if (smem.GetKeypadReturn()==false)  SendRequestToKeypad();
-                    SendRequestToKeypad();
-
+//                    SendRequestToKeypad();
+//printf("12  !!+n" );
                     break;
                 case( 13 ):                                                           //VD SIM
 printf("timer test 13\n");
@@ -782,9 +783,9 @@ printf("timer test 13\n");
                 case( 100 ):
 
 
+//SendRequestToKeypad();
 
-
-        Send_packet[0]='$';//STX
+    /*    Send_packet[0]='$';//STX
        Send_packet[1]='F';
         Send_packet[2]=',';//interval
         Send_packet[3]=0x30+0;//Reset time 0~9
@@ -794,7 +795,7 @@ printf("timer test 13\n");
 printf("hello F\n");
 
       //  power_control_port.Rs232Write(Send_packet,7,device_name);
-         writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);
+         writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);*/
                    /* _intervalTimer.vCommuncationReset(iCommuncationResetCount);                        //default not start
                     iCommuncationResetCount++;
                     if(iCommuncationResetCount >= 3) iCommuncationResetCount = 0;*/
@@ -839,7 +840,11 @@ printf("hello F\n");
                     if(smem.count_vd_alive>30)
                     {   printf("count_vd_alive=%d\n",smem.count_vd_alive);
                         smem.power_object.power_reset_all(10);
+                        smem.count_vd_alive=0;
                         smem.vWriteMsgToDOM("VD link error");
+                        Send_packet[0]=0x6f;
+                        Send_packet[1]=0xff;
+                        smem._0F80_packet(Send_packet);
                     }
                     break;
 

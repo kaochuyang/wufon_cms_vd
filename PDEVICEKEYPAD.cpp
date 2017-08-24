@@ -148,6 +148,7 @@ PDEVICEKEYPAD::~PDEVICEKEYPAD(void)
 bool PDEVICEKEYPAD::DoWorkViaPDevice(MESSAGEOK message)
 {
 try {
+    printf("test DoWorkViaPDevice\n");
     unsigned short int usiTmp;
     int address=0;
     unsigned char ucCSTCControlStrategy;
@@ -158,6 +159,7 @@ try {
 
     switch (message.packet[2]) {
             case 0x01:                                 //keypad response
+            printf("case 1\n");
                  smem.SetRequestKeypad(0);
 
                  DATA_P1=message.packet[3];            //25個鍵盤加按鈕(按鈕不使用)
@@ -462,6 +464,7 @@ printf("Lock_to_Set_Control_Strategy by KEYPAD2!!!\n");
             break;
 
             case 0x03:                                 //keypad request
+            printf("case 3\n");
                  writeJob.WritePhysicalOut(message.packet,message.packetLength,DEVICEKEYPAD);
             break;
             default:
