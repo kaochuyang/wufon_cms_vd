@@ -288,8 +288,16 @@ try {
     if( packet[7]==(const BYTE)0x5F && packet[8]==(const BYTE)0x03 ) { bSetResendFlag = false; }
     if( packet[7]==(const BYTE)0x5F && packet[8]==(const BYTE)0x80 ) { bSetResendFlag = false; }
     */
-BYTE Send_packet[7];
+
     switch (device) {
+            case revAPP:
+
+          //  printf("into writejob revAPP\n");
+                 if (smem.revAPP_socket.GetPortAlreadyOpen()) {
+                       statusUdp=smem.revAPP_socket.UdpSend(packet,length,"revAPP_Socket");
+                   }
+
+            break;
 
             case DEVICECENTER92:                                                //92年版交控中心
 
@@ -349,7 +357,7 @@ BYTE Send_packet[7];
 
 //                 printf("smem.centerPort.GetPortAlreadyOpen():%d,iPacketLcn:%d\n", smem.centerPort.GetPortAlreadyOpen(), iPacketLcn);
                  if (smem.centerPort.GetPortAlreadyOpen() && (iPacketLcn != 0) ) {
-                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS0");
+                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS10");
 //                 if (smem.centerSocket.GetPortAlreadyOpen())
 //                     statusUdp=smem.centerSocket.UdpSend(packet,length,"192.168.1.101:6003");
                  //寫回中心的也要寫回路口測試機
@@ -400,7 +408,6 @@ BYTE Send_packet[7];
             case DEVICEKEYPAD:                                                  //東生面板控制鍵盤
                  if (smem.keypadPort.GetPortAlreadyOpen())
                      statusRs232=smem.keypadPort.Rs232Write(packet,length,"/dev/ttyS2");
-                     printf("402 !!\n");
                  statusUdp=true;
             break;
 
@@ -439,7 +446,7 @@ BYTE Send_packet[7];
                  smem.lightPort.Rs232Write(ucTmpLight, 10,"dev-EmptyTrafficLight");
               */
 
-             /*    if (smem.lightPort.GetPortAlreadyOpen()) {
+      /*           if (smem.lightPort.GetPortAlreadyOpen()) {
                    printf("Send writeJob DEVICETRAFFICLIGHT.\n");
 
                    for(int i = 0; i < 12; i++) {
@@ -461,7 +468,7 @@ BYTE Send_packet[7];
                      ucTmpLight[iRet*2 + 1] = packet[i*2 + 4];
                    }
 */
-              /*       for(int i = 0; i < 12; i++) {
+                 /*    for(int i = 0; i < 12; i++) {
                        packet[i+3] = ucTmpLight[i];
                      }
                      packet[20] = 0;
@@ -469,24 +476,12 @@ BYTE Send_packet[7];
                        packet[20] ^= packet[i];
                      }
 
-                   }
+                   }*/
                      statusRs232=smem.lightPort.Rs232Write(packet, length, "/dev/ttyS3" );
 //                     smem.lightPort.Rs232Write(ucTmpLight, 2,"dev-EmptyTrafficLight");
 //                     usleep(40000);                                             //delay 0.04sec
 
-                 }*/
-                                        Send_packet[0]='$';//STX
-       Send_packet[1]='F';
-        Send_packet[2]=',';//interval
-        Send_packet[3]=0x30+0;//Reset time 0~9
-        Send_packet[4]=0x30+5;//0~9
-        Send_packet[5]=0x0d;//CR
-        Send_packet[6]=0x0a;//LF
-printf("hello F\n");
-
-      //  power_control_port.Rs232Write(Send_packet,7,device_name);
-    //     writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);
-                 statusRs232=smem.lightPort.Rs232Write(Send_packet,7,"/dev/ttyS3");
+             //    }
                  statusUdp=true;
             break;
 
@@ -676,7 +671,7 @@ try {
                  iTCLCN = smem.GetAddress();
 
                  if (smem.centerPort.GetPortAlreadyOpen() && (iPacketLcn != 0) )
-                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS0");
+                     statusRs232=smem.centerPort.Rs232Write(packet,length,"/dev/ttyS10");
 
 
                  if(smem.vGetINTData(Com2_TYPE) == Com2IsTesterPort) {

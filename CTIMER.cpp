@@ -556,7 +556,9 @@ void * intervalTimer::PTime(void *arg)
 
         //jacky20151210
         unsigned char RequestKeypad = 0;
-                BYTE Send_packet[2];
+
+        int reset_count=0;//kaochu 20170824
+        BYTE Send_packet[2];
 
         while(1)
         {
@@ -835,6 +837,9 @@ printf("hello F\n");
 
                 case( 501 ):
 
+                if(reset_count<8)
+                {
+
                     smem.count_vd_alive++;
 
                     if(smem.count_vd_alive>30)
@@ -845,7 +850,10 @@ printf("hello F\n");
                         Send_packet[0]=0x6f;
                         Send_packet[1]=0xff;
                         smem._0F80_packet(Send_packet);
+                        reset_count++;
                     }
+
+                }
                     break;
 
                 case( 600 ):

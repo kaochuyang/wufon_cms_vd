@@ -32,7 +32,7 @@ static pthread_mutex_t _junbo_mutex;
 
 
 
-
+void cms_test_function(int text_ID);
 
 
     void brightness_control(int bright_parameter);

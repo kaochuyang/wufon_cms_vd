@@ -539,9 +539,11 @@ void junbo_cms::report_module_state_to_revapp()
 
 
     }
+    printf("report_module_state_to_revapp=");
     for(int i=0;i<32;i++)printf("%x ",data[i]);
     printf("\n");
     writeJob.WritePhysicalOut(data, 32, revAPP);
+
     pthread_mutex_unlock(&junbo_cms::_junbo_mutex);
 }
 void junbo_cms::report_module_state_to_center()
@@ -613,8 +615,11 @@ void junbo_cms::report_light_timeout()//for app
         data[3*i-1]=smem.record_timeout[i].ID;
         data[3*i]=smem.record_timeout[i].command;
         data[3*i+1]=smem.record_timeout[i].parameter;
+        printf(" report light timeout ID=%d  timeout=%d\n",data[3*i],data[3*i+1]);
     }
     writeJob.WritePhysicalOut(data, 8, revAPP);
+
+
     pthread_mutex_unlock(&junbo_cms::_junbo_mutex);
 
 
@@ -643,9 +648,11 @@ void junbo_cms::light_timeout_control(int control_parameter)
         ucSendTMP[5] = 0x0;//cks
         for (int a=0; a<5; a++)
             ucSendTMP[5]^=ucSendTMP[a];
-        printf("\nlight_timeout_control light ID=%d\n",i);
+        printf("\nlight_timeout_control light ID=%d  timeoute=%d sec\n",i,ucSendTMP[4]);
         junbo_cms_send(ucSendTMP);
     }
+
+
     pthread_mutex_unlock(&junbo_cms::_junbo_mutex);
     smem.light_time.store_time(control_parameter);
 
@@ -655,3 +662,12 @@ void junbo_cms::light_timeout_control(int control_parameter)
     printf("Send junbo light light_timeout_control.by light_timeout_control\n");
 }
 
+void junbo_cms::cms_test_function(int text_ID)
+{
+    try
+    {
+        junbo_send_by_VD(text_ID);
+        printf("cms_test ID=%d\n",text_ID);
+    }
+    catch(...){}
+}

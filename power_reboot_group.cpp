@@ -53,8 +53,10 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
       //  power_control_port.Rs232Write(Send_packet,7,device_name);
        //  writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);
 
-
+        printf("power_reset %C %d\n",device,second);
          smem.lightPort.Rs232Write(Send_packet,7,"/dev/ttyS3");
+         writeJob.WritePhysicalOut(Send_packet, 7, revAPP);
+
 
         return true;
     }
@@ -204,7 +206,7 @@ bool power_reboot_group::report_power_reboot()
         {
             fread(&clock_info,sizeof(clock_info),1,pf);
             fclose(pf);
-        }
+        }else{memset(clock_info,'0',sizeof(clock_info));}
 
 
 
@@ -215,6 +217,9 @@ bool power_reboot_group::report_power_reboot()
         data[3]=clock_info[1];
 
         writeJob.WritePhysicalOut(data,4,revAPP);
+        for(int i=0;i<2;i++)
+        printf("clock_info=%d",clock_info[i]);
+        printf("\n");
 
 
 

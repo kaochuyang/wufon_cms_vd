@@ -125,11 +125,11 @@ int main(int argc, char* argv[])
 
         //¶}±ÒRS232,422,485 ³q°T°ð
         //¶}±Ò¥æ³q±±¨î¤¤¤ß³q°T°ð
-
+/*
         ucTmp = smem.vGetUCData(TC_ReverseLane_Manual_Enable_Status);
         printf("smem.vGetUCData(TC_ReverseLane_Manual_Enable_Status):%d\n", ucTmp);
 
-
+*/
 
         if (smem.lightPort.SetConnDevice(DEVICETRAFFICLIGHT))
             if ((tempmax=smem.lightPort.OpenRs232Port("/dev/ttyS3",9600,false))>0)
@@ -267,7 +267,7 @@ int main(int argc, char* argv[])
             {
 
 
-                if (smem.lightPort.GetPortAlreadyOpen())
+              /* if (smem.lightPort.GetPortAlreadyOpen())
                 {
                     if (FD_ISSET(smem.lightPort.Getfd(),&readfs))
                     {
@@ -292,7 +292,7 @@ int main(int argc, char* argv[])
                             }
                         }
                     }
-                }
+                }*/
 
                 if (smem.junli_object.junli_port.GetPortAlreadyOpen())
                 {
@@ -339,10 +339,12 @@ int main(int argc, char* argv[])
                         if(readSelectLength>0)
                         {
                             //printf("readSelectLength=%d\n",readSelectLength);
-                            if(smem.vGetCommEnable()==true)
+                            if(1)//smem.vGetCommEnable()==true)
                             {
                                 int rev_select=0;
                                 revAPP_messagein=smem.o_Junbo_light.revAPP_packet(readSelectLength,smem.revAPP_socket.block);
+                                for(int g=0;g<revAPP_messagein.packetLength;g++)printf("%x ",revAPP_messagein.packet[g]);
+                                        printf("\n");
 
 
                                 if(revAPP_messagein.packet[0]==0x5F)
@@ -385,6 +387,11 @@ int main(int argc, char* argv[])
                                 {
                                     switch(revAPP_messagein.packet[1])
                                     {
+                                        case(0x0):
+                                        smem.junbo_object.cms_test_function(revAPP_messagein.packet[2]);
+                                        smem.vWriteMsgToDOM("cms_test_function");
+
+                                        break;
                                     case(0xb7):
                                         smem.power_object.report_power_reboot();
                                         smem.vWriteMsgToDOM("report_power_reboot by app");
