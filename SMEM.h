@@ -25,9 +25,12 @@ class light_time_control
     public:
     light_time_control(void);
     ~light_time_control(void);
+    bool text_ID_control(int text_ID);
+    bool read_textID();
     int light_flash_time;
     bool store_time(int time_sec);
     bool read_time();
+    int text_ID;
 
 };
 class SMEM

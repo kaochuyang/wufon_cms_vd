@@ -125,11 +125,11 @@ int main(int argc, char* argv[])
 
         //¶}±ÒRS232,422,485 ³q°T°ð
         //¶}±Ò¥æ³q±±¨î¤¤¤ß³q°T°ð
-/*
-        ucTmp = smem.vGetUCData(TC_ReverseLane_Manual_Enable_Status);
-        printf("smem.vGetUCData(TC_ReverseLane_Manual_Enable_Status):%d\n", ucTmp);
+        /*
+                ucTmp = smem.vGetUCData(TC_ReverseLane_Manual_Enable_Status);
+                printf("smem.vGetUCData(TC_ReverseLane_Manual_Enable_Status):%d\n", ucTmp);
 
-*/
+        */
 
         if (smem.lightPort.SetConnDevice(DEVICETRAFFICLIGHT))
             if ((tempmax=smem.lightPort.OpenRs232Port("/dev/ttyS3",9600,false))>0)
@@ -201,7 +201,7 @@ int main(int argc, char* argv[])
 
         //¶}±ÒIO ³q°T°ð
         //LPT1(0x378) LCD­±ªO
-                                       //±o¨ìkernalÅv­­,¥i¥H±±¨îLPT1
+        //±o¨ìkernalÅv­­,¥i¥H±±¨îLPT1
         if (lcd240x128.GetAuthority(0x378))                                         //±o¨ìkernalÅv­­,¥i¥H±±¨îLPT1
         {
             lcd240x128.GRAPHIC_MODE();                                              //±NLcd³]©w¬°Graphicµe­±
@@ -241,7 +241,7 @@ int main(int argc, char* argv[])
 
             FD_ZERO(&readfs);
 
-             if(smem.revAPP_socket.GetPortAlreadyOpen())FD_SET(smem.revAPP_socket.Getfd(),&readfs);//for revAPP
+            if(smem.revAPP_socket.GetPortAlreadyOpen())FD_SET(smem.revAPP_socket.Getfd(),&readfs);//for revAPP
 
             if (smem.lightPort.GetPortAlreadyOpen()) FD_SET(smem.lightPort.Getfd(),&readfs);
 
@@ -267,32 +267,32 @@ int main(int argc, char* argv[])
             {
 
 
-              /* if (smem.lightPort.GetPortAlreadyOpen())
-                {
-                    if (FD_ISSET(smem.lightPort.Getfd(),&readfs))
-                    {
-                        readSelectLength=smem.lightPort.Rs232Read();
-                        if (readSelectLength>0)
-                        {
-                            if(smem.vGetCommEnable() == true)    //OT20110728
-                            {
-                                parseAABB.ParseBlock(readSelectLength,smem.lightPort.block,smem.lightPort.messageIn,&smem.lightPort.lastPacketIndex,&smem.lightPort.maxMessageIndex);
-                                parseAABB.CheckSum(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                parseAABB.DecideProtocol(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,smem.lightPort.GetConnDevice());
-                                parseAABB.CheckReasonable(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                parseAABB.AssignLcn(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                readJob.SetInterfaceAndReadFlag(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,cRS232);
-                                readJob.DoWorkByMESSAGEIN(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                parseAABB.EchoToGUI(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,"/dev/ttyS3");
-                                parseAABB.MoveLastData(&smem.lightPort.maxMessageIndex,&smem.lightPort.lastPacketIndex,smem.lightPort.messageIn);
+                /* if (smem.lightPort.GetPortAlreadyOpen())
+                  {
+                      if (FD_ISSET(smem.lightPort.Getfd(),&readfs))
+                      {
+                          readSelectLength=smem.lightPort.Rs232Read();
+                          if (readSelectLength>0)
+                          {
+                              if(smem.vGetCommEnable() == true)    //OT20110728
+                              {
+                                  parseAABB.ParseBlock(readSelectLength,smem.lightPort.block,smem.lightPort.messageIn,&smem.lightPort.lastPacketIndex,&smem.lightPort.maxMessageIndex);
+                                  parseAABB.CheckSum(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
+                                  parseAABB.DecideProtocol(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,smem.lightPort.GetConnDevice());
+                                  parseAABB.CheckReasonable(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
+                                  parseAABB.AssignLcn(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
+                                  readJob.SetInterfaceAndReadFlag(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,cRS232);
+                                  readJob.DoWorkByMESSAGEIN(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
+                                  parseAABB.EchoToGUI(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,"/dev/ttyS3");
+                                  parseAABB.MoveLastData(&smem.lightPort.maxMessageIndex,&smem.lightPort.lastPacketIndex,smem.lightPort.messageIn);
 
 
 
-                                smem.vSetBOOLData(TC_SIGNAL_DRIVER_UNIT, true);
-                            }
-                        }
-                    }
-                }*/
+                                  smem.vSetBOOLData(TC_SIGNAL_DRIVER_UNIT, true);
+                              }
+                          }
+                      }
+                  }*/
 
                 if (smem.junli_object.junli_port.GetPortAlreadyOpen())
                 {
@@ -328,7 +328,7 @@ int main(int argc, char* argv[])
 
                 }
 
-  /*****************************************************************/
+                /*****************************************************************/
                 if(smem.revAPP_socket.GetPortAlreadyOpen())
                 {
                     if(FD_ISSET(smem.revAPP_socket.Getfd(),&readfs))
@@ -343,8 +343,8 @@ int main(int argc, char* argv[])
                             {
                                 int rev_select=0;
                                 revAPP_messagein=smem.o_Junbo_light.revAPP_packet(readSelectLength,smem.revAPP_socket.block);
-                                for(int g=0;g<revAPP_messagein.packetLength;g++)printf("%x ",revAPP_messagein.packet[g]);
-                                        printf("\n");
+                                for(int g=0; g<revAPP_messagein.packetLength; g++)printf("%x ",revAPP_messagein.packet[g]);
+                                printf("\n");
 
 
                                 if(revAPP_messagein.packet[0]==0x5F)
@@ -387,11 +387,25 @@ int main(int argc, char* argv[])
                                 {
                                     switch(revAPP_messagein.packet[1])
                                     {
-                                        case(0x0):
+                                    case(0x0):
                                         smem.junbo_object.cms_test_function(revAPP_messagein.packet[2]);
-                                        smem.vWriteMsgToDOM("cms_test_function");
+                                        smem.vWriteMsgToDOM("cms_test_function");//send 0f 00 textID
 
                                         break;
+
+                                    case (0xa):
+                                        smem.junbo_object.color_packet(revAPP_messagein);// 8 BYTE
+                                        smem.vWriteMsgToDOM("color control");//send 0f 0a 0x 0x 0x 0x 0x 0x
+
+                                        break;
+                                    case (0xb):
+                                    smem.junli_object.test_function_C_and_F();
+                                      smem.vWriteMsgToDOM("test_function_C_and_F");
+                                    break;
+                                    case(0xc):
+                                    smem.light_time.text_ID_control(revAPP_messagein.packet[2]);
+                                    smem.vWriteMsgToDOM("text_ID_control");
+                                    break;
                                     case(0xb7):
                                         smem.power_object.report_power_reboot();
                                         smem.vWriteMsgToDOM("report_power_reboot by app");
@@ -407,16 +421,16 @@ int main(int argc, char* argv[])
 
 
                                         smem.power_object.power_reset(revAPP_messagein.packet[2],(int)revAPP_messagein.packet[3]);
-                                        smem.vWriteMsgToDOM("power_reset by app");
+                                        smem.vWriteMsgToDOM("power_reset by app");//send 0x 16 "F or C or V" sec
                                         break;
 
                                     case (0x17):
                                         oRev_protocol_0F.VD_CMS_reboot_0F17(revAPP_messagein.packet[2]);
-                                        smem.vWriteMsgToDOM("write VD_CMS_reboot_0F17 by app");
+                                        smem.vWriteMsgToDOM("write VD_CMS_reboot_0F17 by app");// send 0f 17 sec
                                         break;
                                     case (0x19):
                                         smem.junbo_object.brightness_control(revAPP_messagein.packet[2]);
-                                        smem.vWriteMsgToDOM("write brightness_control by app");
+                                        smem.vWriteMsgToDOM("write brightness_control by app");//send 0f 19 "0~3"
                                         break;
                                     case(0x29):
                                         smem.junbo_object.report_light_brightness();
@@ -439,7 +453,7 @@ int main(int argc, char* argv[])
                                         break;
 
                                     case (0x10):
-                                        smem.vWriteMsgToDOM("vRebootIPC_0F10_revAPP by app");
+                                        smem.vWriteMsgToDOM("vRebootIPC_0F10_revAPP by app");// 0f 10 52 52
                                         oRev_protocol_0F.vRebootIPC_0F10_revAPP(revAPP_messagein);
                                         break;
 
@@ -475,7 +489,7 @@ int main(int argc, char* argv[])
                         }
                     }
                 }
- /********************************************************************/
+                /********************************************************************/
 
 
                 if (smem.centerSocket.GetPortAlreadyOpen())

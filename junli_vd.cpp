@@ -7,11 +7,12 @@
 #include <unistd.h>
 #include "CDataToMessageOK.h"
 #include "WRITEJOB.h"
+#include "CTIMER.h"
 junli_vd::junli_vd()
 {
     //ctor
     alive_count=0;
-    text_ID=1;
+//    text_ID=1;
     vd_alive_mark=false;
 }
 
@@ -83,12 +84,13 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                     {
                         printf("CMS MESSAGE!!\n");
 
-                        smem.power_object.power_reset('F',smem.light_time.light_flash_time);//2017 08 18 kaochu
-                        text_ID++;
-                        if(text_ID>=4)text_ID=2;
+                        smem.power_object.power_reset('F',smem.light_time.light_flash_time-1);//2017 08 18 kaochu
 
-                        printf("textID=%d\n",text_ID);
-                        smem.junbo_object.junbo_send_by_VD(text_ID);
+
+                        _intervalTimer.set_close_light_timer(smem.light_time.light_flash_time);
+
+                        printf("textID=%d\n",smem.light_time.text_ID);
+                        smem.junbo_object.junbo_send_by_VD(smem.light_time.text_ID);
                     } //make cms light_on
                     else if(messageIn[j].packet[1]==0x1c)
                     {
@@ -122,6 +124,28 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
 
     *lastPacketIndex=k;
     return true;
+
+}
+
+bool junli_vd::test_function_C_and_F()
+{
+
+    try
+    {
+        BYTE Send_packet[2];
+        Send_packet[0]=0x0f;
+        Send_packet[1]=0x80;
+        smem.power_object.power_reset('F',smem.light_time.light_flash_time-1);//2017 08 18 kaochu
+
+
+        _intervalTimer.set_close_light_timer(smem.light_time.light_flash_time);
+
+        printf("textID=%d\n",smem.light_time.text_ID);
+        smem.junbo_object.junbo_send_by_VD(smem.light_time.text_ID);
+        writeJob.WritePhysicalOut(Send_packet,2,revAPP);
+    }
+
+    catch(...) {}
 
 }
 void junli_wrong_record(MESSAGEOK messageIn,int junli_length)
@@ -216,20 +240,22 @@ int junli_vd::open_port_process(char* tty_name)
     catch(...) {}
 }
 
- void junli_vd::report_to_center_VD_alive()
- {
-     try
-     {
-             BYTE data[2];
+void junli_vd::report_to_center_VD_alive()
+{
+    try
+    {
+        BYTE data[2];
         data[0]=0x6f;
         data[1]=0xa1;
 
 
-       MESSAGEOK _MsgOK;
+        MESSAGEOK _MsgOK;
 
-    _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 2,true);
-    _MsgOK.InnerOrOutWard = cOutWard;
-    writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
+        _MsgOK = oDataToMessageOK.vPackageINFOTo92Protocol(data, 2,true);
+        _MsgOK.InnerOrOutWard = cOutWard;
+        writeJob.WritePhysicalOut(_MsgOK.packet, _MsgOK.packetLength, DEVICECENTER92);
 
-     }catch(...){}
- }
+    }
+    catch(...) {}
+}
+

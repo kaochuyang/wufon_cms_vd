@@ -56,8 +56,8 @@ static bool timer_reboot_create2();
 
 static struct itimerspec p_itimerspec;
   //  struct sigevent p_event;
-
-
+//void close_junbo_cms_light();//timer_settime
+void set_close_light_timer(int second);
    private:
 
 

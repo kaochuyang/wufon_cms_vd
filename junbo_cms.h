@@ -29,17 +29,17 @@ static pthread_mutex_t _junbo_mutex;
     void delete_record_before_15day();
     bool vClearMsg(MESSAGEOK *messageIn, unsigned short int msgID);
     bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
+    void close_light();
 
 
-
-void cms_test_function(int text_ID);
+    void cms_test_function(int text_ID);
 
 
     void brightness_control(int bright_parameter);
     void report_light_brightness();
 
-
-
+    void color_control(BYTE color[2][3]);
+    void color_packet(MESSAGEOK messageIn);
     void light_timeout_control(int control_parameter);
     void report_light_timeout();//for app
 
@@ -80,7 +80,7 @@ void cms_test_function(int text_ID);
 
     unsigned char junbo_receive_packet[6];
 
-    junbo_to_cms notice_car[4],flash_on,flash_off,light_off,query[4],brightness[4],light_timeout[100];
+    junbo_to_cms notice_car[5],flash_on,flash_off,light_off,query[4],brightness[4],light_timeout[100],color_red,color_green,color_yellow;
 };
 
 #endif // JUNBO_CMS_H

@@ -45,12 +45,12 @@
 #define __CINIFILE_H_
 
 #ifdef _WIN32
-	// VC6 "identifier was truncated to '255' characters in the debug information"
-	#if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
-		#pragma warning(disable: 4786)
-	#endif
-	// Prevent compile time warnings for deprecation
-	#define _CRT_SECURE_NO_DEPRECATE
+// VC6 "identifier was truncated to '255' characters in the debug information"
+#if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
+#pragma warning(disable: 4786)
+#endif
+// Prevent compile time warnings for deprecation
+#define _CRT_SECURE_NO_DEPRECATE
 #endif
 
 #include <map>
@@ -64,157 +64,157 @@
 
 struct ci_less_a
 {
-  bool operator() (const std::string & s1, const std::string & s2) const
-  {
-      #ifndef _WIN32
-            return strcasecmp(s1.c_str(), s2.c_str()) < 0;
-      #else
-            return _stricmp(s1.c_str(), s2.c_str()) < 0;
-      #endif
-  }
+    bool operator() (const std::string & s1, const std::string & s2) const
+    {
+#ifndef _WIN32
+        return strcasecmp(s1.c_str(), s2.c_str()) < 0;
+#else
+        return _stricmp(s1.c_str(), s2.c_str()) < 0;
+#endif
+    }
 };
 
 class CIniFileA
 {
+public:
+    static const char* const LF;
+public:
+    CIniFileA();
+    ~CIniFileA();
+
+    // Used to save the data back to the file or your choice
+    bool Save( const std::string& fileName );
+
+    // Save data to an output stream
+    void Save( std::ostream& output );
+
+    // Loads the Reads the data in the ini file into the IniFile object
+    bool Load( const std::string& fileName , bool bMerge = false );
+
+    // Load data from an input stream
+    void Load( std::istream& input , bool bMerge = false );
+
+public:
+    class CIniMergeA
+    {
     public:
-        static const char* const LF;
-	public:
-		CIniFileA();
-		~CIniFileA();
-
-        // Used to save the data back to the file or your choice
-		bool Save( const std::string& fileName );
-
-		// Save data to an output stream
-		void Save( std::ostream& output );
-
-		// Loads the Reads the data in the ini file into the IniFile object
-		bool Load( const std::string& fileName , bool bMerge = false );
-
-		// Load data from an input stream
-		void Load( std::istream& input , bool bMerge = false );
-
+        explicit CIniMergeA(CIniFileA& ini):_ini(ini) {}
+        std::istream &operator()(std::istream& input) const
+        {
+            _ini.Load( input , true );
+            return input;
+        }
+    private:
+        CIniFileA& _ini;
+    };
+public:
+    class CIniSectionA
+    {
+        friend class CIniFileA; // Allow CIniFileA to create sections
     public:
-            class CIniMergeA
-            {
-                public:
-                    explicit CIniMergeA(CIniFileA& ini):_ini(ini){}
-                    std::istream &operator()(std::istream& input) const
-                    {
-                        _ini.Load( input , true );
-                        return input;
-                    }
-                private:
-                CIniFileA& _ini;
-            };
-	public:
-            class CIniSectionA
-			{
-				friend class CIniFileA; // Allow CIniFileA to create sections
-				public:
-					class CIniKeyA
-					{
-						friend class CIniSectionA; // Allow CIniSectionA to create keys
-						private: // CIniFileA acts as a class factory for CIniSectionA Objects
-							CIniKeyA( CIniSectionA* pSection , std::string sKeyName );
-							CIniKeyA( const CIniKeyA& ); // No Copy
-							CIniKeyA& operator=(const CIniKeyA&); // No Copy
-							~CIniKeyA( );
-						public:
-							// Sets the value of the key
-							void SetValue( std::string sValue );
-							// Returns the value of the Key
-							std::string GetValue() const;
-							// Sets the key name, returns true on success, fails if the section
-							// name sKeyName already exists
-							bool SetKeyName( std::string sKeyName );
-							// Returns the name of the Key
-							std::string GetKeyName() const;
-						private:
-							// Name of the Key
-							std::string m_sKeyName;
-							// Value associated
-							std::string m_sValue;
-							// Pointer to the parent CIniSectionA
-							CIniSectionA* m_pSection;
-					}; // End of CIniKeyA
-					typedef std::map<std::string,CIniKeyA*,ci_less_a> KeyMapA;
-					#ifdef _WIN32
-                        // Added for VC6 Support
-                        #if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
-                            friend class CIniKeyA;
-                        #endif
-                    #endif
-				private: // CIniSectionA acts as a class factory for CIniKeyA Objects
-					CIniSectionA( CIniFileA* pIniFile , std::string sSectionName );
-					CIniSectionA( const CIniSectionA& ); // No Copy
-					CIniSectionA& operator=(const CIniSectionA&); // No Copy
-					~CIniSectionA( );
-				public:
-					// Adds a key to the CIniSectionA object, returns a CIniKeyA pointer to the new or existing object
-					CIniKeyA* AddKey( std::string sKeyName );
-					// Removes a single key by pointer
-					void RemoveKey( CIniKeyA* pKey );
-					// Removes a single key by string
-					void RemoveKey( std::string sKey );
-                    // Removes all the keys in the section
-					void RemoveAllKeys( );
-					// Returns a CIniKeyA pointer to the key by name, NULL if it was not found
-					CIniKeyA* GetKey( std::string sKeyName ) const;
-					// Returns all keys in the section by KeyList ref
-					const KeyMapA& GetKeys() const;
-					// Returns a KeyValue at a certain section
-					std::string GetKeyValue( std::string sKey ) const;
-					// Sets a KeyValuePair at a certain section
-					void SetKeyValue( std::string sKey, std::string sValue );
-					// Sets the section name, returns true on success, fails if the section
-					// name sSectionName already exists
-					bool SetSectionName( std::string sSectionName );
-					// Returns the section name
-					std::string GetSectionName() const;
+        class CIniKeyA
+        {
+            friend class CIniSectionA; // Allow CIniSectionA to create keys
+        private: // CIniFileA acts as a class factory for CIniSectionA Objects
+            CIniKeyA( CIniSectionA* pSection , std::string sKeyName );
+            CIniKeyA( const CIniKeyA& ); // No Copy
+            CIniKeyA& operator=(const CIniKeyA&); // No Copy
+            ~CIniKeyA( );
+        public:
+            // Sets the value of the key
+            void SetValue( std::string sValue );
+            // Returns the value of the Key
+            std::string GetValue() const;
+            // Sets the key name, returns true on success, fails if the section
+            // name sKeyName already exists
+            bool SetKeyName( std::string sKeyName );
+            // Returns the name of the Key
+            std::string GetKeyName() const;
+        private:
+            // Name of the Key
+            std::string m_sKeyName;
+            // Value associated
+            std::string m_sValue;
+            // Pointer to the parent CIniSectionA
+            CIniSectionA* m_pSection;
+        }; // End of CIniKeyA
+        typedef std::map<std::string,CIniKeyA*,ci_less_a> KeyMapA;
+#ifdef _WIN32
+        // Added for VC6 Support
+#if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
+        friend class CIniKeyA;
+#endif
+#endif
+    private: // CIniSectionA acts as a class factory for CIniKeyA Objects
+        CIniSectionA( CIniFileA* pIniFile , std::string sSectionName );
+        CIniSectionA( const CIniSectionA& ); // No Copy
+        CIniSectionA& operator=(const CIniSectionA&); // No Copy
+        ~CIniSectionA( );
+    public:
+        // Adds a key to the CIniSectionA object, returns a CIniKeyA pointer to the new or existing object
+        CIniKeyA* AddKey( std::string sKeyName );
+        // Removes a single key by pointer
+        void RemoveKey( CIniKeyA* pKey );
+        // Removes a single key by string
+        void RemoveKey( std::string sKey );
+        // Removes all the keys in the section
+        void RemoveAllKeys( );
+        // Returns a CIniKeyA pointer to the key by name, NULL if it was not found
+        CIniKeyA* GetKey( std::string sKeyName ) const;
+        // Returns all keys in the section by KeyList ref
+        const KeyMapA& GetKeys() const;
+        // Returns a KeyValue at a certain section
+        std::string GetKeyValue( std::string sKey ) const;
+        // Sets a KeyValuePair at a certain section
+        void SetKeyValue( std::string sKey, std::string sValue );
+        // Sets the section name, returns true on success, fails if the section
+        // name sSectionName already exists
+        bool SetSectionName( std::string sSectionName );
+        // Returns the section name
+        std::string GetSectionName() const;
 
-				private:
-					// CIniFileA pointer back to the object that instanciated the section
-					CIniFileA* m_pIniFile;
-					// Name of the section
-					std::string m_sSectionName;
-					// List of CIniKeyA pointers ( Keys in the section )
-					KeyMapA m_keys;
-			}; // End of CIniSectionA
-		// Typedef of a List of CIniSectionA pointers
-		typedef std::map<std::string,CIniSectionA*,ci_less_a> SecMapA;
-        #ifdef _WIN32
-            // Added for VC6 Support
-            #if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
-                friend class CIniSectionA;
-            #endif
-        #endif
-	public:
-		// Adds a section to the CIniFileA object, returns a CIniFileA pointer to the new or existing object
-		CIniSectionA* AddSection( std::string sSection );
-		// Removes section by pointer
-		void RemoveSection( CIniSectionA* pSection );
-		// Removes a section by its name sSection
-		void RemoveSection( std::string sSection );
-		// Removes all existing sections
-		void RemoveAllSections( );
-		// Returns a CIniSectionA* to the section by name, NULL if it was not found
-		CIniSectionA* GetSection( std::string sSection ) const;
-		// Gets all the section in the ini file
-		const SecMapA& GetSections() const;
-		// Returns a KeyValue at a certain section
-		std::string GetKeyValue( std::string sSection, std::string sKey ) const;
-		// Sets a KeyValuePair at a certain section
-		void SetKeyValue( std::string sSection, std::string sKey, std::string sValue );
-		// Renames an existing section returns true on success, false if the section didn't exist or there was another section with the same sNewSectionName
-		bool RenameSection( std::string sSectionName  , std::string sNewSectionName );
-		// Renames an existing key returns true on success, false if the key didn't exist or there was another section with the same sNewSectionName
-		bool RenameKey( std::string sSectionName  , std::string sKeyName , std::string sNewKeyName);
-	private:
-		CIniFileA( const CIniFileA&); // No Copy
-		CIniFileA& operator=(const CIniFileA&); // No Copy
-		// List of CIniSectionA pointers ( List of sections in the class )
-		SecMapA m_sections;
+    private:
+        // CIniFileA pointer back to the object that instanciated the section
+        CIniFileA* m_pIniFile;
+        // Name of the section
+        std::string m_sSectionName;
+        // List of CIniKeyA pointers ( Keys in the section )
+        KeyMapA m_keys;
+    }; // End of CIniSectionA
+    // Typedef of a List of CIniSectionA pointers
+    typedef std::map<std::string,CIniSectionA*,ci_less_a> SecMapA;
+#ifdef _WIN32
+    // Added for VC6 Support
+#if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
+    friend class CIniSectionA;
+#endif
+#endif
+public:
+    // Adds a section to the CIniFileA object, returns a CIniFileA pointer to the new or existing object
+    CIniSectionA* AddSection( std::string sSection );
+    // Removes section by pointer
+    void RemoveSection( CIniSectionA* pSection );
+    // Removes a section by its name sSection
+    void RemoveSection( std::string sSection );
+    // Removes all existing sections
+    void RemoveAllSections( );
+    // Returns a CIniSectionA* to the section by name, NULL if it was not found
+    CIniSectionA* GetSection( std::string sSection ) const;
+    // Gets all the section in the ini file
+    const SecMapA& GetSections() const;
+    // Returns a KeyValue at a certain section
+    std::string GetKeyValue( std::string sSection, std::string sKey ) const;
+    // Sets a KeyValuePair at a certain section
+    void SetKeyValue( std::string sSection, std::string sKey, std::string sValue );
+    // Renames an existing section returns true on success, false if the section didn't exist or there was another section with the same sNewSectionName
+    bool RenameSection( std::string sSectionName  , std::string sNewSectionName );
+    // Renames an existing key returns true on success, false if the key didn't exist or there was another section with the same sNewSectionName
+    bool RenameKey( std::string sSectionName  , std::string sKeyName , std::string sNewKeyName);
+private:
+    CIniFileA( const CIniFileA&); // No Copy
+    CIniFileA& operator=(const CIniFileA&); // No Copy
+    // List of CIniSectionA pointers ( List of sections in the class )
+    SecMapA m_sections;
 }; // End of CIniFileA
 
 // Basic typedefs for ease of use
@@ -244,157 +244,157 @@ std::istream& operator>>(std::istream& input, CIniMergeA merger);
 
 struct ci_less_w
 {
-  bool operator() (const std::wstring & s1, const std::wstring & s2) const
-  {
-      #ifndef _WIN32
-            return wcscasecmp(s1.c_str(), s2.c_str()) < 0;
-      #else
-            return _wcsicmp(s1.c_str(), s2.c_str()) < 0;
-      #endif
-  }
+    bool operator() (const std::wstring & s1, const std::wstring & s2) const
+    {
+#ifndef _WIN32
+        return wcscasecmp(s1.c_str(), s2.c_str()) < 0;
+#else
+        return _wcsicmp(s1.c_str(), s2.c_str()) < 0;
+#endif
+    }
 };
 
 
 class CIniFileW
 {
+public:
+    static const wchar_t* const LF;
+public:
+    CIniFileW();
+    ~CIniFileW();
+
+    // Used to save the data back to the file or your choice
+    bool Save( const std::wstring& fileName );
+
+    // Save data to an out stream
+    void Save( std::wostream& output );
+
+    // Loads the Reads the data in the ini file into the IniFile object
+    bool Load( const std::wstring& fileName , bool bMerge = false );
+
+    // Load data from an input stream
+    void Load( std::wistream& input , bool bMerge = false );
+public:
+    class CIniMergeW
+    {
     public:
-        static const wchar_t* const LF;
-	public:
-		CIniFileW();
-		~CIniFileW();
-
-        // Used to save the data back to the file or your choice
-		bool Save( const std::wstring& fileName );
-
-        // Save data to an out stream
-		void Save( std::wostream& output );
-
-		// Loads the Reads the data in the ini file into the IniFile object
-		bool Load( const std::wstring& fileName , bool bMerge = false );
-
-		// Load data from an input stream
-		void Load( std::wistream& input , bool bMerge = false );
+        explicit CIniMergeW(CIniFileW& ini):_ini(ini) {}
+        std::wistream& operator()(std::wistream& input) const
+        {
+            _ini.Load( input , true );
+            return input;
+        }
+    private:
+        CIniFileW& _ini;
+    };
+public:
+    class CIniSectionW
+    {
+        friend class CIniFileW; // Allow CIniFileW to create sections
     public:
-            class CIniMergeW
-            {
-                public:
-                    explicit CIniMergeW(CIniFileW& ini):_ini(ini){}
-                    std::wistream& operator()(std::wistream& input) const
-                    {
-                    _ini.Load( input , true );
-                    return input;
-                    }
-                private:
-                    CIniFileW& _ini;
-            };
-	public:
-			class CIniSectionW
-			{
-				friend class CIniFileW; // Allow CIniFileW to create sections
-				public:
-					class CIniKeyW
-					{
-						friend class CIniSectionW; // Allow CIniSectionW to create keys
-						private: // CIniFileW acts as a class factory for CIniSectionW Objects
-							CIniKeyW( CIniSectionW* pSection , std::wstring sKeyName );
-							CIniKeyW( const CIniKeyW& ); // No Copy
-							CIniKeyW& operator=(const CIniKeyW&); // No Copy
-							~CIniKeyW( );
-						public:
-							// Sets the value of the key
-							void SetValue( std::wstring sValue );
-							// Returns the value of the Key
-							std::wstring GetValue() const;
-							// Sets the key name, returns true on success, fails if the section
-							// name sKeyName already exists
-							bool SetKeyName( std::wstring sKeyName );
-							// Returns the name of the Key
-							std::wstring GetKeyName() const;
-						private:
-							// Name of the Key
-							std::wstring m_sKeyName;
-							// Value associated
-							std::wstring m_sValue;
-							// Pointer to the parent CIniSectionW
-							CIniSectionW* m_pSection;
-					}; // End of CIniKeyW
-					typedef std::map<std::wstring,CIniKeyW*,ci_less_w> KeyMapW;
-					#ifdef _WIN32
-                        // Added for VC6 Support
-                        #if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
-                            friend class CIniKeyW;
-                        #endif
-                    #endif
-				private: // CIniSectionW acts as a class factory for CIniKeyW Objects
-					CIniSectionW( CIniFileW* pIniFile , std::wstring sSectionName );
-					CIniSectionW( const CIniSectionW& ); // No Copy
-					CIniSectionW& operator=(const CIniSectionW&); // No Copy
-					~CIniSectionW( );
-				public:
-					// Adds a key to the CIniSectionW object, returns a CIniKeyW pointer to the new or existing object
-					CIniKeyW* AddKey( std::wstring sKeyName );
-					// Removes a single key by pointer
-					void RemoveKey( CIniKeyW* pKey );
-					// Removes a single key by string
-					void RemoveKey( std::wstring sKey );
-                    // Removes all the keys in the section
-					void RemoveAllKeys( );
-					// Returns a CIniKeyW pointer to the key by name, NULL if it was not found
-					CIniKeyW* GetKey( std::wstring sKeyName ) const;
-					// Returns all keys in the section by KeyList ref
-					const KeyMapW& GetKeys() const;
-					// Returns a KeyValue at a certain section
-					std::wstring GetKeyValue( std::wstring sKey ) const;
-					// Sets a KeyValuePair at a certain section
-					void SetKeyValue( std::wstring sKey, std::wstring sValue );
-					// Sets the section name, returns true on success, fails if the section
-					// name sSectionName already exists
-					bool SetSectionName( std::wstring sSectionName );
-					// Returns the section name
-					std::wstring GetSectionName() const;
+        class CIniKeyW
+        {
+            friend class CIniSectionW; // Allow CIniSectionW to create keys
+        private: // CIniFileW acts as a class factory for CIniSectionW Objects
+            CIniKeyW( CIniSectionW* pSection , std::wstring sKeyName );
+            CIniKeyW( const CIniKeyW& ); // No Copy
+            CIniKeyW& operator=(const CIniKeyW&); // No Copy
+            ~CIniKeyW( );
+        public:
+            // Sets the value of the key
+            void SetValue( std::wstring sValue );
+            // Returns the value of the Key
+            std::wstring GetValue() const;
+            // Sets the key name, returns true on success, fails if the section
+            // name sKeyName already exists
+            bool SetKeyName( std::wstring sKeyName );
+            // Returns the name of the Key
+            std::wstring GetKeyName() const;
+        private:
+            // Name of the Key
+            std::wstring m_sKeyName;
+            // Value associated
+            std::wstring m_sValue;
+            // Pointer to the parent CIniSectionW
+            CIniSectionW* m_pSection;
+        }; // End of CIniKeyW
+        typedef std::map<std::wstring,CIniKeyW*,ci_less_w> KeyMapW;
+#ifdef _WIN32
+        // Added for VC6 Support
+#if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
+        friend class CIniKeyW;
+#endif
+#endif
+    private: // CIniSectionW acts as a class factory for CIniKeyW Objects
+        CIniSectionW( CIniFileW* pIniFile , std::wstring sSectionName );
+        CIniSectionW( const CIniSectionW& ); // No Copy
+        CIniSectionW& operator=(const CIniSectionW&); // No Copy
+        ~CIniSectionW( );
+    public:
+        // Adds a key to the CIniSectionW object, returns a CIniKeyW pointer to the new or existing object
+        CIniKeyW* AddKey( std::wstring sKeyName );
+        // Removes a single key by pointer
+        void RemoveKey( CIniKeyW* pKey );
+        // Removes a single key by string
+        void RemoveKey( std::wstring sKey );
+        // Removes all the keys in the section
+        void RemoveAllKeys( );
+        // Returns a CIniKeyW pointer to the key by name, NULL if it was not found
+        CIniKeyW* GetKey( std::wstring sKeyName ) const;
+        // Returns all keys in the section by KeyList ref
+        const KeyMapW& GetKeys() const;
+        // Returns a KeyValue at a certain section
+        std::wstring GetKeyValue( std::wstring sKey ) const;
+        // Sets a KeyValuePair at a certain section
+        void SetKeyValue( std::wstring sKey, std::wstring sValue );
+        // Sets the section name, returns true on success, fails if the section
+        // name sSectionName already exists
+        bool SetSectionName( std::wstring sSectionName );
+        // Returns the section name
+        std::wstring GetSectionName() const;
 
-				private:
-					// CIniFileW pointer back to the object that instanciated the section
-					CIniFileW* m_pIniFile;
-					// Name of the section
-					std::wstring m_sSectionName;
-					// List of CIniKeyW pointers ( Keys in the section )
-					KeyMapW m_keys;
-			}; // End of CIniSectionW
-		// Typedef of a List of CIniSectionW pointers
-		typedef std::map<std::wstring,CIniSectionW*,ci_less_w> SecMapW;
-        #ifdef _WIN32
-            // Added for VC6 Support
-            #if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
-                friend class CIniSectionW;
-            #endif
-        #endif
-	public:
-		// Adds a section to the CIniFileW object, returns a CIniFileW pointer to the new or existing object
-		CIniSectionW* AddSection( std::wstring sSection );
-		// Removes section by pointer
-		void RemoveSection( CIniSectionW* pSection );
-		// Removes a section by its name sSection
-		void RemoveSection( std::wstring sSection );
-		// Removes all existing sections
-		void RemoveAllSections( );
-		// Returns a CIniSectionW* to the section by name, NULL if it was not found
-		CIniSectionW* GetSection( std::wstring sSection ) const;
-		// Gets all the section in the ini file
-		const SecMapW& GetSections() const;
-		// Returns a KeyValue at a certain section
-		std::wstring GetKeyValue( std::wstring sSection, std::wstring sKey ) const;
-		// Sets a KeyValuePair at a certain section
-		void SetKeyValue( std::wstring sSection, std::wstring sKey, std::wstring sValue );
-		// Renames an existing section returns true on success, false if the section didn't exist or there was another section with the same sNewSectionName
-		bool RenameSection( std::wstring sSectionName  , std::wstring sNewSectionName );
-		// Renames an existing key returns true on success, false if the key didn't exist or there was another section with the same sNewSectionName
-		bool RenameKey( std::wstring sSectionName  , std::wstring sKeyName , std::wstring sNewKeyName);
-	private:
-		CIniFileW( const CIniFileW&); // No Copy
-		CIniFileW& operator=(const CIniFileW&); // No Copy
-		// List of CIniSectionW pointers ( List of sections in the class )
-		SecMapW m_sections;
+    private:
+        // CIniFileW pointer back to the object that instanciated the section
+        CIniFileW* m_pIniFile;
+        // Name of the section
+        std::wstring m_sSectionName;
+        // List of CIniKeyW pointers ( Keys in the section )
+        KeyMapW m_keys;
+    }; // End of CIniSectionW
+    // Typedef of a List of CIniSectionW pointers
+    typedef std::map<std::wstring,CIniSectionW*,ci_less_w> SecMapW;
+#ifdef _WIN32
+    // Added for VC6 Support
+#if defined(_MSC_VER) && (_MSC_VER >= 1200) && (_MSC_VER < 1300)
+    friend class CIniSectionW;
+#endif
+#endif
+public:
+    // Adds a section to the CIniFileW object, returns a CIniFileW pointer to the new or existing object
+    CIniSectionW* AddSection( std::wstring sSection );
+    // Removes section by pointer
+    void RemoveSection( CIniSectionW* pSection );
+    // Removes a section by its name sSection
+    void RemoveSection( std::wstring sSection );
+    // Removes all existing sections
+    void RemoveAllSections( );
+    // Returns a CIniSectionW* to the section by name, NULL if it was not found
+    CIniSectionW* GetSection( std::wstring sSection ) const;
+    // Gets all the section in the ini file
+    const SecMapW& GetSections() const;
+    // Returns a KeyValue at a certain section
+    std::wstring GetKeyValue( std::wstring sSection, std::wstring sKey ) const;
+    // Sets a KeyValuePair at a certain section
+    void SetKeyValue( std::wstring sSection, std::wstring sKey, std::wstring sValue );
+    // Renames an existing section returns true on success, false if the section didn't exist or there was another section with the same sNewSectionName
+    bool RenameSection( std::wstring sSectionName  , std::wstring sNewSectionName );
+    // Renames an existing key returns true on success, false if the key didn't exist or there was another section with the same sNewSectionName
+    bool RenameKey( std::wstring sSectionName  , std::wstring sKeyName , std::wstring sNewKeyName);
+private:
+    CIniFileW( const CIniFileW&); // No Copy
+    CIniFileW& operator=(const CIniFileW&); // No Copy
+    // List of CIniSectionW pointers ( List of sections in the class )
+    SecMapW m_sections;
 }; // End of CIniFileW
 
 // Basic typedefs for ease of use
@@ -417,31 +417,31 @@ std::wistream& operator>>(std::wistream& input, CIniMergeW merger);
 
 // Additional defines
 #ifdef _UNICODE
-	#define INI_TOKEN_A INI_TOKEN_UNICODE
-	#define INI_TOKEN_B INI_TOKEN_UNICODE
-	#define INI_EMPTY INI_EMPTY_UNICODE
-	typedef CIniMergeW CIniMerge;
-    typedef CIniFileW CIniFile;
-    typedef CIniSectionW CIniSection;
-    typedef CIniKeyW CIniKey;
-    typedef PCINIW PCINI;
-    typedef PCINIKEYW PCINIKEY;
-    typedef PCINISECW PCINISEC;
-    typedef KeyMapW KeyMap;
-    typedef SecMapW SecMap;
+#define INI_TOKEN_A INI_TOKEN_UNICODE
+#define INI_TOKEN_B INI_TOKEN_UNICODE
+#define INI_EMPTY INI_EMPTY_UNICODE
+typedef CIniMergeW CIniMerge;
+typedef CIniFileW CIniFile;
+typedef CIniSectionW CIniSection;
+typedef CIniKeyW CIniKey;
+typedef PCINIW PCINI;
+typedef PCINIKEYW PCINIKEY;
+typedef PCINISECW PCINISEC;
+typedef KeyMapW KeyMap;
+typedef SecMapW SecMap;
 #else
-	#define INI_TOKEN_A INI_TOKEN_ANSI
-	#define INI_TOKEN_B INI_TOKEN_ANSI
-	#define INI_EMPTY INI_EMPTY_ANSI
-	typedef CIniMergeA CIniMerge;
-    typedef CIniFileA CIniFile;
-    typedef CIniSectionA CIniSection;
-    typedef CIniKeyA CIniKey;
-    typedef PCINIA PCINI;
-    typedef PCINIKEYA PCINIKEY;
-    typedef PCINISECA PCINISEC;
-    typedef KeyMapA KeyMap;
-    typedef SecMapA SecMap;
+#define INI_TOKEN_A INI_TOKEN_ANSI
+#define INI_TOKEN_B INI_TOKEN_ANSI
+#define INI_EMPTY INI_EMPTY_ANSI
+typedef CIniMergeA CIniMerge;
+typedef CIniFileA CIniFile;
+typedef CIniSectionA CIniSection;
+typedef CIniKeyA CIniKey;
+typedef PCINIA PCINI;
+typedef PCINIKEYA PCINIKEY;
+typedef PCINISECA PCINISEC;
+typedef KeyMapA KeyMap;
+typedef SecMapA SecMap;
 #endif
 
 #endif

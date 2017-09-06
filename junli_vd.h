@@ -18,8 +18,10 @@ class junli_vd
         int  open_port_process(char* tty_name);
         void junli_wrong_record(MESSAGEOK messageIn,int junli_length);
         void report_to_center_VD_alive();
+
+        bool test_function_C_and_F();
     private:
-        int alive_count,text_ID;
+        int alive_count;
         bool vd_alive_mark;
 
 };

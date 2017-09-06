@@ -26,7 +26,7 @@ bool light_time_control::store_time(int time_sec)
     {
         FILE *pf=NULL;
         char filename[256]="/cct/Data/SETTING/light_flash_time.txt";
-        pf=fopen(filename,"W+");
+        pf=fopen(filename,"W");
         if(pf!=NULL)
         {
             fwrite(&time_sec,sizeof(time_sec),1,pf);
@@ -48,6 +48,36 @@ bool light_time_control::store_time(int time_sec)
     }
     catch(...) {}
 }
+bool light_time_control::text_ID_control(int Text_ID)
+{
+        try
+    {
+        FILE *pf=NULL;
+        char filename[256]="/cct/Data/SETTING/TextID.txt";
+        pf=fopen(filename,"w+");
+        if(pf!=NULL&&Text_ID<5&&Text_ID>0)
+        {
+            fwrite(&Text_ID,sizeof(Text_ID),1,pf);
+            fclose(pf);
+            text_ID=Text_ID;
+
+        }
+        else
+        {
+            smem.vWriteMsgToDOM("store_text_ID error\n");
+            printf("store_text_ID error\n");
+
+            text_ID=3;
+
+        };
+
+
+        return true;
+
+
+    }
+    catch(...) {}
+};
 
 bool light_time_control::read_time()
 {
@@ -70,6 +100,32 @@ bool light_time_control::read_time()
 
         };
 printf("setting flash time by read_time() flash_time=%d\n",light_flash_time);
+        return true;
+    }
+    catch(...) {}
+}
+
+bool light_time_control::read_textID()
+{
+    try
+    {
+
+        FILE *pf=NULL;
+        char filename[256]="/cct/Data/SETTING/textID.txt";
+        pf=fopen(filename,"r");
+        if(pf!=NULL)
+        {
+            fread(&text_ID,sizeof(text_ID),1,pf);
+            fclose(pf);
+        }
+        else
+        {
+            smem.vWriteMsgToDOM("store_text_ID error\n");
+            printf("store_text_ID error\n");
+            text_ID=3;
+
+        };
+printf("read_textID=%d\n",text_ID);
         return true;
     }
     catch(...) {}

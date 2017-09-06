@@ -170,7 +170,35 @@ printf("timer_reboot_create test \n");
     }
     catch(...) {}
 }
+void intervalTimer::set_close_light_timer(int second)
+{
+try
+{
 
+   _it5.it_value.tv_sec = second-1;
+        _it5.it_value.tv_nsec = 0;
+        _it5.it_interval.tv_sec = 0;
+        _it5.it_interval.tv_nsec = 0;
+        if ( timer_settime( _t5, 0, & _it5, NULL ) ) exit( 1 );
+
+
+}catch(...){}
+
+}
+/*
+void intervalTimer::close_junbo_cms_light()
+{try
+{
+smem.junbo_object.close_light();
+   _it5.it_value.tv_sec = 0;
+        _it5.it_value.tv_nsec = 0;
+        _it5.it_interval.tv_sec = 0;
+        _it5.it_interval.tv_nsec = 0;
+        if ( timer_settime( _t5, 0, & _it5, NULL ) ) exit( 1 );
+
+
+}catch(...){}
+}*/
 
 bool intervalTimer::setting_regular_reboot_0F17(int hour,int minute)
 {
@@ -397,9 +425,9 @@ void intervalTimer::TimersSetting(void)
         _it4.it_interval.tv_nsec = 0;
         if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
 
-        _it5.it_value.tv_sec = 10;
+        _it5.it_value.tv_sec = 0;
         _it5.it_value.tv_nsec = 0;
-        _it5.it_interval.tv_sec = 8;
+        _it5.it_interval.tv_sec = 0;
         _it5.it_interval.tv_nsec = 0;
         if ( timer_settime( _t5, 0, & _it5, NULL ) ) exit( 1 );
 
@@ -497,6 +525,7 @@ void * intervalTimer::PTime(void *arg)
         TimersSetting();
         timer_reboot_create();
         smem.light_time.read_time();
+        smem.light_time.read_textID();
       smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
         printf("hello light control\n");
      //   timer_reboot_create();//kaochu 2017 08 17
@@ -767,9 +796,12 @@ void * intervalTimer::PTime(void *arg)
                     break;
                 case( 13 ):                                                           //VD SIM
 printf("timer test 13\n");
+
                 case( 14 ):
 
-
+printf("timer test 14\n");
+//_intervalTimer.close_junbo_cms_light();
+smem.junbo_object.close_light();
                     break;
 
 

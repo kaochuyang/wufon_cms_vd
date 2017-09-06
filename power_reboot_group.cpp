@@ -55,7 +55,7 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
 
         printf("power_reset %C %d\n",device,second);
          smem.lightPort.Rs232Write(Send_packet,7,"/dev/ttyS3");
-         writeJob.WritePhysicalOut(Send_packet, 7, revAPP);
+      //   writeJob.WritePhysicalOut(Send_packet, 7, revAPP);
 
 
         return true;
