@@ -111,7 +111,7 @@ bool light_time_control::read_textID()
     {
 
         FILE *pf=NULL;
-        char filename[256]="/cct/Data/SETTING/textID.txt";
+        char filename[256]="/cct/Data/SETTING/TextID.txt";
         pf=fopen(filename,"r");
         if(pf!=NULL)
         {
@@ -120,8 +120,8 @@ bool light_time_control::read_textID()
         }
         else
         {
-            smem.vWriteMsgToDOM("store_text_ID error\n");
-            printf("store_text_ID error\n");
+            smem.vWriteMsgToDOM("store_Text_ID error\n");
+            printf("store_Text_ID error\n");
             text_ID=3;
 
         };
