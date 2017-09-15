@@ -409,13 +409,11 @@ int main(int argc, char* argv[])
                                     case(0xb7):
                                         smem.power_object.report_power_reboot();
                                         smem.vWriteMsgToDOM("report_power_reboot by app");
-
-
                                         break;
                                     case (0x5a):
                                         smem.junbo_object.query_modual_state();
                                         smem.vWriteMsgToDOM("query_modual_state by app");
-
+                                        break;
 
                                     case (0x16):
 
@@ -437,7 +435,7 @@ int main(int argc, char* argv[])
                                         smem.vWriteMsgToDOM("report_light_brightness by app");
                                         break;
 
-                                        break;
+
                                     case(0x1b):
                                         smem.junbo_object.report_module_state_to_revapp();
                                         smem.vWriteMsgToDOM("report_module_state_to_revapp by app");

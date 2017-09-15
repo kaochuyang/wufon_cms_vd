@@ -527,6 +527,7 @@ void * intervalTimer::PTime(void *arg)
         smem.light_time.read_time();
         smem.light_time.read_textID();
       smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
+      smem.junbo_object.read_color();
         printf("hello light control\n");
      //   timer_reboot_create();//kaochu 2017 08 17
 

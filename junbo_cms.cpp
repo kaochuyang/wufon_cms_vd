@@ -447,35 +447,36 @@ void junbo_cms::brightness_control(int bright_parameter)
     try
 
     {
-             BYTE Send_packet[2];
+        BYTE Send_packet[2];
         Send_packet[0]=0x0f;
         Send_packet[1]=0x80;
 
         unsigned char ucSendTMP[6];
         if(bright_parameter<4&&bright_parameter>=0)
-        {for(int ID=1; ID<3; ID++ )
-
-
         {
-            ucSendTMP[0] = 0xAA;//head
-            ucSendTMP[1] = smem.GetSequence();
-            ucSendTMP[2] = ID;//ID
-            ucSendTMP[3] = brightness[bright_parameter].command;
-            ucSendTMP[4] = brightness[bright_parameter].parameter;
-            ucSendTMP[5] = 0x0;//cks
-            for (int a=0; a<5; a++)
-                ucSendTMP[5]^=ucSendTMP[a];
-            printf("\nbrightness_control light ID=%d\n",ID);
-            junbo_cms_send(ucSendTMP);
-        }
+            for(int ID=1; ID<3; ID++ )
 
-        printf("Send junbo cms brightness control.by brightness_control\n");
-        writeJob.WritePhysicalOut(Send_packet,2,revAPP);
+
+            {
+                ucSendTMP[0] = 0xAA;//head
+                ucSendTMP[1] = smem.GetSequence();
+                ucSendTMP[2] = ID;//ID
+                ucSendTMP[3] = brightness[bright_parameter].command;
+                ucSendTMP[4] = brightness[bright_parameter].parameter;
+                ucSendTMP[5] = 0x0;//cks
+                for (int a=0; a<5; a++)
+                    ucSendTMP[5]^=ucSendTMP[a];
+                printf("\nbrightness_control light ID=%d\n",ID);
+                junbo_cms_send(ucSendTMP);
+            }
+
+            printf("Send junbo cms brightness control.by brightness_control\n");
+            writeJob.WritePhysicalOut(Send_packet,2,revAPP);
         }
         else
         {
 
-          Send_packet[1]=0x81;
+            Send_packet[1]=0x81;
             writeJob.WritePhysicalOut(Send_packet,2,revAPP);
         }
 
@@ -664,7 +665,7 @@ void junbo_cms::report_light_timeout()//for app
         data[3*i-1]=i;
         data[3*i]=smem.record_timeout[i].command;
         data[3*i+1]=smem.record_timeout[i].parameter;
-        printf(" report light timeout ID=%d  timeout=%d\n",data[3*i],data[3*i+1]);
+        printf(" report light timeout ID=%d  timeout=%d\n",data[3*i-1],data[3*i+1]);
     }
     writeJob.WritePhysicalOut(data, 8, revAPP);
 
@@ -712,7 +713,7 @@ void junbo_cms::light_timeout_control(int control_parameter)
 
 
 
-printf("Send junbo light light_timeout_control.by light_timeout_control\n");
+    printf("Send junbo light light_timeout_control.by light_timeout_control\n");
 }
 
 void junbo_cms::cms_test_function(int text_ID)
@@ -738,68 +739,152 @@ void junbo_cms::cms_test_function(int text_ID)
     catch(...) {}
 }
 
-   void junbo_cms::color_control(BYTE color[2][3])
-   {
-       try
-       {
+void junbo_cms::color_control(BYTE color[2][3])
+{
+    try
+    {
 
 
         BYTE Send_packet[6];
         Send_packet[0]=0xaa;
-        BYTE packet_error[2]={0x0f,0x81};
-        BYTE bit={1};
+        BYTE packet_error[2]= {0x0f,0x81};
+        BYTE bit= {1};
 
-        for(int j=0;j<2;j++)
+        for(int j=0; j<2; j++)
         {
-            for(int i=0;i<3;i++)
-        {
-            switch(color[j][i])
+            for(int i=0; i<3; i++)
             {
+                switch(color[j][i])
+                {
                 case 0x01:
-                Send_packet[4]=color_red.parameter+(bit<<i);
-                break;
+                    Send_packet[4]=color_red.parameter+(bit<<i);
+                    break;
                 case 0x02:
-                Send_packet[4]=color_green.parameter+(bit<<i);
-                break;
+                    Send_packet[4]=color_green.parameter+(bit<<i);
+                    break;
                 case 0x03:
-                Send_packet[4]=color_yellow.parameter+(bit<<i);
-                break;
+                    Send_packet[4]=color_yellow.parameter+(bit<<i);
+                    break;
                 default:
-                 smem.vWriteMsgToDOM("wrong color control number \n");
-                 printf("wrong color control ID=%d number= %d\n",j+1,i+1);
-                  writeJob.WritePhysicalOut(packet_error,2,revAPP);
-                break;
+                    smem.vWriteMsgToDOM("wrong color control number \n");
+                    printf("wrong color control ID=%d number= %d\n",j+1,i+1);
+                    writeJob.WritePhysicalOut(packet_error,2,revAPP);
+                    break;
 
+                }
+
+                Send_packet[1]=smem.GetSequence();//sequence
+                Send_packet[2]=1+j;//ID
+                Send_packet[3]=0xc6;//command
+                Send_packet[5]=0x0;//cks
+                for (int a=0; a<5; a++)
+                    Send_packet[5]^=Send_packet[a];
+                bit=1;
+
+                junbo_cms_send(Send_packet);
             }
-
-        Send_packet[1]=smem.GetSequence();//sequence
-        Send_packet[2]=0+j;//ID
-        Send_packet[3]=0xc6;//command
-        Send_packet[5]=0x0;//cks
-         for (int a=0; a<5; a++)
-            Send_packet[5]^=Send_packet[a];
-        bit=1;
-
-        junbo_cms_send(Send_packet);
-        }
         }
 
         packet_error[1]=0x80;
         writeJob.WritePhysicalOut(packet_error,2,revAPP);
 
-       }catch(...){}
-   };
+    }
+    catch(...) {}
+};
 
-   void junbo_cms::color_packet(MESSAGEOK messageIn)
-   {
-       try
-       {
-           BYTE color[2][3];
-           for(int i=0;i<3;i++)
-           {color[0][i]=messageIn.packet[2+i];
+void junbo_cms::color_packet(MESSAGEOK messageIn)
+{
+    try
+    {
+
+        BYTE color[2][3];
+        for(int i=0; i<3; i++)
+        {
+            color[0][i]=messageIn.packet[2+i];
             color[1][i]=messageIn.packet[5+i];
-           }
-       color_control(color);
+        }
 
-       }catch(...){}
-   };
+        color_control(color);
+        store_color(messageIn);
+    }
+    catch(...) {}
+};
+
+void junbo_cms::store_color(MESSAGEOK messageIn)
+{
+    try
+    {
+        FILE *pf=NULL;
+        char filename[256]="/cct/Data/SETTING/color_set.bin";
+        BYTE color[6];
+        for(int i=0; i<6; i++)
+        {
+
+
+            if(messageIn.packet[2+i]>0&&messageIn.packet[2+i]<4) color[i]=messageIn.packet[2+i];
+            else color[i]=0x3;
+        }
+        pf=fopen(filename,"w+");
+        if(pf!=NULL)
+        {
+
+
+            fwrite(&color,sizeof(color),6,pf);
+
+            printf("color= ");
+            for(int i=0; i<6; i++)printf("%x",color[i]);
+            printf(" \n ");
+        }
+        else
+        {
+            smem.vWriteMsgToDOM("store color error\n");
+            printf("store_color error\n");
+        };
+        fclose(pf);
+
+    }
+    catch(...) {}
+
+}
+void junbo_cms::read_color()
+{
+    try
+    {
+        FILE *pf=NULL;
+        char filename[256]="/cct/Data/SETTING/color_set.bin";
+        BYTE color[6];
+
+        pf=fopen(filename,"r");
+
+
+
+        if(pf!=NULL)
+        {
+            printf("read color success\n");
+
+            fread(&color,sizeof(BYTE),6,pf);
+
+            printf("color= ");
+            for(int i=0; i<6; i++)printf("%x",color[i]);
+            printf(" \n ");
+        }
+        else
+        {
+            smem.vWriteMsgToDOM("read color error\n");
+            printf("read color error\n");
+            for(int i=0; i<6; i++)color[i]=0x3;
+        };
+        fclose(pf);
+
+        BYTE color_M[2][3];
+        for(int i=0; i<3; i++)
+        {
+            color_M[0][i]=color[i];
+            color_M[1][i]=color[3+i];
+        }
+        color_control(color_M);
+
+    }
+    catch(...) {}
+
+}

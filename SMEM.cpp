@@ -20,27 +20,35 @@ SMEM smem;
 //---------------------------------------------------------------------------
 light_time_control::light_time_control(void) {};
 light_time_control::~light_time_control(void) {};
+
 bool light_time_control::store_time(int time_sec)
 {
     try
     {
-        FILE *pf=NULL;
-        char filename[256]="/cct/Data/SETTING/light_flash_time.txt";
-        pf=fopen(filename,"W");
+
+
+printf("time_sec=%d\n",time_sec);
+  FILE *pf=NULL;
+        char filename[256]={0};
+         sprintf(filename,"/cct/Data/SETTING/light_flash_time.txt");
+        pf=fopen(filename,"w+");
         if(pf!=NULL)
         {
+            printf("success!.");
             fwrite(&time_sec,sizeof(time_sec),1,pf);
-            fclose(pf);
-            light_flash_time=time_sec;
 
-        }
+            light_flash_time=time_sec;
+            printf("light_flash_time=%d\n",light_flash_time);
+  fclose(pf);
+
+       }
         else
         {
             smem.vWriteMsgToDOM("store_time error\n");
             light_flash_time=10;
-
+            printf("store_time error\n");
+            printf("light_flash_time=%d\n",light_flash_time);
         };
-
 
         return true;
 
@@ -58,8 +66,10 @@ bool light_time_control::text_ID_control(int Text_ID)
         if(pf!=NULL&&Text_ID<5&&Text_ID>0)
         {
             fwrite(&Text_ID,sizeof(Text_ID),1,pf);
-            fclose(pf);
+
             text_ID=Text_ID;
+            printf("success!textID=%d\n",text_ID);
+  fclose(pf);
 
         }
         else
@@ -70,7 +80,6 @@ bool light_time_control::text_ID_control(int Text_ID)
             text_ID=3;
 
         };
-
 
         return true;
 
@@ -87,11 +96,13 @@ bool light_time_control::read_time()
         FILE *pf=NULL;
         char filename[256]="/cct/Data/SETTING/light_flash_time.txt";
         pf=fopen(filename,"r");
-        if(pf!=NULL)
+       if(pf!=NULL)
         {
             fread(&time_sec,sizeof(time_sec),1,pf);
-            fclose(pf);
+
             light_flash_time=time_sec;
+            printf("light_flash_time=%d\n",light_flash_time);
+                fclose(pf);
         }
         else
         {
@@ -99,6 +110,7 @@ bool light_time_control::read_time()
             light_flash_time=10;
 
         };
+
 printf("setting flash time by read_time() flash_time=%d\n",light_flash_time);
         return true;
     }
@@ -116,7 +128,7 @@ bool light_time_control::read_textID()
         if(pf!=NULL)
         {
             fread(&text_ID,sizeof(text_ID),1,pf);
-            fclose(pf);
+  fclose(pf);
         }
         else
         {
@@ -125,6 +137,7 @@ bool light_time_control::read_textID()
             text_ID=3;
 
         };
+
 printf("read_textID=%d\n",text_ID);
         return true;
     }
@@ -198,19 +211,19 @@ try {
     localIp1_3 = 1;
     localIp1_4 = 101;
     localPort1 = 6003;
-    //\uFFFD\uFFFDï¿½ï¿½192.168.1.101:6003
+    //\uFFFD\uFFFDÃ¯Â¿Â½Ã¯Â¿Â½192.168.1.101:6003
     distIp0_1 = 192;
     distIp0_2 = 168;
     distIp0_3 = 1;
     distIp0_4 = 102;
     dist0Port = 6003;
-    //\uFFFD\uFFFDï¿½ï¿½192.168.1.102:6003
+    //\uFFFD\uFFFDÃ¯Â¿Â½Ã¯Â¿Â½192.168.1.102:6003
     distIp1 = 192;
     distIp2 = 168;
     distIp3 = 1;
     distIp4 = 1;
     distPort= 5003;
-    //\uFFFD\uFFFDï¿½ï¿½192.168.1.1:5003
+    //\uFFFD\uFFFDÃ¯Â¿Â½Ã¯Â¿Â½192.168.1.1:5003
 
     //OT20111020
     netmask1 = 255;
@@ -223,7 +236,7 @@ try {
     gateway4 = 254;
 
     siTransmitType[0] = cSTOPSENDTIME;                                                      //In VD TransmitType[0] = 0; //page 6-42
-    siTransmitType[1] = 5;                                                          //5sec¡A½s¸¹¬°3
+    siTransmitType[1] = 5;                                                          //5secÂ¡AÂ½sÂ¸Â¹Â¬Â°3
     siTransmitType[2] = cSTOPSENDTIME;
     siTransmitType[3] = cSTOPSENDTIME;
     siTransmitType[4] = cSTOPSENDTIME;
@@ -239,7 +252,7 @@ try {
 
 //92COMM
     ucCommandSet = 0x03;
-    for (int i=0;i<6;i++) password[i]='0';  //¼È¦sfrom¶¶´Ücode
+    for (int i=0;i<6;i++) password[i]='0';  //Â¼ÃˆÂ¦sfromÂ¶Â¶Â´Ãœcode
     operMode = 0;
     HWCycleCode = 0x05;
 
@@ -361,10 +374,10 @@ try {
     ui5F18EffectTime = 0;
     iSmem92TC_ChangePlanOneTime5F18_PlanID = 255; //default
 
-    cFace=cLOGO;                                                                //ªÅ¥Õ­¶­±
+    cFace=cLOGO;                                                                //ÂªÃ…Â¥Ã•Â­Â¶Â­Â±
     lastFace=cMAIN;
     address=0;
-    operMode=99;                                                                //³Ìªì¨S¦³­È,«ÝÁä½L¿é¤J«á¤~¦³­Èªº·N¸q
+    operMode=99;                                                                //Â³ÃŒÂªÃ¬Â¨SÂ¦Â³Â­Ãˆ,Â«ÃÃÃ¤Â½LÂ¿Ã©Â¤JÂ«Ã¡Â¤~Â¦Â³Â­ÃˆÂªÂºÂ·NÂ¸q
     dbOperStat=0;
 
     iAdjudicateReturnAddressBCDorHEX = cHEX;
@@ -375,9 +388,9 @@ try {
     lastKeypadTime=time(NULL);
 
 
-    for (int i=0;i<6;i++) password[i]='0';  //¼È¦s
+    for (int i=0;i<6;i++) password[i]='0';  //Â¼ÃˆÂ¦s
 
-    iSmem92TC_PhaseUpdateFlag = 0;                                              //§ó·s¥Îflag
+    iSmem92TC_PhaseUpdateFlag = 0;                                              //Â§Ã³Â·sÂ¥ÃŽflag
     bSmem92TC_TransmitCycle5F0F_ChangeFlag = false;
     bSmem92TC_TransmitCycle5F03_ChangeFlag = false;
 
@@ -389,7 +402,7 @@ try {
     bSmem92TC_ChangePlanOneTime5F18_ChangeFlag = false;
 
     //OTADD
-    for(int i = 0; i < 255; i++) {                                                //¥ý°²³]¥þ³¡¸ê®Æ³£¨S¦³
+    for(int i = 0; i < 255; i++) {                                                //Â¥Ã½Â°Â²Â³]Â¥Ã¾Â³Â¡Â¸ÃªÂ®Ã†Â³Â£Â¨SÂ¦Â³
       bSmemTC_PhaseAlive[i] = false;
       bSmemTC_PlanAlive[i] = false;
       bSmemTC_SegTypeAlive[i] = false;
@@ -400,15 +413,15 @@ try {
     bTCSignalConflictError = false;
     bSmem92TC_SubPhaseOfPhasePlanIncorrent = false;
 
-    long lTmpTime = 0;                                                          //³Ì«á­«¶}¾÷®É¶¡
+    long lTmpTime = 0;                                                          //Â³ÃŒÂ«Ã¡Â­Â«Â¶}Â¾Ã·Â®Ã‰Â¶Â¡
     disk.vReadLastAliveTimeStampFile(&lTmpTime);
     lTmpTime;
 
     pthread_mutex_unlock(&mutexSmem);
 
-    smem.vSetLastResetTime(lTmpTime);                                           //§â­«¶}¾÷®É¶¡©ñ¨ìsmem¸Ì
+    smem.vSetLastResetTime(lTmpTime);                                           //Â§Ã¢Â­Â«Â¶}Â¾Ã·Â®Ã‰Â¶Â¡Â©Ã±Â¨Ã¬smemÂ¸ÃŒ
 
-    vReadUDPMappingLCNDataFromStorage();                                        //ÅªIP¸ê®Æ
+    vReadUDPMappingLCNDataFromStorage();                                        //Ã…ÂªIPÂ¸ÃªÂ®Ã†
 
 //OT Debug 951121
     vReadLCNFromDisk();
@@ -436,8 +449,8 @@ try {
     usiSignamMapMappingLightBoard[5] = 5;
 
 //    iSmem_Com2Type = Com2IsTesterPort;
-    iSmem_Com2Type = Com2IsGPSPort;                                             //¼g¦ºªº
-//    iSmem_Com2Type = Com2IsPassingPort;                                     //¼g¦ºªº
+    iSmem_Com2Type = Com2IsGPSPort;                                             //Â¼gÂ¦ÂºÂªÂº
+//    iSmem_Com2Type = Com2IsPassingPort;                                     //Â¼gÂ¦ÂºÂªÂº
 //    iSmem_Com2Type = Com2IsRedCount;
 //    iSmem_Com2Type = Com2IsTainanPeopleLight;
 
@@ -453,7 +466,7 @@ try {
 
 //OT Debug 0523
     bTC_ActuateTypeFunctionEnable = true;
-    bSmemTC_CCT_In_LongTanu_ActuateType_Switch = false;                                 //Às¼æ¯S§OÄ²°Ê, 1 cycle change execplan
+    bSmemTC_CCT_In_LongTanu_ActuateType_Switch = false;                                 //Ã€sÂ¼Ã¦Â¯SÂ§OÃ„Â²Â°ÃŠ, 1 cycle change execplan
     usiSmemTC_CCT_In_LongTanu_ActuateType_PlanID = 1;                               //when actuating, change to this plan
 
     //OT Pass
@@ -753,8 +766,8 @@ try {
     int tempSequence;
     pthread_mutex_lock(&mutexSmem);
     tempSequence=sequence;
-    sequence++;                                          //³Q¤H¨ú¨««á¬y¤ô¸¹­n¥[¤@
-    if (sequence>=256) sequence=0;                       //¬y¤ô¸¹¥u¦³¤@­ÓBYTE,©Ò¥H³Ì¦h¨ì255
+    sequence++;                                          //Â³QÂ¤HÂ¨ÃºÂ¨Â«Â«Ã¡Â¬yÂ¤Ã´Â¸Â¹Â­nÂ¥[Â¤@
+    if (sequence>=256) sequence=0;                       //Â¬yÂ¤Ã´Â¸Â¹Â¥uÂ¦Â³Â¤@Â­Ã“BYTE,Â©Ã’Â¥HÂ³ÃŒÂ¦hÂ¨Ã¬255
     pthread_mutex_unlock(&mutexSmem);
     return tempSequence;
   } catch (...) {}
@@ -991,7 +1004,7 @@ bool SMEM::vSetSimIntervalTime(itimerspec _SimInterVal)
 {
 try {
    pthread_mutex_lock(&mutexSmem);
-   bSimIntervalTimeChange = true;                                           //µ¹CTIMER°µÀË¬d
+   bSimIntervalTimeChange = true;                                           //ÂµÂ¹CTIMERÂ°ÂµÃ€Ã‹Â¬d
    _ShareSimCycle = _SimInterVal;  //save struct in Share mem
    pthread_mutex_unlock(&mutexSmem);
    return true;
@@ -1023,7 +1036,7 @@ bool SMEM::vSet0FHardwareCycle(itimerspec _HWCycleReportIntervalIN)
 {
 try {
    pthread_mutex_lock(&mutexSmem);
-    bHWCycleReportIntervalChange = true;                                        //µ¹CTIMER°µÀË¬d
+    bHWCycleReportIntervalChange = true;                                        //ÂµÂ¹CTIMERÂ°ÂµÃ€Ã‹Â¬d
    _HWCycleReportInterval = _HWCycleReportIntervalIN;  //save struct in Share mem
    vSave92COMMToDisk();                                                   //SAVE to DOM
    pthread_mutex_unlock(&mutexSmem);
@@ -1230,9 +1243,9 @@ try{
     bool bConnecting, bConnectingStatus;
     pthread_mutex_lock(&mutexSmem);
 
-    if(connected != INVAILDVALUE ) siTransmitType[1] = connected;               //­Y¬°999«h¤£³]©w
+    if(connected != INVAILDVALUE ) siTransmitType[1] = connected;               //Â­YÂ¬Â°999Â«hÂ¤Â£Â³]Â©w
 
-    if(disconnected != INVAILDVALUE ) siTimeGap = disconnected;       //­Y¬°999«h¤£³]©w
+    if(disconnected != INVAILDVALUE ) siTimeGap = disconnected;       //Â­YÂ¬Â°999Â«hÂ¤Â£Â³]Â©w
 
 
     fprintf(stderr, "%sSend TimeInterval change to T[1]:%d, TimeGap:%d.%s\n", ColorRed, siTransmitType[1], siTimeGap, ColorNormal);
@@ -1266,8 +1279,8 @@ try {
     pthread_mutex_unlock(&mutexSmem);
 
     MESSAGEOK _MSG;
-    if(bConnectingStatus) {                                                     //¦pªG²{¦b¬O³s½u¤~§ó§ïInterval
-       _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(connected);                //³]©wSmartSensor
+    if(bConnectingStatus) {                                                     //Â¦pÂªGÂ²{Â¦bÂ¬OÂ³sÂ½uÂ¤~Â§Ã³Â§Ã¯Interval
+       _MSG = oDataToMessageOK.SendSSProtocalSetTimeInterval(connected);                //Â³]Â©wSmartSensor
 
      //OTMARKPRINTF  printf("[MESSAGE] Now in connect mode, set time interval is %d\n", connected);
 
@@ -2891,7 +2904,7 @@ try {
 }
 
 //---------------------------------------------------------------------------
-bool SMEM::vSaveLastAliveStatus(void)                                           //·íSSÂ_½u®É¡A¥Îinterval¨Ó¬ö¿ý®É¶¡toDOM
+bool SMEM::vSaveLastAliveStatus(void)                                           //Â·Ã­SSÃ‚_Â½uÂ®Ã‰Â¡AÂ¥ÃŽintervalÂ¨Ã“Â¬Ã¶Â¿Ã½Â®Ã‰Â¶Â¡toDOM
 {
 try {
     time_t NowSec = time(NULL);

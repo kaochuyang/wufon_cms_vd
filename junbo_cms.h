@@ -31,6 +31,8 @@ static pthread_mutex_t _junbo_mutex;
     bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
     void close_light();
 
+    void store_color(MESSAGEOK messageIn);
+    void read_color();
 
     void cms_test_function(int text_ID);
 
