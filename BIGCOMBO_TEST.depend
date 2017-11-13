@@ -9013,7 +9013,7 @@
 	<error.h>
 	"CSTC.h"
 
-1505474274 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/SMEM.cpp
+1505478603 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/SMEM.cpp
 	"SMEM.h"
 	"WRITEJOB.h"
 	"CDataToMessageOK.h"
@@ -9586,4 +9586,10 @@
 	"CSTORINI.h"
 	"PTRAFFIC92TC.h"
 	"PTRAFFIC92COMM.h"
+
+1510577576 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/protocol_9F_m_curve.cpp
+	"protocol_9F_m_curve.h"
+
+1510580257 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/protocol_9F_m_curve.h
+	"var.h"
 

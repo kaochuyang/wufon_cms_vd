@@ -38,7 +38,7 @@
 		<Cursor position="2036" topLine="0" />
 	</File>
 	<File name="PTRAFFIC92TC.cpp" open="1" top="0" tabpos="14">
-		<Cursor position="129969" topLine="3416" />
+		<Cursor position="129969" topLine="3415" />
 	</File>
 	<File name="PTRAFFIC92TC.h" open="1" top="0" tabpos="15">
 		<Cursor position="1486" topLine="0" />
@@ -47,7 +47,7 @@
 		<Cursor position="56842" topLine="1765" />
 	</File>
 	<File name="RS232.cpp" open="1" top="0" tabpos="8">
-		<Cursor position="5421" topLine="168" />
+		<Cursor position="5421" topLine="167" />
 	</File>
 	<File name="SCREEN.cpp" open="0" top="0" tabpos="8">
 		<Cursor position="0" topLine="0" />
@@ -62,7 +62,7 @@
 		<Cursor position="32838" topLine="918" />
 	</File>
 	<File name="STORAGE.h" open="1" top="0" tabpos="12">
-		<Cursor position="7032" topLine="124" />
+		<Cursor position="7032" topLine="114" />
 	</File>
 	<File name="WRITEJOB.cpp" open="1" top="0" tabpos="3">
 		<Cursor position="19734" topLine="457" />
@@ -80,10 +80,10 @@
 		<Cursor position="2341" topLine="58" />
 	</File>
 	<File name="main.cpp" open="1" top="1" tabpos="2">
-		<Cursor position="24362" topLine="59" />
+		<Cursor position="16101" topLine="377" />
 	</File>
 	<File name="power_reboot_group.cpp" open="1" top="0" tabpos="18">
-		<Cursor position="1356" topLine="27" />
+		<Cursor position="4830" topLine="179" />
 	</File>
 	<File name="tstdlibs.h" open="0" top="0" tabpos="5">
 		<Cursor position="0" topLine="42" />
