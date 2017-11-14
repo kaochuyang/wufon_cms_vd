@@ -221,6 +221,14 @@ void SendRequestToKeypad(void);                                                 
 
 //---------------------------------------------------------------------------
 //Copy From ParseTraffic
+  typedef  struct cms_mark
+{
+    BYTE brightness;
+
+};
+
+
+
 typedef struct BCD{
         BYTE b1:4;
         BYTE b2:4;

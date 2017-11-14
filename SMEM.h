@@ -31,8 +31,18 @@ class light_time_control
     bool store_time(int time_sec);
     bool read_time();
     int text_ID;
+    bool read_cms_mark_object();
+    bool write_cms_mark_object(cms_mark object);
+    cms_mark get_cms_record();
+
+
+
+private:
+cms_mark cms_record_object;
 
 };
+
+
 class SMEM
 {
     public:

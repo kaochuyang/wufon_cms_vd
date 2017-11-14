@@ -82,7 +82,7 @@ class protocol_9F_m_curve
 
     protected:
     private:
-
+ static  byte module_err_quan;
 int vReturnToCenterACK(unsigned char , unsigned char);
         int vReturnToCenterNACK(unsigned char, unsigned char, unsigned char, unsigned char);
 };

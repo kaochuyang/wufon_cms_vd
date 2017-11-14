@@ -21,6 +21,84 @@ SMEM smem;
 light_time_control::light_time_control(void) {};
 light_time_control::~light_time_control(void) {};
 
+
+cms_mark light_time_control::get_cms_record()
+{
+    try{
+
+    return cms_record_object;
+    }catch(...){}
+}
+
+bool light_time_control::read_cms_mark_object()
+{
+    try
+    {
+
+        FILE *pf=NULL;
+        char filename[256]="/cct/Data/SETTING/cms_mark_object.bin";
+        pf=fopen(filename,"r");
+        if(pf!=NULL)
+        {
+            fread(&cms_record_object,sizeof(cms_mark),1,pf);
+  fclose(pf);
+  smem.vWriteMsgToDOM("read_cms_mark_object success\n");
+  printf("read cms mark object success\n");
+    return true;
+
+
+        }
+        else
+        {
+            smem.vWriteMsgToDOM("read_cms_mark_object error\n");
+            printf("read cms mark object error\n");
+fclose(pf);
+return false;
+        };
+
+
+
+    }
+    catch(...) {}
+}
+
+
+
+bool light_time_control::write_cms_mark_object(cms_mark object)
+{
+
+ try{
+
+
+
+printf("write_cms_mark_object\n");
+  FILE *pf=NULL;
+        char filename[256]={0};
+         sprintf(filename,"/cct/Data/SETTING/cms_mark_object.bin");
+        pf=fopen(filename,"w+");
+        if(pf!=NULL)
+        {
+
+            fwrite(&object,sizeof(cms_mark),1,pf);
+            fclose(pf);
+printf("write cms_mark_object success!.");
+smem.vWriteMsgToDOM("write cms_mark_object error\n");
+    return true;
+
+       }
+        else
+        {
+            smem.vWriteMsgToDOM("write cms_mark_object error\n");
+            printf("write cms_mark_object error\n");
+            return false;
+        };
+cms_record_object=object;
+
+    }catch(...){}
+}
+
+
+
 bool light_time_control::store_time(int time_sec)
 {
     try
