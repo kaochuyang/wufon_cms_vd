@@ -267,32 +267,7 @@ int main(int argc, char* argv[])
             {
 
 
-                /* if (smem.lightPort.GetPortAlreadyOpen())
-                  {
-                      if (FD_ISSET(smem.lightPort.Getfd(),&readfs))
-                      {
-                          readSelectLength=smem.lightPort.Rs232Read();
-                          if (readSelectLength>0)
-                          {
-                              if(smem.vGetCommEnable() == true)    //OT20110728
-                              {
-                                  parseAABB.ParseBlock(readSelectLength,smem.lightPort.block,smem.lightPort.messageIn,&smem.lightPort.lastPacketIndex,&smem.lightPort.maxMessageIndex);
-                                  parseAABB.CheckSum(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                  parseAABB.DecideProtocol(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,smem.lightPort.GetConnDevice());
-                                  parseAABB.CheckReasonable(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                  parseAABB.AssignLcn(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                  readJob.SetInterfaceAndReadFlag(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,cRS232);
-                                  readJob.DoWorkByMESSAGEIN(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn);
-                                  parseAABB.EchoToGUI(&smem.lightPort.maxMessageIndex,smem.lightPort.messageIn,"/dev/ttyS3");
-                                  parseAABB.MoveLastData(&smem.lightPort.maxMessageIndex,&smem.lightPort.lastPacketIndex,smem.lightPort.messageIn);
 
-
-
-                                  smem.vSetBOOLData(TC_SIGNAL_DRIVER_UNIT, true);
-                              }
-                          }
-                      }
-                  }*/
 
                 if (smem.junli_object.junli_port.GetPortAlreadyOpen())
                 {

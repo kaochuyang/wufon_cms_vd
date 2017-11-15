@@ -163,21 +163,23 @@ void junbo_cms::junbo_send_by_VD(int textID)
 {
     try
     {
-
-        junbo_send_packet[0]=0xaa;
-        junbo_send_packet[3]=notice_car[textID].command;
-        junbo_send_packet[4]=notice_car[textID].parameter;
-        printf("VD TEST MESSAGE ,I RECEIVE THE VD MESSAGE\n");
-        for(int i=1; i<3; i++)
+        for(int i=0; i<2; i++)
         {
-            junbo_send_packet[1]=smem.GetSequence();
-            junbo_send_packet[2]=0x0+i;
-            junbo_send_packet[5]=0x0;
-            for(int i=0; i<5; i++)
+            junbo_send_packet[0]=0xaa;
+            junbo_send_packet[3]=notice_car[textID].command;
+            junbo_send_packet[4]=notice_car[textID].parameter;
+            printf("VD TEST MESSAGE ,I RECEIVE THE VD MESSAGE\n");
+            for(int i=1; i<3; i++)
             {
-                junbo_send_packet[5]^=junbo_send_packet[i];
+                junbo_send_packet[1]=smem.GetSequence();
+                junbo_send_packet[2]=0x0+i;
+                junbo_send_packet[5]=0x0;
+                for(int i=0; i<5; i++)
+                {
+                    junbo_send_packet[5]^=junbo_send_packet[i];
+                }
+                junbo_cms_send(junbo_send_packet);
             }
-            junbo_cms_send(junbo_send_packet);
         }
     }
     catch(...) {}
@@ -186,6 +188,7 @@ void junbo_cms::close_light()
 {
     try
     {
+
         junbo_send_packet[0]=0xaa;
         junbo_send_packet[3]=light_off.command;
         junbo_send_packet[4]=light_off.parameter;
@@ -247,6 +250,8 @@ void junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the jun
                 smem.record_light[ID].ID=junbo_receive_packet[2];
                 smem.record_light[ID].command=junbo_receive_packet[3];//junbo_receive_packet[2]   I am ID
                 smem.record_light[ID].parameter=junbo_receive_packet[4];
+
+                if(smem.record_light[1].parameter==light_off.parameter&&smem.record_light[2].parameter==light_off.parameter)smem.protocol_9F_object.o_CMS_mannager._9f08_cms_off_report();
             }
             else if(junbo_receive_packet[3]==0xb2)
             {
@@ -691,7 +696,8 @@ void junbo_cms::light_timeout_control(int control_parameter)
     {
         smem.record_timeout[i].ID=i;
         smem.record_timeout[i].command=0xc2;
-        smem.record_timeout[i].parameter=control_parameter;
+        if(control_parameter==99)smem.record_timeout[i].parameter=control_parameter;
+        else smem.record_timeout[i].parameter=control_parameter+1;
         //int i=4;
         ucSendTMP[0] = 0xAA;//head
         ucSendTMP[1] =smem.GetSequence();

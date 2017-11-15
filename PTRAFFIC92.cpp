@@ -48,6 +48,11 @@ if (message.packet[0]==0xAA) {
                     case 0xAF:                                                          //資訊可變控制器
                         pTraffic92Cms.DoWorkViaPTraffic92(message);
                     break;
+
+                    case 0x9F:
+                      smem.protocol_9F_object.DoWorkViaPTraffic92(message);
+                    break;
+
                     default:
                         pTraffic92Other.DoWorkViaPTraffic92(message);
                     break;

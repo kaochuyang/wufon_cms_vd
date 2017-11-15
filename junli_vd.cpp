@@ -85,7 +85,7 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                         printf("CMS MESSAGE!!\n");
 
                         smem.power_object.power_reset('F',smem.light_time.light_flash_time-1);//2017 08 18 kaochu
-
+                        smem.protocol_9F_object.o_VD_manager._9f07_vd_trigger_report();
 
                         _intervalTimer.set_close_light_timer(smem.light_time.light_flash_time);
 

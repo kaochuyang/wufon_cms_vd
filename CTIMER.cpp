@@ -106,90 +106,79 @@ bool intervalTimer::timer_reboot_create2()
 {
     try
     {
-             _it4.it_value.tv_sec = 0;
-        _it4.it_value.tv_nsec = 0;
-        _it4.it_interval.tv_sec = 0;
-        _it4.it_interval.tv_nsec = 0;
-        if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
-    }catch(...){}
-}
-bool intervalTimer::timer_reboot_create()
-{
-    try
-    {
-        FILE *pf=NULL;
-        struct sigevent p_event;
-
-        int clock_info[2];
-        time_t time_reboot=time(NULL);
-        struct tm* clock_time;
-        clock_time=localtime(&time_reboot);
-        int now_second=0;
-
-        int clock_sec=0;
-        int a;
-
-
-        p_event=event_fillvalue(power_signal_timer,700);
-     //   if(p_timer)timer_delete(p_timer);
-
-
-
-   /*     if(a=timer_create(CLOCK_REALTIME,&(p_event),&(p_timer)))
-        {
-            printf("%d\n",a);
-            printf("power_reboot_group have some problem\n");
-            printf("%d\n",p_timer);
-            smem.vWriteMsgToDOM("power_reboot timer() setting error\n");
-            exit(1);
-        }else printf("p_timer create ok!!");
-*/
-
-
-        if(pf=fopen("/cct/Data/SETTING/power_timer.txt","r"))
-        {
-            fread(&clock_info,sizeof(clock_info),1,pf);
-            fclose(pf);
-            int setting_sec=clock_info[0]*3600+clock_info[1]*60;
-            now_second=(clock_time->tm_hour)*3600+(clock_time->tm_min)*60;
-
-
-            if(now_second>setting_sec)clock_sec=now_second-setting_sec;
-            else clock_sec=setting_sec-now_second;
-            p_itimerspec=timer_spec_fillvalue(clock_sec,0,86400,0);
-        }
-        else p_itimerspec=timer_spec_fillvalue(0,0,0,0);
-
-        if ( timer_settime( _t4, 0, & (p_itimerspec), NULL ) ) exit( 1 );
-
-
-
-printf("timer_reboot_create test \n");
-
-        return true;
+        /*       _it4.it_value.tv_sec = 0;
+          _it4.it_value.tv_nsec = 0;
+          _it4.it_interval.tv_sec = 0;
+          _it4.it_interval.tv_nsec = 0;
+          if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );*/
     }
     catch(...) {}
 }
+bool intervalTimer::timer_reboot_create()
+{
+    /* try
+     {
+         FILE *pf=NULL;
+         struct sigevent p_event;
+
+         int clock_info[2];
+         time_t time_reboot=time(NULL);
+         struct tm* clock_time;
+         clock_time=localtime(&time_reboot);
+         int now_second=0;
+
+         int clock_sec=0;
+         int a;
+
+
+         p_event=event_fillvalue(power_signal_timer,700);
+
+
+         if(pf=fopen("/cct/Data/SETTING/power_timer.txt","r"))
+         {
+             fread(&clock_info,sizeof(clock_info),1,pf);
+             fclose(pf);
+             int setting_sec=clock_info[0]*3600+clock_info[1]*60;
+             now_second=(clock_time->tm_hour)*3600+(clock_time->tm_min)*60;
+
+
+             if(now_second>setting_sec)clock_sec=now_second-setting_sec;
+             else clock_sec=setting_sec-now_second;
+             p_itimerspec=timer_spec_fillvalue(clock_sec,0,86400,0);
+         }
+         else p_itimerspec=timer_spec_fillvalue(0,0,0,0);
+
+         if ( timer_settime( _t4, 0, & (p_itimerspec), NULL ) ) exit( 1 );
+
+
+
+    printf("timer_reboot_create test \n");
+
+         return true;
+     }
+     catch(...) {}*/
+}
 void intervalTimer::set_close_light_timer(int second)
 {
-try
-{
+    try
+    {
 
-   _it5.it_value.tv_sec = second-1;
+        _it5.it_value.tv_sec = second-1;
         _it5.it_value.tv_nsec = 0;
         _it5.it_interval.tv_sec = 0;
         _it5.it_interval.tv_nsec = 0;
         if ( timer_settime( _t5, 0, & _it5, NULL ) ) exit( 1 );
 
 
-}catch(...){}
+    }
+    catch(...) {}
 
 }
 /*
 void intervalTimer::close_junbo_cms_light()
 {try
 {
-smem.junbo_object.close_light();
+
    _it5.it_value.tv_sec = 0;
         _it5.it_value.tv_nsec = 0;
         _it5.it_interval.tv_sec = 0;
@@ -203,8 +192,10 @@ smem.junbo_object.close_light();
 bool intervalTimer::setting_regular_reboot_0F17(int hour,int minute)
 {
     try
-    {return power_regular_reboot_setting(hour,minute);
-    }catch(...){}
+    {
+        return power_regular_reboot_setting(hour,minute);
+    }
+    catch(...) {}
 }
 bool intervalTimer::power_regular_reboot_setting(int hour,int minute)
 {
@@ -254,7 +245,12 @@ bool intervalTimer::power_regular_reboot_setting(int hour,int minute)
 
 bool intervalTimer::power_regular_reboot_resetting_for_outer()
 {
-    try{power_regular_reboot_resetting();  return true; }catch(...){}
+    try
+    {
+        power_regular_reboot_resetting();
+        return true;
+    }
+    catch(...) {}
 }
 bool intervalTimer::power_regular_reboot_resetting()
 {
@@ -419,9 +415,9 @@ void intervalTimer::TimersSetting(void)
         _it3.it_interval.tv_nsec = 0;
         if ( timer_settime( _t3, 0, & _it3, NULL ) ) exit( 1 );
 
-        _it4.it_value.tv_sec = 0;
+        _it4.it_value.tv_sec = 120;//for act report 9f09
         _it4.it_value.tv_nsec = 0;
-        _it4.it_interval.tv_sec = 0;
+        _it4.it_interval.tv_sec = 120;
         _it4.it_interval.tv_nsec = 0;
         if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
 
@@ -526,10 +522,12 @@ void * intervalTimer::PTime(void *arg)
         timer_reboot_create();
         smem.light_time.read_time();
         smem.light_time.read_textID();
-      smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
-      smem.junbo_object.read_color();
+        smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
+        smem.junbo_object.read_color();
+        smem.light_time.read_cms_mark_object();
+
         printf("hello light control\n");
-     //   timer_reboot_create();//kaochu 2017 08 17
+        //   timer_reboot_create();//kaochu 2017 08 17
 
         int VDsignum = 0;
         int VDrid = 9999;
@@ -779,30 +777,39 @@ void * intervalTimer::PTime(void *arg)
                     break;
                 case( 12 ):
 //Remove                                   _intervalTimer.vCheckAndReSendSS_SK_Status();
-              //      _intervalTimer.vCheckScreenAndDoSomething();
+                    //      _intervalTimer.vCheckScreenAndDoSomething();
 
 //Remove                                    _SSLastRun = smem.vGetSSCommTime();         //æª¢æ\uFFFDSmartSensor
-                 //   _RunSec = time(NULL);
+                    //   _RunSec = time(NULL);
 
-                //    _intervalTimer.vCheckVDUpdateDBAndDoSomething();
+                    //    _intervalTimer.vCheckVDUpdateDBAndDoSomething();
 
-                //    if((_RunSec - smem.GetLastKeypadTime()) > 300)    //TEST, 990325 for amegids, don't clear screen
-                  //  {
-             //           screenNone.DisplayNone();
-               //     }
+                    //    if((_RunSec - smem.GetLastKeypadTime()) > 300)    //TEST, 990325 for amegids, don't clear screen
+                    //  {
+                    //           screenNone.DisplayNone();
+                    //     }
 
 //                                    if (smem.GetKeypadReturn()==false)  SendRequestToKeypad();
 //                    SendRequestToKeypad();
 //printf("12  !!+n" );
                     break;
                 case( 13 ):                                                           //VD SIM
-printf("timer test 13\n");
+                    printf("timer test 13\n");
+                    smem.protocol_9F_object.o_TC_manager._9f09_tc_link_report();
+                    smem.protocol_9F_object.o_VD_manager._9f05_vd_state_act_report();
+
+                    break;
 
                 case( 14 ):
 
-printf("timer test 14\n");
+                    printf("timer test 14\n");
 //_intervalTimer.close_junbo_cms_light();
-smem.junbo_object.close_light();
+                    for(int i=0; i<3; i++)
+                    {
+                        if(smem.record_light[1].parameter!=smem.junbo_object.light_off.parameter||smem.record_light[2].parameter!=smem.junbo_object.light_off.parameter)
+                            smem.junbo_object.close_light();
+                    }
+
                     break;
 
 
@@ -820,31 +827,31 @@ smem.junbo_object.close_light();
 
 //SendRequestToKeypad();
 
-    /*    Send_packet[0]='$';//STX
-       Send_packet[1]='F';
-        Send_packet[2]=',';//interval
-        Send_packet[3]=0x30+0;//Reset time 0~9
-        Send_packet[4]=0x30+5;//0~9
-        Send_packet[5]=0x0d;//CR
-        Send_packet[6]=0x0a;//LF
-printf("hello F\n");
+                    /*    Send_packet[0]='$';//STX
+                       Send_packet[1]='F';
+                        Send_packet[2]=',';//interval
+                        Send_packet[3]=0x30+0;//Reset time 0~9
+                        Send_packet[4]=0x30+5;//0~9
+                        Send_packet[5]=0x0d;//CR
+                        Send_packet[6]=0x0a;//LF
+                    printf("hello F\n");
 
-      //  power_control_port.Rs232Write(Send_packet,7,device_name);
-         writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);*/
-                   /* _intervalTimer.vCommuncationReset(iCommuncationResetCount);                        //default not start
-                    iCommuncationResetCount++;
-                    if(iCommuncationResetCount >= 3) iCommuncationResetCount = 0;*/
-                 //   smem.power_object.power_reset('F',5);//kaochu test test
+                      //  power_control_port.Rs232Write(Send_packet,7,device_name);
+                         writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);*/
+                    /* _intervalTimer.vCommuncationReset(iCommuncationResetCount);                        //default not start
+                     iCommuncationResetCount++;
+                     if(iCommuncationResetCount >= 3) iCommuncationResetCount = 0;*/
+                    //   smem.power_object.power_reset('F',5);//kaochu test test
 
-                   //  text_ID++;
+                    //  text_ID++;
                     //    if(text_ID>4)text_ID=1;
 
-                   //     printf("textID=%d  by test\n",text_ID);
-                       // smem.junbo_object.junbo_send_by_VD(2);
-                      //  smem.junbo_object.brightness_control(text_ID);
+                    //     printf("textID=%d  by test\n",text_ID);
+                    // smem.junbo_object.junbo_send_by_VD(2);
+                    //  smem.junbo_object.brightness_control(text_ID);
                     //    smem.junbo_object.query_modual_state();
-                        //smem.junbo_object.light_timeout_control(text_ID);
-                  //      smem.junbo_object.report_module_state_to_revapp();
+                    //smem.junbo_object.light_timeout_control(text_ID);
+                    //      smem.junbo_object.report_module_state_to_revapp();
                     break;
 
                 case( 101 ):
@@ -870,23 +877,24 @@ printf("hello F\n");
 
                 case( 501 ):
 
-                if(reset_count<8)
-                {
+                    if(reset_count<3)
+                    {
 
-                    smem.count_vd_alive++;
+                        smem.count_vd_alive++;
 
-                    if(smem.count_vd_alive>30)
-                    {   printf("count_vd_alive=%d\n",smem.count_vd_alive);
-                        smem.power_object.power_reset_all(10);
-                        smem.count_vd_alive=0;
-                        smem.vWriteMsgToDOM("VD link error");
-                        Send_packet[0]=0x6f;
-                        Send_packet[1]=0xff;
-                        smem._0F80_packet(Send_packet);
-                        reset_count++;
+                        if(smem.count_vd_alive>30)
+                        {
+                            printf("count_vd_alive=%d\n",smem.count_vd_alive);
+                            smem.power_object.power_reset_all(10);
+                            smem.count_vd_alive=0;
+                            smem.vWriteMsgToDOM("VD link error");
+                            Send_packet[0]=0x6f;
+                            Send_packet[1]=0xff;
+                            smem._0F80_packet(Send_packet);
+                            reset_count++;
+                        }
+
                     }
-
-                }
                     break;
 
                 case( 600 ):

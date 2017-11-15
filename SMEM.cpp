@@ -44,6 +44,9 @@ bool light_time_control::read_cms_mark_object()
   fclose(pf);
   smem.vWriteMsgToDOM("read_cms_mark_object success\n");
   printf("read cms mark object success\n");
+  if(0<cms_record_object.brightness&&cms_record_object.brightness<5)smem.junbo_object.brightness_control(cms_record_object.brightness-1);
+    else smem.junbo_object.brightness_control(0x0);
+
     return true;
 
 
@@ -52,7 +55,9 @@ bool light_time_control::read_cms_mark_object()
         {
             smem.vWriteMsgToDOM("read_cms_mark_object error\n");
             printf("read cms mark object error\n");
-fclose(pf);
+                cms_record_object.brightness=0x0;
+              smem.junbo_object.brightness_control(0x0);
+
 return false;
         };
 
