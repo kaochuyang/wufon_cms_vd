@@ -382,8 +382,8 @@ try {
                    if (smem.centerSocket.GetPortAlreadyOpen()  && (iPacketLcn != 0) ) {
                        statusUdp=smem.centerSocket.UdpSend(packet,length,"centerSocket");
                    }
-                   if (smem.testerSocket.GetPortAlreadyOpen()  && (iPacketLcn != 0) ) {
-                       statusUdp=smem.testerSocket.UdpSend(packet,length,"testerSocket");
+                   if (smem.centerSocket2.GetPortAlreadyOpen()  && (iPacketLcn != 0) ) {
+                       statusUdp=smem.centerSocket2.UdpSend(packet,length,"centerSocket2");
                    }
 
 
@@ -415,8 +415,8 @@ try {
             case DEVICETESTER92:                                                //92年版現場手提測試機
                  if (smem.testerPort.GetPortAlreadyOpen())
                      statusRs232=smem.testerPort.Rs232Write(packet,length,"/dev/ttyS3");
-                 if (smem.testerSocket.GetPortAlreadyOpen())
-                     statusUdp=smem.testerSocket.UdpSend(packet,length,"192.168.1.102:6003");
+                 if (smem.centerSocket2.GetPortAlreadyOpen())
+                     statusUdp=smem.centerSocket2.UdpSend(packet,length,"192.168.1.102:6003");
                  //寫回路口測試機的也要寫回中心
             break;
 */
@@ -687,8 +687,8 @@ try {
                    if (smem.centerSocket.GetPortAlreadyOpen()  && (iPacketLcn != 0) ) {
                        statusUdp=smem.centerSocket.UdpSend(packet,length,"centerSocket");
                    }
-                   if (smem.testerSocket.GetPortAlreadyOpen()  && (iPacketLcn != 0) ) {
-                       statusUdp=smem.testerSocket.UdpSend(packet,length,"testerSocket");
+                   if (smem.centerSocket2.GetPortAlreadyOpen()  && (iPacketLcn != 0) ) {
+                       statusUdp=smem.centerSocket2.UdpSend(packet,length,"centerSocket2");
                    }
 
 

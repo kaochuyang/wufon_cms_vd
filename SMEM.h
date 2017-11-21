@@ -89,7 +89,7 @@ public:
     UDP revSyncSocket;
 
 //OTSS++
-    UDP centerSocket,testerSocket,tempSocket;                               //交控中心,手提測試機,保留
+    UDP centerSocket,centerSocket2,tempSocket;                               //交控中心,手提測試機,保留
 //        UDP VDBcastForListen5003Socket;                                         //VD廣撥Socket
     UDP DynCalServerInCrossSocket, DynCalServerInCenterSocket;              //全動態計算主機
     UDP SSVD01Socket, SSVD02Socket, SSVD03Socket, SSVD04Socket;

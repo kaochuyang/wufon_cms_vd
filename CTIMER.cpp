@@ -415,9 +415,9 @@ void intervalTimer::TimersSetting(void)
         _it3.it_interval.tv_nsec = 0;
         if ( timer_settime( _t3, 0, & _it3, NULL ) ) exit( 1 );
 
-        _it4.it_value.tv_sec = 120;//for act report 9f09
+        _it4.it_value.tv_sec = 5;//for act report 9f09
         _it4.it_value.tv_nsec = 0;
-        _it4.it_interval.tv_sec = 120;
+        _it4.it_interval.tv_sec = 5;
         _it4.it_interval.tv_nsec = 0;
         if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
 

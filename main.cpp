@@ -178,7 +178,11 @@ int main(int argc, char* argv[])
             }
             else printf("open CenterSocket-%s:%d Fail!!\n",localIP1,localPort1);
 
-
+   if (smem.centerSocket2.SetConnDevice(DEVICETESTER92))
+    if ((tempmax=smem.centerSocket2.OpenUdpSocket(localIP1,localPort1+64,distIP,distPort))>0)  {
+         if (tempmax>maxport)  maxport=tempmax;
+         printf("open centerSocket2-%s:%d (fdValue:%d) Success!!\n",localIP1,localPort1+64,tempmax);
+    } else printf("open centerSocket2-%s:%d Fail!!\n",localIP1,localPort1+64);
 
 ////-----------------------------------------------------------------------------------------------------//
         system("ifconfig eth1 192.168.2.1");//for VSX-6156
@@ -244,7 +248,7 @@ int main(int argc, char* argv[])
             if(smem.revAPP_socket.GetPortAlreadyOpen())FD_SET(smem.revAPP_socket.Getfd(),&readfs);//for revAPP
 
             if (smem.lightPort.GetPortAlreadyOpen()) FD_SET(smem.lightPort.Getfd(),&readfs);
-
+     if (smem.centerSocket2.GetPortAlreadyOpen()) FD_SET(smem.centerSocket2.Getfd(),&readfs);
             if (smem.centerSocket.GetPortAlreadyOpen()) FD_SET(smem.centerSocket.Getfd(),&readfs);
 
             if(smem.junli_object.junli_port.GetPortAlreadyOpen())FD_SET(smem.junli_object.junli_port.Getfd(),&readfs);
@@ -497,6 +501,35 @@ int main(int argc, char* argv[])
                 }
 
 
+
+
+            if (smem.centerSocket2.GetPortAlreadyOpen()) {
+                if (FD_ISSET(smem.centerSocket2.Getfd(),&readfs)) {
+                    readSelectLength=smem.centerSocket2.UdpRead();
+                    if (readSelectLength>0) {
+                      if(smem.vGetCommEnable() == true) {
+                        //OT20110526
+                        smem.vSetLastGetProtocolTime();
+
+                        parseAABB.ParseBlock(readSelectLength,smem.centerSocket2.block,smem.centerSocket2.messageIn,&smem.centerSocket2.lastPacketIndex,&smem.centerSocket2.maxMessageIndex);
+                        parseAABB.CheckSum(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        //enable vJudgeProtocolAndCheckLength
+                        parseAABB.vJudgeProtocolAndCheckLength(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        parseAABB.DecideProtocol(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn,smem.centerSocket2.GetConnDevice());
+                        parseAABB.CheckReasonable(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        parseAABB.AssignLcn(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        readJob.SetInterfaceAndReadFlag(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn,cUDP);
+                        readJob.vCheckIfBcastingForwardToUDP(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        readJob.CheckLcn(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        readJob.SetCenterComm(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        readJob.DoWorkByMESSAGEIN(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn);
+                        parseAABB.EchoToGUI(&smem.centerSocket2.maxMessageIndex,smem.centerSocket2.messageIn,"192.168.1.102:6003");
+                        parseAABB.MoveLastData(&smem.centerSocket2.maxMessageIndex,&smem.centerSocket2.lastPacketIndex,smem.centerSocket2.messageIn);
+                      }
+                    }
+                }
+            }
+
             }
 
         }
@@ -507,7 +540,7 @@ int main(int argc, char* argv[])
         //Ãö³¬RS232,422,485 ³q°T°ð
 
         if (smem.centerSocket.CloseUdpSocket()) printf("Close CenterSocket Successful!!\n");
-
+         if (smem.centerSocket2.CloseUdpSocket()) printf("Close centerSocket2 Successful!!\n");
 
         //Ãö³¬IO ³q°T°ð
         lcd240x128.ReleaseAuthority();

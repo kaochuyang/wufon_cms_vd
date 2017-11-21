@@ -243,6 +243,8 @@
 		<Unit filename="main.h" />
 		<Unit filename="power_reboot_group.cpp" />
 		<Unit filename="power_reboot_group.h" />
+		<Unit filename="protocol_9F_m_curve.cpp" />
+		<Unit filename="protocol_9F_m_curve.h" />
 		<Unit filename="screenActuateArwenStatus.cpp" />
 		<Unit filename="screenActuateArwenStatus.h" />
 		<Unit filename="screenActuateEdit.cpp" />
