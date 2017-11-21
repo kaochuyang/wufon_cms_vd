@@ -474,10 +474,14 @@ int main(int argc, char* argv[])
                     if (FD_ISSET(smem.centerSocket.Getfd(),&readfs))
                     {
                         readSelectLength=smem.centerSocket.UdpRead();
+                        printf("centerSocket  action!!!\n");
+                for(int i=0;i<readSelectLength;i++)printf("%x ",smem.centerSocket.block[i]);
+                printf("\n");
+
                         if (readSelectLength>0)
                         {
                             if(smem.vGetCommEnable() == true)
-                            {
+                            {printf("get comm enable\n");
                                 //OT20110526
                                 smem.vSetLastGetProtocolTime();
 

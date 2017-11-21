@@ -36,6 +36,7 @@ if (message.packet[0]==0xAA) {
       smem.vWriteMsgToDOM(msg);
 
             switch (message.packet[7]) {
+
                     case 0x0F:                                                          //¦@¥Î°T®§
                          pTraffic92Comm.DoWorkViaPTraffic92(message);
                     break;
@@ -50,6 +51,7 @@ if (message.packet[0]==0xAA) {
                     break;
 
                     case 0x9F:
+                printf("9f success\n");
                       smem.protocol_9F_object.DoWorkViaPTraffic92(message);
                     break;
 

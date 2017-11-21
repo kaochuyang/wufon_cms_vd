@@ -97,7 +97,7 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                         printf("VD IS ALIVE\n");    //record the VD still alive
                         smem.count_vd_alive=0;
                         alive_count++;
-                        smem._0F80_packet(_6F_);
+                 //       smem._0F80_packet(_6F_);
 
                         if(alive_count>=100)
                         {

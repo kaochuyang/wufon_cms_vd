@@ -415,9 +415,9 @@ void intervalTimer::TimersSetting(void)
         _it3.it_interval.tv_nsec = 0;
         if ( timer_settime( _t3, 0, & _it3, NULL ) ) exit( 1 );
 
-        _it4.it_value.tv_sec = 5;//for act report 9f09
+        _it4.it_value.tv_sec = 120;//for act report 9f09
         _it4.it_value.tv_nsec = 0;
-        _it4.it_interval.tv_sec = 5;
+        _it4.it_interval.tv_sec = 120;
         _it4.it_interval.tv_nsec = 0;
         if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
 
@@ -514,7 +514,7 @@ void * intervalTimer::PTime(void *arg)
 
         //OTMARKPRINTF  printf( "THREAD_VDINFO: pid=%d\n", getpid() );
 
-
+          smem.vSetCommEnable(true);
 
         TimersCreating();
 
@@ -814,11 +814,11 @@ void * intervalTimer::PTime(void *arg)
 
 
                 case( 15 ):  //0F04, HwStatus AutoReport
-                    uc0F04[2] = smem.vGetHardwareStatus(3);
+                 /*   uc0F04[2] = smem.vGetHardwareStatus(3);
                     uc0F04[3] = smem.vGetHardwareStatus(4);
                     _MSG = oDataToMessageOK.vPackageINFOTo92Protocol(uc0F04, 4, true);
                     _MSG.InnerOrOutWard = cOutWard;
-                    writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECENTER92);
+                    writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECENTER92);*/
 
                     break;
 
@@ -888,9 +888,9 @@ void * intervalTimer::PTime(void *arg)
                             smem.power_object.power_reset_all(10);
                             smem.count_vd_alive=0;
                             smem.vWriteMsgToDOM("VD link error");
-                            Send_packet[0]=0x6f;
+                        /*    Send_packet[0]=0x6f;
                             Send_packet[1]=0xff;
-                            smem._0F80_packet(Send_packet);
+                            smem._0F80_packet(Send_packet);*/
                             reset_count++;
                         }
 

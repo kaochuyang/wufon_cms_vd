@@ -64,7 +64,7 @@ bool protocol_9F_m_curve::DoWorkViaPTraffic92(MESSAGEOK mes)
             break;
 
         case 0x16:
-            o_TC_manager.o_power._9f07_power_reboot(mes.packet[9],mes.packet[10]);
+            o_TC_manager.o_power._9f16_power_reboot(mes.packet[9],mes.packet[10]);
 
             break;
 
@@ -261,6 +261,7 @@ bool protocol_9F_m_curve::cms_manager::brightness_manager::_9f11_brightness_set(
         {
             smem.junbo_object.brightness_control(brightness-1);
             pack.brightness=brightness;
+            printf("%x = brightness 9f 11 set\n",brightness);
             if(smem.light_time.write_cms_mark_object(pack))
                 _9f_object.vReturnToCenterACK(0x9f,0x11);
             else _9f_object.vReturnToCenterNACK(0x9f,0x11,0x02,0);
@@ -330,7 +331,7 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9f42_module_query()
 
         smem.vWriteMsgToDOM("9f42 module query success\n");
         _9f_object.vReturnToCenterACK(0x9f,0x42);
-        _9f42_module_query();
+       _9fc2_module_report();
 
 
 
@@ -536,7 +537,7 @@ bool protocol_9F_m_curve::vd_manager::_9f07_vd_trigger_report()
 }
 
 
-bool protocol_9F_m_curve::tc_manager::power_manager::_9f07_power_reboot(BYTE device,BYTE second)
+bool protocol_9F_m_curve::tc_manager::power_manager::_9f16_power_reboot(BYTE device,BYTE second)
 {
 
     try
@@ -546,13 +547,13 @@ bool protocol_9F_m_curve::tc_manager::power_manager::_9f07_power_reboot(BYTE dev
         {
             if(second<=99&&second>=0)
             {
-                _9f_object.vReturnToCenterACK(0x9f,0x07);//0x56=vd 0x43==cms
+                _9f_object.vReturnToCenterACK(0x9f,0x16);//0x56=vd 0x43==cms
                 smem.power_object.power_reset(device,second);
             }
             else
-                _9f_object.vReturnToCenterNACK(0x9f,0x7,0x4,0x2);
+                _9f_object.vReturnToCenterNACK(0x9f,0x16,0x4,0x2);
         }
-        else _9f_object.vReturnToCenterNACK(0x9f,0x7,0x4,0x1);
+        else _9f_object.vReturnToCenterNACK(0x9f,0x16,0x4,0x1);
 
         return true;
     }

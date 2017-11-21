@@ -30,7 +30,7 @@ public:
 
         class power_manager
         {public:
-            bool _9f07_power_reboot(BYTE device,BYTE second);//device=cms or vd
+            bool _9f16_power_reboot(BYTE device,BYTE second);//device=cms or vd
 
         };
         //    private:

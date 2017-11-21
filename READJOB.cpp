@@ -206,6 +206,7 @@ try {
                    printf("%x ",messageIn[i].packet[ii]);
                  printf("\n");
 */
+printf("DoWorkByMESSAGEIN \n");
                      protocol.DoWork(messageIn[i]);
 //                     printf("[OTMsg] Go readJob. S:OK C:OK\n");
                  }

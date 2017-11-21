@@ -806,8 +806,8 @@ void junbo_cms::color_packet(MESSAGEOK messageIn)
         BYTE color[2][3];
         for(int i=0; i<3; i++)
         {
-            color[0][i]=messageIn.packet[2+i];
-            color[1][i]=messageIn.packet[5+i];
+            color[0][i]=messageIn.packet[9+i];
+            color[1][i]=messageIn.packet[12+i];
         }
 
         color_control(color);
@@ -827,7 +827,7 @@ void junbo_cms::store_color(MESSAGEOK messageIn)
         {
 
 
-            if(messageIn.packet[2+i]>0&&messageIn.packet[2+i]<4) color[i]=messageIn.packet[2+i];
+            if(messageIn.packet[9+i]>0&&messageIn.packet[9+i]<4) color[i]=messageIn.packet[9+i];
             else color[i]=0x3;
         }
         pf=fopen(filename,"w+");
