@@ -44,6 +44,8 @@ public:
     public:
         bool _9f08_cms_off_report();
 
+        bool _9f0A_cms_dead();
+
         class brightness_manager
         {
         public:

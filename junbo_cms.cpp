@@ -162,13 +162,13 @@ void junbo_cms::junbo_cms_send(unsigned char junbo_send_packet[6])
 void junbo_cms::junbo_send_by_VD(int textID)
 {
     try
-    {
+    {int count_send=0;
         for(int i=0; i<2; i++)
         {
             junbo_send_packet[0]=0xaa;
             junbo_send_packet[3]=notice_car[textID].command;
             junbo_send_packet[4]=notice_car[textID].parameter;
-            printf("VD TEST MESSAGE ,I RECEIVE THE VD MESSAGE\n");
+            printf("RECEIVE THE VD MESSAGE\n");
             for(int i=1; i<3; i++)
             {
                 junbo_send_packet[1]=smem.GetSequence();
@@ -179,6 +179,12 @@ void junbo_cms::junbo_send_by_VD(int textID)
                     junbo_send_packet[5]^=junbo_send_packet[i];
                 }
                 junbo_cms_send(junbo_send_packet);
+                while(smem.record_light[i].command!=0xb1){
+
+                    if(count_send<3){junbo_cms_send(junbo_send_packet);count_send++;}
+                    else break;
+                }
+
             }
         }
     }
@@ -188,7 +194,7 @@ void junbo_cms::close_light()
 {
     try
     {
-
+int count_send=0;
         junbo_send_packet[0]=0xaa;
         junbo_send_packet[3]=light_off.command;
         junbo_send_packet[4]=light_off.parameter;
@@ -203,6 +209,11 @@ void junbo_cms::close_light()
                 junbo_send_packet[5]^=junbo_send_packet[i];
             }
             junbo_cms_send(junbo_send_packet);
+                     while(smem.record_light[i].command!=0xb0){
+
+                    if(count_send<3){junbo_cms_send(junbo_send_packet);count_send++;}
+                    else break;
+                }
         }
     }
     catch(...) {}
@@ -251,7 +262,7 @@ void junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the jun
                 smem.record_light[ID].command=junbo_receive_packet[3];//junbo_receive_packet[2]   I am ID
                 smem.record_light[ID].parameter=junbo_receive_packet[4];
 
-                if(smem.record_light[1].parameter==light_off.parameter&&smem.record_light[2].parameter==light_off.parameter)smem.protocol_9F_object.o_CMS_mannager._9f08_cms_off_report();
+                if(smem.record_light[1].command==0xb0&&smem.record_light[2].command==0xb0)smem.protocol_9F_object.o_CMS_mannager._9f08_cms_off_report();
             }
             else if(junbo_receive_packet[3]==0xb2)
             {

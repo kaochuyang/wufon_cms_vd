@@ -57,7 +57,11 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
          smem.lightPort.Rs232Write(Send_packet,7,"/dev/ttyS3");
       //   writeJob.WritePhysicalOut(Send_packet, 7, revAPP);
 
-
+        if(device==0x46){sleep(second+2);
+         smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);//cms_initial process
+         smem.light_time.read_cms_mark_object();
+        smem.junbo_object.read_color();
+        }
         return true;
     }
     catch(...)

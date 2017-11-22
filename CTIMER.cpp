@@ -409,9 +409,9 @@ void intervalTimer::TimersSetting(void)
         _it2.it_interval.tv_nsec = 0;
         if ( timer_settime( _t2, 0, & _it2, NULL ) ) exit( 1 );
 
-        _it3.it_value.tv_sec = 5;
+        _it3.it_value.tv_sec = 10;
         _it3.it_value.tv_nsec = 0;
-        _it3.it_interval.tv_sec = 8;
+        _it3.it_interval.tv_sec = 300;
         _it3.it_interval.tv_nsec = 0;
         if ( timer_settime( _t3, 0, & _it3, NULL ) ) exit( 1 );
 
@@ -449,9 +449,9 @@ void intervalTimer::TimersSetting(void)
             iTmp = 300;
             break;
         }
-        _it6.it_value.tv_sec = iTmp;
+        _it6.it_value.tv_sec = 10;
         _it6.it_value.tv_nsec = 0;
-        _it6.it_interval.tv_sec = iTmp;
+        _it6.it_interval.tv_sec = 3600;
         _it6.it_interval.tv_nsec = 0;
         if ( timer_settime( _t6, 0, & _it6, NULL ) ) exit( 1 );
 
@@ -474,9 +474,9 @@ void intervalTimer::TimersSetting(void)
         _it10.it_interval.tv_nsec = 0;                                  // 1/10 sec
         if ( timer_settime( _t10, 0, & _it10, NULL ) ) exit( 1 );
 
-        _itTrafficeLight.it_value.tv_sec = 0;
-        _itTrafficeLight.it_value.tv_nsec = 200000000;  //0.2 sec
-        _itTrafficeLight.it_interval.tv_sec = 2;
+        _itTrafficeLight.it_value.tv_sec = 10;
+        _itTrafficeLight.it_value.tv_nsec = 0;  //0.2 sec
+        _itTrafficeLight.it_interval.tv_sec = 86400;
         _itTrafficeLight.it_interval.tv_nsec = 0;
         if ( timer_settime( _tTrafficeLight, 0, & _itTrafficeLight, NULL ) ) exit( 1 );
 
@@ -524,7 +524,7 @@ void * intervalTimer::PTime(void *arg)
         smem.light_time.read_textID();
         smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
         smem.junbo_object.read_color();
-        smem.light_time.read_cms_mark_object();
+        smem.light_time.read_cms_mark_object();//brightness
 
         printf("hello light control\n");
         //   timer_reboot_create();//kaochu 2017 08 17
@@ -776,22 +776,9 @@ void * intervalTimer::PTime(void *arg)
 
                     break;
                 case( 12 ):
-//Remove                                   _intervalTimer.vCheckAndReSendSS_SK_Status();
-                    //      _intervalTimer.vCheckScreenAndDoSomething();
+                smem.protocol_9F_object.o_CMS_mannager.o_module._9f02_moduel_act_report();//period report
 
-//Remove                                    _SSLastRun = smem.vGetSSCommTime();         //æª¢æ\uFFFDSmartSensor
-                    //   _RunSec = time(NULL);
 
-                    //    _intervalTimer.vCheckVDUpdateDBAndDoSomething();
-
-                    //    if((_RunSec - smem.GetLastKeypadTime()) > 300)    //TEST, 990325 for amegids, don't clear screen
-                    //  {
-                    //           screenNone.DisplayNone();
-                    //     }
-
-//                                    if (smem.GetKeypadReturn()==false)  SendRequestToKeypad();
-//                    SendRequestToKeypad();
-//printf("12  !!+n" );
                     break;
                 case( 13 ):                                                           //VD SIM
                     printf("timer test 13\n");
@@ -804,22 +791,19 @@ void * intervalTimer::PTime(void *arg)
 
                     printf("timer test 14\n");
 //_intervalTimer.close_junbo_cms_light();
-                    for(int i=0; i<3; i++)
-                    {
-                        if(smem.record_light[1].parameter!=smem.junbo_object.light_off.parameter||smem.record_light[2].parameter!=smem.junbo_object.light_off.parameter)
-                            smem.junbo_object.close_light();
-                    }
+                    smem.record_light[1].command=smem.record_light[2].command=0xff;
+                    smem.junbo_object.close_light();
+
+                      if(smem.record_light[1].command==0xff&&smem.record_light[2].command==0xff)
+                       smem.protocol_9F_object.o_CMS_mannager._9f0A_cms_dead();
+
 
                     break;
 
 
-                case( 15 ):  //0F04, HwStatus AutoReport
-                 /*   uc0F04[2] = smem.vGetHardwareStatus(3);
-                    uc0F04[3] = smem.vGetHardwareStatus(4);
-                    _MSG = oDataToMessageOK.vPackageINFOTo92Protocol(uc0F04, 4, true);
-                    _MSG.InnerOrOutWard = cOutWard;
-                    writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECENTER92);*/
+                case( 15 ):
 
+                smem.junbo_object.query_modual_state();
                     break;
 
                 case( 100 ):
@@ -898,7 +882,7 @@ void * intervalTimer::PTime(void *arg)
                     break;
 
                 case( 600 ):
-
+                smem.junbo_object.delete_record_before_15day();
                     break;
 
                 default:
@@ -1133,7 +1117,7 @@ bool intervalTimer::vCheckSMEM(void)
 //        if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
 //        smem.vSetSimIntervalTimeChangeStatus(false);
 //    }
-        if( smem.vGet0FHardwareCycleChangeStatus() )
+       /* if( smem.vGet0FHardwareCycleChangeStatus() )
         {
             _it6 = smem.vGet0FHardwareCycle();
 
@@ -1141,7 +1125,7 @@ bool intervalTimer::vCheckSMEM(void)
 
             if ( timer_settime( _t6, 0, & _it6, NULL ) ) exit( 1 );
             smem.vSet0FHardwareCycleChangeStatus(false);
-        }
+        }*/
         if( smem.vGet0F11CommuncationResetChangeStatus() )
         {
             _it7.it_value.tv_sec = 0;

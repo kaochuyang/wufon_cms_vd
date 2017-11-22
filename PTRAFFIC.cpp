@@ -25,7 +25,7 @@ try {
             //第三種分類:交通部92年版通訊協定
             case PROTOCOL92:                                                    //交通部92年版通訊協定
 
-            printf("DoWorkViaProtocol PROTOCOL92\n");
+
                  pTraffic92.DoWorkViaPTraffic(message);
             break;
             //第四種分類:交通部Ntcip年版通訊協定

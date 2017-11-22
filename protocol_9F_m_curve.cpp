@@ -342,6 +342,7 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9f42_module_query()
 
 bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
 {
+
     try
     {
 
@@ -370,9 +371,14 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
 
         }
 
+
+         if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
+        {
         _9f_object.send_to_center_3(0x9f,0xc2,module_err_quan);
         _9f_object.vReturnToCenterACK(0x9f,0xc2);
         smem.vWriteMsgToDOM("9fc2 cms_module state report success\n");
+      }
+        else _9f_object.vReturnToCenterNACK(0x9f,0x2,0x2,0);
 
         return true;
 
@@ -384,8 +390,16 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9f02_moduel_act_report()
 {
     try
     {
-        _9f_object.send_to_center_3(0x9f,0x02,module_err_quan);
-        _9f_object.vReturnToCenterACK(0x9f,0x2);
+
+
+
+        if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
+        {
+            _9f_object.send_to_center_3(0x9f,0x02,module_err_quan);
+            _9f_object.vReturnToCenterACK(0x9f,0x2);
+        }
+        else _9f_object.vReturnToCenterNACK(0x9f,0x2,0x2,0);
+
         return true;
     }
     catch(...) {}
@@ -579,7 +593,15 @@ bool protocol_9F_m_curve::tc_manager::_9f09_tc_link_report()
     catch(...) {}
 }
 
+bool protocol_9F_m_curve::cms_manager::_9f0A_cms_dead()
+{
 
+    if(smem.record_light[1].parameter==smem.junbo_object.light_off.parameter
+                           &&smem.record_light[2].parameter==smem.junbo_object.light_off.parameter)
+ _9f_object.send_to_center_2(0x9f,0x0a);
+        return true;
+
+}
 
 
 

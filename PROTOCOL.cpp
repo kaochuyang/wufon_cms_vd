@@ -24,7 +24,7 @@ try {
             case PROTOCOLREVSYNC:
             case PROTOCOLAMEGIDS:
 
-            printf("do work protocol %d\n",message.protocol);
+
                  pTraffic.DoWorkViaProtocol(message);
             break;
             //第二種分類:週邊設備
