@@ -519,7 +519,7 @@ void * intervalTimer::PTime(void *arg)
         TimersCreating();
 
         TimersSetting();
-        timer_reboot_create();
+
         smem.light_time.read_time();
         smem.light_time.read_textID();
         smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
@@ -527,7 +527,7 @@ void * intervalTimer::PTime(void *arg)
         smem.light_time.read_cms_mark_object();//brightness
 
         printf("hello light control\n");
-        //   timer_reboot_create();//kaochu 2017 08 17
+
 
         int VDsignum = 0;
         int VDrid = 9999;

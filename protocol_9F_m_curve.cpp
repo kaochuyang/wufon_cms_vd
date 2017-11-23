@@ -378,7 +378,7 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
         _9f_object.vReturnToCenterACK(0x9f,0xc2);
         smem.vWriteMsgToDOM("9fc2 cms_module state report success\n");
       }
-        else _9f_object.vReturnToCenterNACK(0x9f,0x2,0x2,0);
+        else _9f_object.vReturnToCenterNACK(0x9f,0xc2,0x2,0);
 
         return true;
 
@@ -396,9 +396,9 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9f02_moduel_act_report()
         if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
         {
             _9f_object.send_to_center_3(0x9f,0x02,module_err_quan);
-            _9f_object.vReturnToCenterACK(0x9f,0x2);
+        //    _9f_object.vReturnToCenterACK(0x9f,0x2);
         }
-        else _9f_object.vReturnToCenterNACK(0x9f,0x2,0x2,0);
+      //  else _9f_object.vReturnToCenterNACK(0x9f,0x2,0x2,0);
 
         return true;
     }

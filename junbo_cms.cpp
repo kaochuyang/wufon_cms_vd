@@ -695,6 +695,8 @@ void junbo_cms::report_light_timeout()//for app
 
 void junbo_cms::light_timeout_control(int control_parameter)
 {
+
+
     BYTE Send_packet[2];
     Send_packet[0]=0x0f;
     Send_packet[1]=0x80;

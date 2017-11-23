@@ -188,7 +188,7 @@ bool light_time_control::read_time()
         {
             fread(&time_sec,sizeof(time_sec),1,pf);
 
-            light_flash_time=time_sec;
+            light_flash_time=time_sec+1;
             printf("light_flash_time=%d\n",light_flash_time);
             fclose(pf);
         }
