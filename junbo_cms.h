@@ -20,7 +20,10 @@ static pthread_mutex_t _junbo_mutex;
 
     RS232 junbo_cms_port;
     int open_port_process(char* tty_name);
+    void CMS_boot_time();
 
+    void carflow_calculate_interval();
+    int clear_calculate_carflow();
 
     void initial_junbo_control(char *output_tty_name);
     void junbo_cms_send(unsigned char junbo_send_packet[6]);

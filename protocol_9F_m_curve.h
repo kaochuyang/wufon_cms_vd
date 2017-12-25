@@ -12,6 +12,9 @@ public:
 
     bool DoWorkViaPTraffic92(MESSAGEOK message);        //switch for select
 
+    void _9f0b_car_calculate();
+
+
     //----------TC manager-------------------------//
     class tc_manager
     {
@@ -44,7 +47,7 @@ public:
     public:
         bool _9f08_cms_off_report();
 
-        bool _9f0A_cms_dead();
+        void _9f0A_cms_opentime();
 
         class brightness_manager
         {

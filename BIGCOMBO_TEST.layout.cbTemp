@@ -104,7 +104,7 @@
 		<Cursor position="879" topLine="20" />
 	</File>
 	<File name="SMEM.cpp" open="1" top="0" tabpos="9">
-		<Cursor position="171079" topLine="5525" />
+		<Cursor position="4472" topLine="152" />
 	</File>
 	<File name="SMEM.h" open="0" top="0" tabpos="4">
 		<Cursor position="2364" topLine="40" />
@@ -124,11 +124,11 @@
 	<File name="inifile.h" open="0" top="0" tabpos="9">
 		<Cursor position="2407" topLine="24" />
 	</File>
-	<File name="junbo_cms.cpp" open="1" top="0" tabpos="2">
-		<Cursor position="12647" topLine="405" />
+	<File name="junbo_cms.cpp" open="1" top="1" tabpos="2">
+		<Cursor position="10713" topLine="330" />
 	</File>
-	<File name="junbo_cms.h" open="1" top="1" tabpos="3">
-		<Cursor position="1296" topLine="4" />
+	<File name="junbo_cms.h" open="1" top="0" tabpos="3">
+		<Cursor position="674" topLine="4" />
 	</File>
 	<File name="junbo_light_control.cpp" open="1" top="0" tabpos="14">
 		<Cursor position="28928" topLine="983" />
@@ -140,7 +140,7 @@
 		<Cursor position="549" topLine="0" />
 	</File>
 	<File name="main.cpp" open="1" top="0" tabpos="5">
-		<Cursor position="21714" topLine="321" />
+		<Cursor position="11534" topLine="259" />
 	</File>
 	<File name="power_reboot_group.cpp" open="1" top="0" tabpos="10">
 		<Cursor position="1522" topLine="15" />
@@ -149,7 +149,7 @@
 		<Cursor position="2377" topLine="77" />
 	</File>
 	<File name="protocol_9F_m_curve.h" open="1" top="0" tabpos="4">
-		<Cursor position="1315" topLine="0" />
+		<Cursor position="202" topLine="0" />
 	</File>
 	<File name="tstdlibs.h" open="0" top="0" tabpos="5">
 		<Cursor position="0" topLine="42" />

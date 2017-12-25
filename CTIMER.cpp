@@ -174,6 +174,23 @@ void intervalTimer::set_close_light_timer(int second)
     catch(...) {}
 
 }
+void intervalTimer::set_query_module_timer(int sec)
+{
+    try
+    {
+        _it7.it_value.tv_sec = sec;
+        _it7.it_value.tv_nsec = 0;
+        _it7.it_interval.tv_sec = 0;
+        _it7.it_interval.tv_nsec = 0;
+        if ( timer_settime( _t7, 0, & _it7, NULL ) ) exit( 1 );
+
+
+
+    }catch(...)
+    {
+
+    }
+}
 /*
 void intervalTimer::close_junbo_cms_light()
 {try
@@ -451,13 +468,13 @@ void intervalTimer::TimersSetting(void)
         }
         _it6.it_value.tv_sec = 10;
         _it6.it_value.tv_nsec = 0;
-        _it6.it_interval.tv_sec = 3600;
+        _it6.it_interval.tv_sec = 19600;
         _it6.it_interval.tv_nsec = 0;
         if ( timer_settime( _t6, 0, & _it6, NULL ) ) exit( 1 );
 
-        _it7.it_value.tv_sec = 2;
+        _it7.it_value.tv_sec = 0;
         _it7.it_value.tv_nsec = 0;
-        _it7.it_interval.tv_sec = 2;
+        _it7.it_interval.tv_sec = 0;
         _it7.it_interval.tv_nsec = 0;
         if ( timer_settime( _t7, 0, & _it7, NULL ) ) exit( 1 );
 
@@ -791,52 +808,23 @@ void * intervalTimer::PTime(void *arg)
 
                     printf("timer test 14\n");
 //_intervalTimer.close_junbo_cms_light();
-                    smem.record_light[1].command=smem.record_light[2].command=0xff;
+                 //   smem.record_light[1].command=smem.record_light[2].command=0xff;
                     smem.junbo_object.close_light();
 
-                      if(smem.record_light[1].command==0xff&&smem.record_light[2].command==0xff)
-                       smem.protocol_9F_object.o_CMS_mannager._9f0A_cms_dead();
 
 
                     break;
 
 
-                case( 15 ):
+                case( 15 )://
 
                 smem.junbo_object.query_modual_state();
                     break;
 
                 case( 100 ):
+              smem.junbo_object.query_modual_state();
 
-
-//SendRequestToKeypad();
-
-                    /*    Send_packet[0]='$';//STX
-                       Send_packet[1]='F';
-                        Send_packet[2]=',';//interval
-                        Send_packet[3]=0x30+0;//Reset time 0~9
-                        Send_packet[4]=0x30+5;//0~9
-                        Send_packet[5]=0x0d;//CR
-                        Send_packet[6]=0x0a;//LF
-                    printf("hello F\n");
-
-                      //  power_control_port.Rs232Write(Send_packet,7,device_name);
-                         writeJob.WritePhysicalOut(Send_packet,7,DEVICETRAFFICLIGHT);*/
-                    /* _intervalTimer.vCommuncationReset(iCommuncationResetCount);                        //default not start
-                     iCommuncationResetCount++;
-                     if(iCommuncationResetCount >= 3) iCommuncationResetCount = 0;*/
-                    //   smem.power_object.power_reset('F',5);//kaochu test test
-
-                    //  text_ID++;
-                    //    if(text_ID>4)text_ID=1;
-
-                    //     printf("textID=%d  by test\n",text_ID);
-                    // smem.junbo_object.junbo_send_by_VD(2);
-                    //  smem.junbo_object.brightness_control(text_ID);
-                    //    smem.junbo_object.query_modual_state();
-                    //smem.junbo_object.light_timeout_control(text_ID);
-                    //      smem.junbo_object.report_module_state_to_revapp();
-                    break;
+                                    break;
 
                 case( 101 ):
                     _intervalTimer.vDBLockRequest(iDBLockCount);                        //default not start
@@ -860,7 +848,7 @@ void * intervalTimer::PTime(void *arg)
 
 
                 case( 501 ):
-
+smem.protocol_9F_object._9f0b_car_calculate();
                     if(reset_count<3)
                     {
 

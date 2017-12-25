@@ -888,7 +888,7 @@ int SMEM::GetSequence(void)
         pthread_mutex_lock(&mutexSmem);
         tempSequence=sequence;
         sequence++;                                          //³Q¤H¨ú¨««á¬y¤ô¸¹­n¥[¤@
-        if (sequence>=256) sequence=0;                       //¬y¤ô¸¹¥u¦³¤@­ÓBYTE,©Ò¥H³Ì¦h¨ì255
+        if (sequence>=127) sequence=0;                       //¬y¤ô¸¹¥u¦³¤@­ÓBYTE,©Ò¥H³Ì¦h¨ì255
         pthread_mutex_unlock(&mutexSmem);
         return tempSequence;
     }

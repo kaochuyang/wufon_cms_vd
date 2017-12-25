@@ -88,7 +88,8 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                         smem.protocol_9F_object.o_VD_manager._9f07_vd_trigger_report();
 
                         _intervalTimer.set_close_light_timer(smem.light_time.light_flash_time);
-
+                        smem.junbo_object.carflow_calculate_interval();
+                        smem.junbo_object.CMS_boot_time();
                         printf("textID=%d\n",smem.light_time.text_ID);
                         smem.junbo_object.junbo_send_by_VD(smem.light_time.text_ID);
                     } //make cms light_on

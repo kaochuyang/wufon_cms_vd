@@ -580,6 +580,7 @@ bool protocol_9F_m_curve::cms_manager::_9f08_cms_off_report()
     try
     {
         _9f_object.send_to_center_2(0x9f,0x08);
+        _9f0A_cms_opentime();
     }
     catch(...) {}
 }
@@ -593,17 +594,38 @@ bool protocol_9F_m_curve::tc_manager::_9f09_tc_link_report()
     catch(...) {}
 }
 
-bool protocol_9F_m_curve::cms_manager::_9f0A_cms_dead()
+void protocol_9F_m_curve::cms_manager::_9f0A_cms_opentime()
+
 {
 
-    if(smem.record_light[1].parameter==smem.junbo_object.light_off.parameter
-                           &&smem.record_light[2].parameter==smem.junbo_object.light_off.parameter)
- _9f_object.send_to_center_2(0x9f,0x0a);
-        return true;
+try{BYTE offset=0;
+
+
+struct tm* currenttime;
+    time_t now = time(NULL);
+    currenttime = localtime(&now);
+offset=(currenttime->tm_hour-smem.cms_boot_hour)*3600+(currenttime->tm_min-smem.cms_boot_min)*60+(currenttime->tm_sec-smem.cms_boot_sec);
+smem.CMS_boot_flag=false;
+
+
+_9f_object.send_to_center_3(0x9f,0xa,offset);
+
+}catch(...){}
+
+
 
 }
 
 
+void protocol_9F_m_curve::_9f0b_car_calculate()
+{
+    try
+    {
 
+        _9f_object.send_to_center_3(0x9f,0xb,smem.junbo_object.clear_calculate_carflow());
+
+
+    }catch(...){};
+}
 
 

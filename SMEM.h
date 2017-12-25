@@ -65,14 +65,18 @@ public:
     junbo_to_light record_light[9],record_state[3][4],record_timeout[9],record_brightness[9];
 
 
- protocol_9F_m_curve protocol_9F_object;
+    protocol_9F_m_curve protocol_9F_object;
     junli_vd junli_object;
     junbo_cms junbo_object;
+    int cms_query_count;
     power_reboot_group power_object;
     RS232 power_port;
     UDP revAPP_socket;
 
     int count_vd_alive;
+    int car_flow_count;
+    float flow_hour,flow_min,flow_sec,cms_boot_hour,cms_boot_min,cms_boot_sec;
+    bool CMS_boot_flag;
     STORAGE disk;                                                           //寫檔案用
     /*OTCombo0713*/
 //        RS232 centerPort,lightPort,ssPort,keypadPort,testerPort,rtmsPort;       //交控中心,Light,SmartSensor,面板,手提測試機,RTMS
