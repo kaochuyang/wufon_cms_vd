@@ -234,12 +234,12 @@ bool protocol_9F_m_curve::tc_manager::textID_manager::_9fc0_textID_report()
             _MSG.InnerOrOutWard = cOutWard;
             writeJob.WritePhysicalOut(_MSG.packet, _MSG.packetLength, DEVICECENTER92);
             fclose(pf);
-            _9f_object.vReturnToCenterACK(0x9f,0xc0);
+           // _9f_object.vReturnToCenterACK(0x9f,0xc0);
 
         }
         else
         {
-            _9f_object.vReturnToCenterNACK(0x9f,0xc0,0x8,0x1);
+            _9f_object.vReturnToCenterNACK(0x9f,0x40,0x2,0x0);
             fclose(pf);
         }
 
@@ -378,7 +378,7 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
         _9f_object.vReturnToCenterACK(0x9f,0xc2);
         smem.vWriteMsgToDOM("9fc2 cms_module state report success\n");
       }
-        else _9f_object.vReturnToCenterNACK(0x9f,0xc2,0x2,0);
+        else _9f_object.vReturnToCenterNACK(0x9f,0x42,0x2,0);
 
         return true;
 
