@@ -482,10 +482,10 @@ void junbo_cms::carflow_calculate_interval()
         smem.flow_hour=currenttime->tm_hour;
         smem.flow_min=currenttime->tm_min;
         smem.flow_sec=currenttime->tm_sec;
-        if(timeOffset>1)
+        if(timeOffset>3)
         smem.car_flow_count++;
 
-
+printf("CAR FLOW  CLACULATE=%d\n\n",smem.car_flow_count);
 
     }
     catch(...) {}
@@ -494,10 +494,12 @@ int junbo_cms::clear_calculate_carflow()
 {
     try
     {
-        return smem.car_flow_count;
+
+printf("SENT CAR FLOW  CLACULATE=%d\n\n",smem.car_flow_count);
+       int car_flow=smem.car_flow_count;
     smem.car_flow_count=0;
 
-
+ return car_flow;
 
     }catch(...){}
 }
@@ -597,7 +599,7 @@ void junbo_cms::query_modual_state()
         int query_block=smem.cms_query_count;
 
 
-if(query_block==0)initial_module_state(&module_state_object);
+//if(query_block==0)initial_module_state(&module_state_object);
 
         unsigned char ucSendTMP[6];
         for(int ID=1; ID<3; ID++)

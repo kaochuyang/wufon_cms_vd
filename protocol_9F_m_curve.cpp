@@ -372,13 +372,13 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
         }
 
 
-         if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
-        {
+       /*  if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
+        {*/
         _9f_object.send_to_center_3(0x9f,0xc2,module_err_quan);
         _9f_object.vReturnToCenterACK(0x9f,0xc2);
         smem.vWriteMsgToDOM("9fc2 cms_module state report success\n");
-      }
-        else _9f_object.vReturnToCenterNACK(0x9f,0x42,0x2,0);
+      //}
+      //  else _9f_object.vReturnToCenterNACK(0x9f,0x42,0x2,0);
 
         return true;
 
@@ -392,12 +392,36 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9f02_moduel_act_report()
     {
 
 
+   module_err_quan=0;
+        BYTE block_test[5];
 
-        if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
+        for(int ID=1; ID<3; ID++)//lazy to modify old code
         {
+            for(int block=1; block<4; block++)
+
+            {
+
+                block_test[1]=(smem.record_state[ID][block].parameter&0x08);
+                block_test[2]=(smem.record_state[ID][block].parameter&0x04);
+                block_test[3]=(smem.record_state[ID][block].parameter&0x02);
+                block_test[4]=(smem.record_state[ID][block].parameter&0x01);
+
+                for(int i=1; i<5; i++)
+                {
+                    if(block_test[i]>0)
+                        module_err_quan++;
+
+                }
+            }
+
+        }
+
+
+    /*if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
+        {*/
             _9f_object.send_to_center_3(0x9f,0x02,module_err_quan);
         //    _9f_object.vReturnToCenterACK(0x9f,0x2);
-        }
+       // }
       //  else _9f_object.vReturnToCenterNACK(0x9f,0x2,0x2,0);
 
         return true;
@@ -580,7 +604,7 @@ bool protocol_9F_m_curve::cms_manager::_9f08_cms_off_report()
     try
     {
         _9f_object.send_to_center_2(0x9f,0x08);
-        _9f0A_cms_opentime();
+        _9f0B_cms_opentime();
     }
     catch(...) {}
 }
@@ -594,7 +618,7 @@ bool protocol_9F_m_curve::tc_manager::_9f09_tc_link_report()
     catch(...) {}
 }
 
-void protocol_9F_m_curve::cms_manager::_9f0A_cms_opentime()
+void protocol_9F_m_curve::cms_manager::_9f0B_cms_opentime()
 
 {
 
@@ -607,8 +631,8 @@ struct tm* currenttime;
 offset=(currenttime->tm_hour-smem.cms_boot_hour)*3600+(currenttime->tm_min-smem.cms_boot_min)*60+(currenttime->tm_sec-smem.cms_boot_sec);
 smem.CMS_boot_flag=false;
 
-
-_9f_object.send_to_center_3(0x9f,0xa,offset);
+printf("9f0b=%x\n",offset);
+_9f_object.send_to_center_3(0x9f,0x0b,offset);
 
 }catch(...){}
 
@@ -617,12 +641,12 @@ _9f_object.send_to_center_3(0x9f,0xa,offset);
 }
 
 
-void protocol_9F_m_curve::_9f0b_car_calculate()
+void protocol_9F_m_curve::_9f0a_car_calculate()
 {
     try
     {
 
-        _9f_object.send_to_center_3(0x9f,0xb,smem.junbo_object.clear_calculate_carflow());
+        _9f_object.send_to_center_3(0x9f,0xa,smem.junbo_object.clear_calculate_carflow());
 
 
     }catch(...){};

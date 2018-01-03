@@ -848,7 +848,7 @@ void * intervalTimer::PTime(void *arg)
 
 
                 case( 501 ):
-smem.protocol_9F_object._9f0b_car_calculate();
+smem.protocol_9F_object._9f0a_car_calculate();
                     if(reset_count<3)
                     {
 
