@@ -182,13 +182,7 @@ bool PTRAFFIC92COMM::DoWorkViaPTraffic92(MESSAGEOK message)
     {
         switch (message.packet[8])
         {
-        case 0x5a:
-         smem.power_object.report_power_reboot_to_center();
-        break;
 
-        case 0xb7:
-        smem.junbo_object.report_module_state_to_center();
-        break;
 
         case 0x10:
             vRebootIPC_0F10(message);
@@ -568,7 +562,7 @@ bool PTRAFFIC92COMM::vReportPowerOff_0F00()                                     
 bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
 {
     try
-    {
+    {printf("vSetIPCTime_0F12");
         //之前的拿掉
         bool bEnableUpdate;
         char cWriteMsgTmp[128]= {0};
@@ -635,7 +629,7 @@ bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
         _CenterTime.tm_sec = ss;
         _CenterTime.tm_isdst = -1;
         _CenterTimeSec = mktime(&_CenterTime);
-
+printf("%d %d %d %d %d %d \n",tmpYY,tmpMM,DD,hh,mm,ss);
         //得到現在時間,為了設date -s MMDDhhmmYYYY
         time_t currenttime=time(NULL);
 
@@ -657,9 +651,9 @@ bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
         {
             vReturnToCenterACK(0x0F, 0x12);
         }
-
+printf(" 123456789--------\n");
         bEnableUpdate = smem.vGetBOOLData(EnableUpdateRTC);
-        if(bEnableUpdate == true)
+        if(1)
         {
 
             smem.vSetBOOLData(EnableUpdateRTC, false);
@@ -668,14 +662,14 @@ bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
             unsigned int temphh=(now->tm_hour),tempmm=(now->tm_min);
 
             smem.vSetTimerMutexRESET(1);
-            while(smem.vGetTimerMutexCTIMER() == 0 || smem.vGetTimerMutexCSTC() == 0)
-            {
+        /*    while(smem.vGetTimerMutexCTIMER() == 0 || smem.vGetTimerMutexCSTC() == 0)
+            {*/
                 usleep(100);
 //              printf("screen data while\n");
-            }
+/*            }*/
 
-            stc.TimersRead_BeforeResetCMOSTime();  //OTBUG =1
-            _intervalTimer.TimersRead_BeforeResetCMOSTime();
+         //   stc.TimersRead_BeforeResetCMOSTime();  //OTBUG =1
+//            _intervalTimer.TimersRead_BeforeResetCMOSTime();
 
 //      smem.vSetTimerMutexRESET(1);
 //      while(smem.vGetTimerMutexCTIMER() == 0 || smem.vGetTimerMutexCSTC() == 0) {
@@ -685,7 +679,7 @@ bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
 
 //      stc.TimersRead_BeforeResetCMOSTime();  //OTBUG =1
 //      _intervalTimer.TimersRead_BeforeResetCMOSTime();
-
+printf("vSetSystemClockTime vSetSystemClockTime\n");
             smem.vSetSystemClockTime(YYYY, MM, DD, hh, mm, ss);
             /*move to smem
                   sprintf(date,"date -s %#02d%#02d%#02d%#02d%#04d",MM,DD,temphh,tempmm,YYYY);
@@ -701,8 +695,8 @@ bool PTRAFFIC92COMM::vSetIPCTime_0F12(MESSAGEOK DataMessageIn)
                   system(ctime);
             */
 
-            _intervalTimer.power_regular_reboot_resetting_for_outer();
-            stc.TimersReset_AfterResetCMOSTime();  //OTBUG =1
+          //  _intervalTimer.power_regular_reboot_resetting_for_outer();
+         //   stc.TimersReset_AfterResetCMOSTime();  //OTBUG =1
             _intervalTimer.TimersReset_AfterResetCMOSTime();
 
 //move to smem      system("hwclock -w");
@@ -1864,7 +1858,7 @@ bool PTRAFFIC92COMM::VD_CMS_reboot_0F17(BYTE second)
         BYTE data[2];
         data[0] = 0x0F;
         data[1] = 0x17;
-        smem.power_object.power_reset_all(second);
+//        smem.power_object.power_reset_all(second);
         writeJob.WritePhysicalOut(data,2,revAPP);
 
     }
