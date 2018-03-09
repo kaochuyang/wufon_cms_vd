@@ -292,7 +292,7 @@ void junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the jun
                 smem.record_brightness[ID].parameter=junbo_receive_packet[4];
             }
             else if(junbo_receive_packet[3]==0xb4)
-            {
+            {    ID=junbo_receive_packet[2];
                 //module_state_object.bit_block_ID=((junbo_receive_packet[4]>>4)&0xff);
                 smem.record_state[ID][smem.cms_query_count].ID=junbo_receive_packet[2];
                 smem.record_state[ID][smem.cms_query_count].command=junbo_receive_packet[3];//junbo_receive_packet[2]   I am ID

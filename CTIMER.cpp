@@ -849,10 +849,12 @@ void * intervalTimer::PTime(void *arg)
 
                 case( 501 ):
 smem.protocol_9F_object._9f0a_car_calculate();
+
+                    smem.count_vd_alive++;// 20180309
                     if(reset_count<3)
                     {
 
-                        smem.count_vd_alive++;
+
 
                         if(smem.count_vd_alive>30)
                         {
