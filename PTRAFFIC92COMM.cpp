@@ -1858,7 +1858,7 @@ bool PTRAFFIC92COMM::VD_CMS_reboot_0F17(BYTE second)
         BYTE data[2];
         data[0] = 0x0F;
         data[1] = 0x17;
-//        smem.power_object.power_reset_all(second);
+        smem.power_object.power_reset_all(second);
         writeJob.WritePhysicalOut(data,2,revAPP);
 
     }

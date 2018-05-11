@@ -595,7 +595,7 @@ void junbo_cms::query_modual_state()
     try
     {
 
-        if(smem.cms_query_count>=4)smem.cms_query_count=0;
+        if(smem.cms_query_count>3)smem.cms_query_count=0;
         int query_block=smem.cms_query_count;
 
 
@@ -629,15 +629,17 @@ void junbo_cms::query_modual_state()
 
 
 
-if((query_block<3)&&(query_block>=0))
+if((query_block<=2)&&(query_block>=0))
 {
     smem.cms_query_count++;
     _intervalTimer.set_query_module_timer(2);
 }
-
+else {smem.cms_query_count++;
+smem.protocol_9F_object.o_CMS_mannager.o_module._9fc2_module_report();}//20180321
+/*
 if(query_block==4){report_module_state_to_revapp();
  _intervalTimer.set_query_module_timer(0);
-}
+}*/
         printf("Send junbo light query.by query_modual_state\n");
         /*-----------------*/
     }

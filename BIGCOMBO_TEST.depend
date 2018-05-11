@@ -9056,7 +9056,7 @@
 	<iostream>
 	<fstream>
 
-1514971373 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junbo_cms.cpp
+1520586562 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/junbo_cms.cpp
 	"junbo_cms.h"
 	"SMEM.h"
 	"WRITEJOB.h"
@@ -9085,7 +9085,7 @@
 	<sys/perm.h>
 	<sys/io.h>
 
-1511404966 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/power_reboot_group.cpp
+1521193186 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/power_reboot_group.cpp
 	"power_reboot_group.h"
 	<stdio.h>
 	"SMEM.h"
@@ -9588,11 +9588,1970 @@
 	"PTRAFFIC92TC.h"
 	"PTRAFFIC92COMM.h"
 
-1514971373 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/protocol_9F_m_curve.cpp
+1520586562 source:/home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/protocol_9F_m_curve.cpp
 	"protocol_9F_m_curve.h"
 	"SMEM.h"
 	"PTRAFFIC92COMM.h"
 
 1514958569 /home/cct/Desktop/Untitled4/cms_of_chushein/wufon_chushein_project/protocol_9F_m_curve.h
 	"var.h"
+
+1503554078 source:/home/cct/桌面/wufon_chushein_project/CDataToMessageOK.cpp
+	"CDataToMessageOK.h"
+	"SMEM.h"
+	"CHexToInt.h"
+	<stdio.h>
+	<time.h>
+	<string.h>
+
+1278409714 /home/cct/桌面/wufon_chushein_project/CDataToMessageOK.h
+	"var.h"
+
+1510666020 /home/cct/桌面/wufon_chushein_project/var.h
+	<time.h>
+
+1514196092 /home/cct/桌面/wufon_chushein_project/SMEM.h
+	"var.h"
+	"STORAGE.h"
+	"RS232.h"
+	"UDP.h"
+	"junbo_light_control.h"
+	"junli_vd.h"
+	"junbo_cms.h"
+	"power_reboot_group.h"
+	"protocol_9F_m_curve.h"
+	<pthread.h>
+
+1498908954 /home/cct/桌面/wufon_chushein_project/STORAGE.h
+	"var.h"
+	"IODEVICE.h"
+	<pthread.h>
+	<stdio.h>
+
+1205475608 /home/cct/桌面/wufon_chushein_project/IODEVICE.h
+	"var.h"
+
+1205475558 /home/cct/桌面/wufon_chushein_project/RS232.h
+	"var.h"
+	"IODEVICE.h"
+	<pthread.h>
+
+1205474912 /home/cct/桌面/wufon_chushein_project/UDP.h
+	"var.h"
+	"IODEVICE.h"
+	<sys/socket.h>
+	<netinet/in.h>
+	<netdb.h>
+	<pthread.h>
+
+1499695780 /home/cct/桌面/wufon_chushein_project/junbo_light_control.h
+	"RS232.h"
+	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+	<iostream>
+	<time.h>
+	<signal.h>
+	<pthread.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"var.h"
+
+1504669406 /home/cct/桌面/wufon_chushein_project/junli_vd.h
+	"RS232.h"
+	"var.h"
+
+1514184306 /home/cct/桌面/wufon_chushein_project/junbo_cms.h
+	"var.h"
+	<stdlib.h>
+	<stdio.h>
+	<unistd.h>
+	<string.h>
+	<iostream>
+	<time.h>
+	<signal.h>
+	<pthread.h>
+	"RS232.h"
+
+1503517198 /home/cct/桌面/wufon_chushein_project/power_reboot_group.h
+	"var.h"
+	<time.h>
+	<signal.h>
+	<pthread.h>
+
+1514958568 /home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.h
+	"var.h"
+
+1205475632 /home/cct/桌面/wufon_chushein_project/CHexToInt.h
+
+1205475636 source:/home/cct/桌面/wufon_chushein_project/CHexToInt.cpp
+	"CHexToInt.h"
+	<ctype.h>
+	<stdio.h>
+	"var.h"
+
+1205475632 source:/home/cct/桌面/wufon_chushein_project/CIOCom.cpp
+	"CIOCom.h"
+	<stdio.h>
+	<sys/types.h>
+	<sys/stat.h>
+	<fcntl.h>
+	<unistd.h>
+	<stdlib.h>
+	<strings.h>
+
+1205475632 /home/cct/桌面/wufon_chushein_project/CIOCom.h
+	<termios.h>
+
+1205475630 source:/home/cct/桌面/wufon_chushein_project/CPacketCluster.cpp
+	"CPacketCluster.h"
+
+1205475630 /home/cct/桌面/wufon_chushein_project/CPacketCluster.h
+
+1222150096 source:/home/cct/桌面/wufon_chushein_project/CPhaseInfo.cpp
+	"CPhaseInfo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1222150024 /home/cct/桌面/wufon_chushein_project/CPhaseInfo.h
+	<pthread.h>
+
+1222148844 source:/home/cct/桌面/wufon_chushein_project/CPlanInfo.cpp
+	"CPlanInfo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1271925678 /home/cct/桌面/wufon_chushein_project/CPlanInfo.h
+	<pthread.h>
+
+1277114108 source:/home/cct/桌面/wufon_chushein_project/CReverseTime.cpp
+	"CReverseTime.h"
+	<stdio.h>
+	<stdlib.h>
+
+1277113610 /home/cct/桌面/wufon_chushein_project/CReverseTime.h
+	<pthread.h>
+
+1205475622 source:/home/cct/桌面/wufon_chushein_project/CRTMSDecoder.cpp
+	"CRTMSDecoder.h"
+	<string.h>
+	<stdio.h>
+
+1205475622 /home/cct/桌面/wufon_chushein_project/CRTMSDecoder.h
+	"CRTMSInformation.h"
+	"CPacketCluster.h"
+
+1205475620 /home/cct/桌面/wufon_chushein_project/CRTMSInformation.h
+	"CTarget.h"
+
+1205475616 /home/cct/桌面/wufon_chushein_project/CTarget.h
+
+1205475620 source:/home/cct/桌面/wufon_chushein_project/CRTMSInformation.cpp
+	"CRTMSInformation.h"
+	<stdio.h>
+
+1222150526 source:/home/cct/桌面/wufon_chushein_project/CSegmentInfo.cpp
+	"CSegmentInfo.h"
+	<stdio.h>
+	<stdlib.h>
+
+1222149414 /home/cct/桌面/wufon_chushein_project/CSegmentInfo.h
+	<pthread.h>
+
+1442368108 source:/home/cct/桌面/wufon_chushein_project/CSTC.cpp
+	"CSTC.h"
+	"light.h"
+	"CTools.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<unistd.h>
+	<pthread.h>
+	<signal.h>
+	<time.h>
+	<mntent.h>
+	<sstream>
+	<iomanip>
+	"screenCurrentLightStatus.h"
+	"screenStrategy.h"
+	"CTIMER.h"
+	"SCREENHWReset.h"
+	"screenRedCountHWCheckSel.h"
+
+1399517500 /home/cct/桌面/wufon_chushein_project/CSTC.h
+	<fstream>
+	"CReverseTime.h"
+	"CSegmentInfo.h"
+	"CPhaseInfo.h"
+	"CPlanInfo.h"
+	"CIOCom.h"
+	"CPacketCluster.h"
+	"CRTMSDecoder.h"
+	"CRTMSInformation.h"
+	"CTrafficAnalyzer.h"
+
+1205475612 /home/cct/桌面/wufon_chushein_project/CTrafficAnalyzer.h
+	"CTarget.h"
+
+1205475604 /home/cct/桌面/wufon_chushein_project/light.h
+
+1205475616 /home/cct/桌面/wufon_chushein_project/CTools.h
+
+1397812716 /home/cct/桌面/wufon_chushein_project/screenCurrentLightStatus.h
+	"SCREEN.h"
+
+1205475556 /home/cct/桌面/wufon_chushein_project/SCREEN.h
+	"var.h"
+
+1205475064 /home/cct/桌面/wufon_chushein_project/screenStrategy.h
+	"SCREEN.h"
+
+1514196092 /home/cct/桌面/wufon_chushein_project/CTIMER.h
+	"power_reboot_group.h"
+	<pthread.h>
+
+1205475526 /home/cct/桌面/wufon_chushein_project/SCREENHWReset.h
+	"SCREEN.h"
+	"var.h"
+
+1271666050 /home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckSel.h
+	"SCREEN.h"
+
+1276830626 source:/home/cct/桌面/wufon_chushein_project/CSTORINI.cpp
+	"CSTORINI.h"
+	<iostream>
+	<string>
+	<sstream>
+	<ctype.h>
+	<stdio.h>
+	"var.h"
+
+1276830498 /home/cct/桌面/wufon_chushein_project/CSTORINI.h
+	"inifile.h"
+
+1504689160 /home/cct/桌面/wufon_chushein_project/inifile.h
+	<map>
+	<string>
+	<string.h>
+	<wchar.h>
+
+1520583174 source:/home/cct/桌面/wufon_chushein_project/CTIMER.cpp
+	"CTIMER.h"
+	"var.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"SMEM.h"
+	"DIGITALIO.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENModifyDT.h"
+	"SCREENNone.h"
+	"SCREENOnline.h"
+	"SCREENCommStat.h"
+	"SCREENTotalRun.h"
+	"screenCurrentLightStatus.h"
+	"screenChainStatus.h"
+	"SCREENOperStat.h"
+	"screenActuateArwenStatus.h"
+	"screenReverseMenu.h"
+	<stdio.h>
+	<sys/types.h>
+	<unistd.h>
+	<stdlib.h>
+	<pthread.h>
+	<signal.h>
+	<time.h>
+	"CSTC.h"
+
+1206525060 /home/cct/桌面/wufon_chushein_project/DIGITALIO.h
+	"var.h"
+	"pthread.h"
+
+1205475502 /home/cct/桌面/wufon_chushein_project/SCREENMain.h
+	"SCREEN.h"
+
+1205475538 /home/cct/桌面/wufon_chushein_project/SCREENCtlSetup.h
+	"SCREEN.h"
+
+1205475496 /home/cct/桌面/wufon_chushein_project/SCREENModifyDT.h
+	"SCREEN.h"
+
+1205475488 /home/cct/桌面/wufon_chushein_project/SCREENNone.h
+	"SCREEN.h"
+	"var.h"
+
+1205476082 /home/cct/桌面/wufon_chushein_project/SCREENOnline.h
+	"SCREEN.h"
+	"var.h"
+
+1205475542 /home/cct/桌面/wufon_chushein_project/SCREENCommStat.h
+	"SCREEN.h"
+
+1205475062 /home/cct/桌面/wufon_chushein_project/SCREENTotalRun.h
+	"SCREEN.h"
+
+1205475552 /home/cct/桌面/wufon_chushein_project/screenChainStatus.h
+	"SCREEN.h"
+
+1322528644 /home/cct/桌面/wufon_chushein_project/SCREENOperStat.h
+	"SCREEN.h"
+
+1274672736 /home/cct/桌面/wufon_chushein_project/screenActuateArwenStatus.h
+	"SCREEN.h"
+
+1277548756 /home/cct/桌面/wufon_chushein_project/screenReverseMenu.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1205475614 source:/home/cct/桌面/wufon_chushein_project/CTools.cpp
+	<stdio.h>
+	"CTools.h"
+
+1205475618 source:/home/cct/桌面/wufon_chushein_project/CTrafficAnalyzer.cpp
+	"CTrafficAnalyzer.h"
+	<stdio.h>
+
+1231149340 source:/home/cct/桌面/wufon_chushein_project/DIGITALIO.cpp
+	"DIGITALIO.h"
+	"SMEM.h"
+	<stdio.h>
+	<sys/perm.h>
+	<sys/io.h>
+	<stdio.h>
+
+1205475610 source:/home/cct/桌面/wufon_chushein_project/DYNCTLJOB.cpp
+	"DYNCTLJOB.h"
+	"PROTOCOL.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+
+1205475608 /home/cct/桌面/wufon_chushein_project/DYNCTLJOB.h
+	"var.h"
+	"JOB.h"
+
+1205475612 /home/cct/桌面/wufon_chushein_project/JOB.h
+	"var.h"
+
+1205475588 /home/cct/桌面/wufon_chushein_project/PROTOCOL.h
+	"var.h"
+	"PTRAFFIC.h"
+	"PDEVICE.h"
+
+1278402182 /home/cct/桌面/wufon_chushein_project/PTRAFFIC.h
+	"var.h"
+	"PTRAFFIC77.h"
+	"PTRAFFIC87.h"
+	"PTRAFFIC92.h"
+	"PTRAFFICNTCIP.h"
+	"PTRAFFICCCJ.h"
+	"PTRAFFICREVSYNC.h"
+	"PTRAFFICAMEGIDS.h"
+
+1205475584 /home/cct/桌面/wufon_chushein_project/PTRAFFIC77.h
+	"var.h"
+
+1205475582 /home/cct/桌面/wufon_chushein_project/PTRAFFIC87.h
+	"var.h"
+	"PTRAFFIC87COMM.h"
+	"PTRAFFIC87TC.h"
+	"PTRAFFIC87CMS.h"
+	"PTRAFFIC87VD.h"
+
+1205475576 /home/cct/桌面/wufon_chushein_project/PTRAFFIC87COMM.h
+	"var.h"
+
+1205475580 /home/cct/桌面/wufon_chushein_project/PTRAFFIC87TC.h
+	"var.h"
+
+1205475578 /home/cct/桌面/wufon_chushein_project/PTRAFFIC87CMS.h
+	"var.h"
+
+1205475576 /home/cct/桌面/wufon_chushein_project/PTRAFFIC87VD.h
+	"var.h"
+
+1510754196 /home/cct/桌面/wufon_chushein_project/PTRAFFIC92.h
+	"var.h"
+	"PTRAFFIC92COMM.h"
+	"PTRAFFIC92TC.h"
+	"PTRAFFIC92CMS.h"
+	"PTRAFFIC92VD.h"
+	"PTRAFFIC92OTHER.h"
+
+1503309204 /home/cct/桌面/wufon_chushein_project/PTRAFFIC92COMM.h
+	"var.h"
+	"SMEM.h"
+
+1503535906 /home/cct/桌面/wufon_chushein_project/PTRAFFIC92TC.h
+	"var.h"
+	"SMEM.h"
+
+1205475574 /home/cct/桌面/wufon_chushein_project/PTRAFFIC92CMS.h
+	"var.h"
+	"SMEM.h"
+
+1205475564 /home/cct/桌面/wufon_chushein_project/PTRAFFIC92VD.h
+	"var.h"
+	"SMEM.h"
+
+1205475566 /home/cct/桌面/wufon_chushein_project/PTRAFFIC92OTHER.h
+	"var.h"
+	"SMEM.h"
+
+1205475560 /home/cct/桌面/wufon_chushein_project/PTRAFFICNTCIP.h
+	"var.h"
+
+1305527624 /home/cct/桌面/wufon_chushein_project/PTRAFFICCCJ.h
+	"var.h"
+	"SMEM.h"
+
+1276832230 /home/cct/桌面/wufon_chushein_project/PTRAFFICREVSYNC.h
+	"var.h"
+
+1278409544 /home/cct/桌面/wufon_chushein_project/PTRAFFICAMEGIDS.h
+	"var.h"
+	"SMEM.h"
+
+1236325982 /home/cct/桌面/wufon_chushein_project/PDEVICE.h
+	"var.h"
+	"PDEVICESS.h"
+	"PDEVICERTMS.h"
+	"PDEVICEKEYPAD.h"
+	"PDEVICETRAFFICLIGHT.h"
+	"PDEVICEREVMANUALPAD.h"
+
+1205475590 /home/cct/桌面/wufon_chushein_project/PDEVICESS.h
+	"var.h"
+
+1205475590 /home/cct/桌面/wufon_chushein_project/PDEVICERTMS.h
+	"var.h"
+
+1279186236 /home/cct/桌面/wufon_chushein_project/PDEVICEKEYPAD.h
+	"var.h"
+
+1459144422 /home/cct/桌面/wufon_chushein_project/PDEVICETRAFFICLIGHT.h
+	"var.h"
+
+1236673852 /home/cct/桌面/wufon_chushein_project/PDEVICEREVMANUALPAD.h
+	"var.h"
+
+1268564102 source:/home/cct/桌面/wufon_chushein_project/inifile.cpp
+	"inifile.h"
+	<algorithm>
+	<iostream>
+	<fstream>
+
+1205475608 source:/home/cct/桌面/wufon_chushein_project/IODEVICE.cpp
+	"IODEVICE.h"
+
+1205475610 source:/home/cct/桌面/wufon_chushein_project/JOB.cpp
+	"JOB.h"
+
+1503535514 source:/home/cct/桌面/wufon_chushein_project/junbo_light_control.cpp
+	"junbo_light_control.h"
+	"SMEM.h"
+
+1514184306 source:/home/cct/桌面/wufon_chushein_project/junli_vd.cpp
+	"junli_vd.h"
+	"SMEM.h"
+	<string.h>
+	<time.h>
+	<stdio.h>
+	<signal.h>
+	<unistd.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+
+1404792418 source:/home/cct/桌面/wufon_chushein_project/LCD240x128.cpp
+	"LCD240x128.h"
+	<stdio.h>
+	<sys/perm.h>
+	<sys/io.h>
+
+1293761418 /home/cct/桌面/wufon_chushein_project/LCD240x128.h
+	"pthread.h"
+
+1205475604 source:/home/cct/桌面/wufon_chushein_project/light.cpp
+	"light.h"
+	<unistd.h>
+	<sys/perm.h>
+	<sys/io.h>
+
+1511320856 source:/home/cct/桌面/wufon_chushein_project/main.cpp
+	"var.h"
+	"SMEM.h"
+	"PARSETRAFFIC.h"
+	"PARSERTMS.h"
+	"PARSENMEA.h"
+	"PARSESS.h"
+	"READJOB.h"
+	"WRITEJOB.h"
+	"LCD240x128.h"
+	"DIGITALIO.h"
+	"CTIMER.h"
+	"CDataToMessageOK.h"
+	"SCREENLogo.h"
+	"STORAGE.h"
+	<stdio.h>
+	<string.h>
+	<unistd.h>
+	<pthread.h>
+	"CSTC.h"
+	"CSTORINI.h"
+	"PTRAFFIC92TC.h"
+	"PTRAFFIC92COMM.h"
+
+1309140270 /home/cct/桌面/wufon_chushein_project/PARSETRAFFIC.h
+	"var.h"
+	"PARSE.h"
+
+1205475600 /home/cct/桌面/wufon_chushein_project/PARSE.h
+	"var.h"
+
+1205475598 /home/cct/桌面/wufon_chushein_project/PARSERTMS.h
+	"var.h"
+	"PARSE.h"
+
+1207115134 /home/cct/桌面/wufon_chushein_project/PARSENMEA.h
+	"var.h"
+	"PARSE.h"
+
+1205475596 /home/cct/桌面/wufon_chushein_project/PARSESS.h
+	"var.h"
+	"CHexToInt.h"
+
+1205475498 /home/cct/桌面/wufon_chushein_project/SCREENLogo.h
+	"SCREEN.h"
+	"var.h"
+
+1205475602 source:/home/cct/桌面/wufon_chushein_project/PARSE.cpp
+	"PARSE.h"
+
+1450062720 source:/home/cct/桌面/wufon_chushein_project/PARSENMEA.cpp
+	"PARSENMEA.h"
+	"SMEM.h"
+	"CTIMER.h"
+	"CSTC.h"
+	"SCREENOperStat.h"
+	"CHexToInt.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<unistd.h>
+
+1205475600 source:/home/cct/桌面/wufon_chushein_project/PARSERTMS.cpp
+	"PARSERTMS.h"
+
+1205475598 source:/home/cct/桌面/wufon_chushein_project/PARSESS.cpp
+	"PARSESS.h"
+	<stdio.h>
+	<string.h>
+
+1316670168 source:/home/cct/桌面/wufon_chushein_project/PARSETRAFFIC.cpp
+	"PARSETRAFFIC.h"
+	"SMEM.h"
+	<stdio.h>
+	<string.h>
+	"screenCurrentCommPacket.h"
+
+1205475540 /home/cct/桌面/wufon_chushein_project/screenCurrentCommPacket.h
+	"SCREEN.h"
+
+1246502996 source:/home/cct/桌面/wufon_chushein_project/PARSEV3.cpp
+	"PARSEV3.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	<stdio.h>
+	<string.h>
+
+1245834160 /home/cct/桌面/wufon_chushein_project/PARSEV3.h
+	"var.h"
+	"PARSE.h"
+
+1236325982 source:/home/cct/桌面/wufon_chushein_project/PDEVICE.cpp
+	"PDEVICE.h"
+
+1503533812 source:/home/cct/桌面/wufon_chushein_project/PDEVICEKEYPAD.cpp
+	"PDEVICEKEYPAD.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"SCREENNone.h"
+	"SCREENLogo.h"
+	"SCREENLogin.h"
+	"SCREENLoginErr.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENCtlNo.h"
+	"SCREENLastDown.h"
+	"SCREENModifyDT.h"
+	"SCREENFWVerDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENOperStat.h"
+	"SCREENOperMode.h"
+	"SCREENCommStat.h"
+	"SCREENSendCycle.h"
+	"SCREENUpdateDB.h"
+	"SCREENOnline.h"
+	"SCREENOffline.h"
+	"SCREENLockdb.h"
+	"SCREENTotalRun.h"
+	"SCREENABOErr.h"
+	"SCREENCmdSet.h"
+	"SCREENHWReset.h"
+	"SCREENLcnEncode.h"
+	"screenPlan.h"
+	"screenWeekDay.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"screenSpecialDay.h"
+	"screenSegtypeSel.h"
+	"screenRunTableList.h"
+	"screenStrategy.h"
+	"screenRTMSInfo.h"
+	"screenCurrentLightStatus.h"
+	"screenCurrentCommPacket.h"
+	"screenRedCountHWCheck.h"
+	"screenRedCountHWCheckSel.h"
+	"screenRedCountMenu.h"
+	"screenRedCountHWVerMenu.h"
+	"SCREENRedCountMap.h"
+	"screenReverseMenu.h"
+	"screenReverse.h"
+	"screenRevWeekDay.h"
+	"screenRevSpecialDay.h"
+	"screenActuateEdit.h"
+	"screenPassModeSet.h"
+	"SCREENDirMap.h"
+	"screenDirLightBoardMappingMenu.h"
+	"SCREENLightBoardMap.h"
+	"screenPlanEditF2.h"
+	"screenSegtypeEditF2.h"
+	"screenWeekDayEditF2.h"
+	"screenSpecialDayView.h"
+	"screenSpecialDayEditF2.h"
+	"screenPhasePreview.h"
+	"screenSegtypePreview.h"
+	"screenPlanPreview.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"screenChainMenu.h"
+	"screenMotherChainSet.h"
+	"screenChildChainSet.h"
+	"screenChainStatus.h"
+	"screenLightPreview.h"
+	"screenLightEdit.h"
+	"SCREENNetworkSetConfirm.h"
+	"SCREENNetworkSet.h"
+	"SCREENNetmaskSet.h"
+	"SCREENMBSelect.h"
+	"SCREENUart2.h"
+	"SCREENWarning.h"
+	"SCREENTFDStatus.h"
+	"screenRedCountHWCheckDevID.h"
+	"screenRedCountHWCheckCycleNum.h"
+	"screenRedCountHWCheckNum88.h"
+	"screenRailwayChainSet.h"
+	"screenActuateArwenStatus.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"unistd.h"
+	<stdio.h>
+
+1205475500 /home/cct/桌面/wufon_chushein_project/SCREENLogin.h
+	"SCREEN.h"
+
+1205475498 /home/cct/桌面/wufon_chushein_project/SCREENLoginErr.h
+	"SCREEN.h"
+
+1205475540 /home/cct/桌面/wufon_chushein_project/SCREENCtlNo.h
+	"SCREEN.h"
+
+1205475518 /home/cct/桌面/wufon_chushein_project/SCREENLastDown.h
+	"SCREEN.h"
+
+1245746724 /home/cct/桌面/wufon_chushein_project/SCREENFWVerDT.h
+	"SCREEN.h"
+	"var.h"
+
+1205475532 /home/cct/桌面/wufon_chushein_project/SCREENHWCycle.h
+	"SCREEN.h"
+
+1205475492 /home/cct/桌面/wufon_chushein_project/SCREENModifyPWD.h
+	"SCREEN.h"
+
+1205475534 /home/cct/桌面/wufon_chushein_project/SCREENDBSetup.h
+	"SCREEN.h"
+
+1205475274 /home/cct/桌面/wufon_chushein_project/SCREENOperMode.h
+	"SCREEN.h"
+
+1205475072 /home/cct/桌面/wufon_chushein_project/SCREENSendCycle.h
+	"SCREEN.h"
+
+1205475638 /home/cct/桌面/wufon_chushein_project/SCREENUpdateDB.h
+	"SCREEN.h"
+
+1205475482 /home/cct/桌面/wufon_chushein_project/SCREENOffline.h
+	"SCREEN.h"
+	"var.h"
+
+1205475512 /home/cct/桌面/wufon_chushein_project/SCREENLockdb.h
+	"SCREEN.h"
+	"var.h"
+
+1205475554 /home/cct/桌面/wufon_chushein_project/SCREENABOErr.h
+	"SCREEN.h"
+	"var.h"
+
+1205475544 /home/cct/桌面/wufon_chushein_project/SCREENCmdSet.h
+	"SCREEN.h"
+	"var.h"
+
+1205475516 /home/cct/桌面/wufon_chushein_project/SCREENLcnEncode.h
+	"SCREEN.h"
+
+1205475270 /home/cct/桌面/wufon_chushein_project/screenPlan.h
+	"SCREEN.h"
+
+1205474960 /home/cct/桌面/wufon_chushein_project/screenWeekDay.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475214 /home/cct/桌面/wufon_chushein_project/screenSegtype.h
+	"SCREEN.h"
+
+1205475080 /home/cct/桌面/wufon_chushein_project/screenSegtypeMenu.h
+	"SCREEN.h"
+
+1205475070 /home/cct/桌面/wufon_chushein_project/screenSpecialDay.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475074 /home/cct/桌面/wufon_chushein_project/screenSegtypeSel.h
+	"SCREEN.h"
+
+1205475212 /home/cct/桌面/wufon_chushein_project/screenRunTableList.h
+	"SCREEN.h"
+
+1205475214 /home/cct/桌面/wufon_chushein_project/screenRTMSInfo.h
+	"SCREEN.h"
+
+1205475242 /home/cct/桌面/wufon_chushein_project/screenRedCountHWCheck.h
+	"SCREEN.h"
+
+1205475232 /home/cct/桌面/wufon_chushein_project/screenRedCountMenu.h
+	"SCREEN.h"
+
+1205475238 /home/cct/桌面/wufon_chushein_project/screenRedCountHWVerMenu.h
+	"SCREEN.h"
+
+1205475234 /home/cct/桌面/wufon_chushein_project/SCREENRedCountMap.h
+	"SCREEN.h"
+
+1205475228 /home/cct/桌面/wufon_chushein_project/screenReverse.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1205475216 /home/cct/桌面/wufon_chushein_project/screenRevWeekDay.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1205475218 /home/cct/桌面/wufon_chushein_project/screenRevSpecialDay.h
+	"SCREEN.h"
+	"CReverseTime.h"
+
+1252656626 /home/cct/桌面/wufon_chushein_project/screenActuateEdit.h
+	"SCREEN.h"
+
+1205475266 /home/cct/桌面/wufon_chushein_project/screenPassModeSet.h
+	"SCREEN.h"
+
+1205475532 /home/cct/桌面/wufon_chushein_project/SCREENDirMap.h
+	"SCREEN.h"
+
+1205475534 /home/cct/桌面/wufon_chushein_project/screenDirLightBoardMappingMenu.h
+	"SCREEN.h"
+
+1205475518 /home/cct/桌面/wufon_chushein_project/SCREENLightBoardMap.h
+	"SCREEN.h"
+
+1205475254 /home/cct/桌面/wufon_chushein_project/screenPlanEditF2.h
+	"SCREEN.h"
+
+1205475088 /home/cct/桌面/wufon_chushein_project/screenSegtypeEditF2.h
+	"SCREEN.h"
+
+1205474964 /home/cct/桌面/wufon_chushein_project/screenWeekDayEditF2.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475066 /home/cct/桌面/wufon_chushein_project/screenSpecialDayView.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475066 /home/cct/桌面/wufon_chushein_project/screenSpecialDayEditF2.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475264 /home/cct/桌面/wufon_chushein_project/screenPhasePreview.h
+	"SCREEN.h"
+	"CSegmentInfo.h"
+
+1205475078 /home/cct/桌面/wufon_chushein_project/screenSegtypePreview.h
+	"SCREEN.h"
+
+1205475260 /home/cct/桌面/wufon_chushein_project/screenPlanPreview.h
+	"SCREEN.h"
+
+1205475526 /home/cct/桌面/wufon_chushein_project/SCREENLast92TCPlanSegmentUpdate.h
+	"SCREEN.h"
+
+1205475550 /home/cct/桌面/wufon_chushein_project/screenChainMenu.h
+	"SCREEN.h"
+
+1205475496 /home/cct/桌面/wufon_chushein_project/screenMotherChainSet.h
+	"SCREEN.h"
+
+1205475548 /home/cct/桌面/wufon_chushein_project/screenChildChainSet.h
+	"SCREEN.h"
+
+1205475502 /home/cct/桌面/wufon_chushein_project/screenLightPreview.h
+	"SCREEN.h"
+
+1205475514 /home/cct/桌面/wufon_chushein_project/screenLightEdit.h
+	"SCREEN.h"
+
+1319080670 /home/cct/桌面/wufon_chushein_project/SCREENNetworkSetConfirm.h
+	"SCREEN.h"
+	"var.h"
+
+1300706176 /home/cct/桌面/wufon_chushein_project/SCREENNetworkSet.h
+	"SCREEN.h"
+
+1319079468 /home/cct/桌面/wufon_chushein_project/SCREENNetmaskSet.h
+	"SCREEN.h"
+
+1207036714 /home/cct/桌面/wufon_chushein_project/SCREENMBSelect.h
+	"SCREEN.h"
+
+1207039950 /home/cct/桌面/wufon_chushein_project/SCREENUart2.h
+	"SCREEN.h"
+
+1207038584 /home/cct/桌面/wufon_chushein_project/SCREENWarning.h
+	"SCREEN.h"
+
+1213696576 /home/cct/桌面/wufon_chushein_project/SCREENTFDStatus.h
+	"SCREEN.h"
+	"var.h"
+
+1228634790 /home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckDevID.h
+	"SCREEN.h"
+
+1228637428 /home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckCycleNum.h
+	"SCREEN.h"
+
+1228637428 /home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckNum88.h
+	"SCREEN.h"
+
+1322710152 /home/cct/桌面/wufon_chushein_project/screenRailwayChainSet.h
+	"SCREEN.h"
+
+1238394212 source:/home/cct/桌面/wufon_chushein_project/PDEVICEREVMANUALPAD.cpp
+	"PDEVICEREVMANUALPAD.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"unistd.h"
+	<stdio.h>
+
+1205475592 source:/home/cct/桌面/wufon_chushein_project/PDEVICERTMS.cpp
+	"PDEVICERTMS.h"
+
+1218795120 source:/home/cct/桌面/wufon_chushein_project/PDEVICESS.cpp
+	"PDEVICESS.h"
+	"CHexToInt.h"
+	"CDataToMessageOK.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	<string.h>
+
+1459144368 source:/home/cct/桌面/wufon_chushein_project/PDEVICETRAFFICLIGHT.cpp
+	"PDEVICETRAFFICLIGHT.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"CSTORINI.h"
+	<stdio.h>
+
+1521193186 source:/home/cct/桌面/wufon_chushein_project/power_reboot_group.cpp
+	"power_reboot_group.h"
+	<stdio.h>
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+
+1511320858 source:/home/cct/桌面/wufon_chushein_project/PROTOCOL.cpp
+	"PROTOCOL.h"
+
+1521611193 source:/home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.cpp
+	"protocol_9F_m_curve.h"
+	"SMEM.h"
+	"PTRAFFIC92COMM.h"
+
+1511320858 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC.cpp
+	"PTRAFFIC.h"
+
+1205475584 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC77.cpp
+	"PTRAFFIC77.h"
+
+1205475586 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC87.cpp
+	"PTRAFFIC87.h"
+
+1205475580 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC87CMS.cpp
+	"PTRAFFIC87CMS.h"
+
+1205475578 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC87COMM.cpp
+	"PTRAFFIC87COMM.h"
+
+1205475578 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC87TC.cpp
+	"PTRAFFIC87TC.h"
+
+1205475576 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC87VD.cpp
+	"PTRAFFIC87VD.h"
+
+1511255274 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92.cpp
+	"PTRAFFIC92.h"
+	"WRITEJOB.h"
+	"SMEM.h"
+
+1205475570 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92CMS.cpp
+	"PTRAFFIC92CMS.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1521193304 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92COMM.cpp
+	"PTRAFFIC92COMM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"SCREENOnline.h"
+	"SCREENHWReset.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"READJOB.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1205475566 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92OTHER.cpp
+	"PTRAFFIC92OTHER.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1503535906 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92TC.cpp
+	"PTRAFFIC92TC.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"CTools.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CTIMER.h"
+
+1205475568 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92VD.cpp
+	"PTRAFFIC92VD.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1322472908 source:/home/cct/桌面/wufon_chushein_project/PTRAFFICAMEGIDS.cpp
+	"PTRAFFICAMEGIDS.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"CTools.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CTIMER.h"
+
+1387960444 source:/home/cct/桌面/wufon_chushein_project/PTRAFFICCCJ.cpp
+	"PTRAFFICCCJ.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CTIMER.h"
+	"DIGITALIO.h"
+	"CHexToInt.h"
+	"CSTC.h"
+	"CTools.h"
+	"SCREENTFDStatus.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CTIMER.h"
+	"CPlanInfo.h"
+	"CPhaseInfo.h"
+	"CSegmentInfo.h"
+
+1205475562 source:/home/cct/桌面/wufon_chushein_project/PTRAFFICNTCIP.cpp
+	"PTRAFFICNTCIP.h"
+
+1277687004 source:/home/cct/桌面/wufon_chushein_project/PTRAFFICREVSYNC.cpp
+	"PTRAFFICREVSYNC.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CSTC.h"
+	"unistd.h"
+	<stdio.h>
+	<math.h>
+
+1316662722 source:/home/cct/桌面/wufon_chushein_project/RS232.cpp
+	"RS232.h"
+	<stdio.h>
+	<fcntl.h>
+	<termios.h>
+	<unistd.h>
+	<string.h>
+
+1205475558 source:/home/cct/桌面/wufon_chushein_project/SCREEN.cpp
+	"SCREEN.h"
+	"LCD240x128.h"
+	<stdio.h>
+	<string.h>
+
+1218795166 source:/home/cct/桌面/wufon_chushein_project/SCREENABOErr.cpp
+	"SCREENABOErr.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENModifyDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENSendCycle.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	<stdio.h>
+
+1322474924 source:/home/cct/桌面/wufon_chushein_project/screenActuateArwenStatus.cpp
+	"screenActuateArwenStatus.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"SMEM.h"
+
+1392098130 source:/home/cct/桌面/wufon_chushein_project/screenActuateEdit.cpp
+	"screenActuateEdit.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+	<string.h>
+
+1234745682 source:/home/cct/桌面/wufon_chushein_project/screenChainMenu.cpp
+	"screenChainMenu.h"
+	"screenMotherChainSet.h"
+	"screenChildChainSet.h"
+	"screenRailwayChainSet.h"
+	<stdio.h>
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+
+1233888366 source:/home/cct/桌面/wufon_chushein_project/screenChainStatus.cpp
+	"screenChainStatus.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475548 source:/home/cct/桌面/wufon_chushein_project/screenChildChainSet.cpp
+	"screenChildChainSet.h"
+	"SCREENMain.h"
+	"screenChainMenu.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1221552410 source:/home/cct/桌面/wufon_chushein_project/SCREENCmdSet.cpp
+	"SCREENCmdSet.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENFWVerDT.h"
+	"SCREENLockdb.h"
+	<stdio.h>
+
+1245806918 source:/home/cct/桌面/wufon_chushein_project/SCREENCommStat.cpp
+	"SCREENCommStat.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENHWReset.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"DIGITALIO.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CSTC.h"
+	"WRITEJOB.h"
+
+1205475544 source:/home/cct/桌面/wufon_chushein_project/SCREENCtlNo.cpp
+	"SCREENCtlNo.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENABOErr.h"
+	"SCREENLcnEncode.h"
+
+1226891724 source:/home/cct/桌面/wufon_chushein_project/SCREENCtlSetup.cpp
+	"SCREENCtlSetup.h"
+	"SCREENMain.h"
+	"SCREENCtlNo.h"
+	"SCREENLastDown.h"
+	"SCREENModifyDT.h"
+	"SCREENFWVerDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENOperStat.h"
+	"SCREENOperMode.h"
+	"SCREENCommStat.h"
+	"SCREENTotalRun.h"
+	"screenCurrentCommPacket.h"
+	"screenPassModeSet.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	<time.h>
+
+1205475538 source:/home/cct/桌面/wufon_chushein_project/screenCurrentCommPacket.cpp
+	"screenCurrentCommPacket.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"CSTC.h"
+	"SCREENNetworkSet.h"
+	<stdio.h>
+	<string.h>
+	"SMEM.h"
+
+1397815050 source:/home/cct/桌面/wufon_chushein_project/screenCurrentLightStatus.cpp
+	"screenCurrentLightStatus.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1457061456 source:/home/cct/桌面/wufon_chushein_project/SCREENDBSetup.cpp
+	"SCREENDBSetup.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"SCREENABOErr.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475536 source:/home/cct/桌面/wufon_chushein_project/screenDirLightBoardMappingMenu.cpp
+	"screenDirLightBoardMappingMenu.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+	"SCREENDirMap.h"
+	"SCREENLightBoardMap.h"
+
+1205475532 source:/home/cct/桌面/wufon_chushein_project/SCREENDirMap.cpp
+	"SCREENDirMap.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"screenDirLightBoardMappingMenu.h"
+
+1245748050 source:/home/cct/桌面/wufon_chushein_project/SCREENFWVerDT.cpp
+	"SCREENFWVerDT.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENCmdSet.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"stdlib.h"
+
+1207035582 source:/home/cct/桌面/wufon_chushein_project/SCREENHWCycle.cpp
+	"SCREENHWCycle.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"SCREENABOErr.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475636 source:/home/cct/桌面/wufon_chushein_project/SCREENHWReset.cpp
+	"SCREENHWReset.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475522 source:/home/cct/桌面/wufon_chushein_project/SCREENLast92TCPlanSegmentUpdate.cpp
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475520 source:/home/cct/桌面/wufon_chushein_project/SCREENLastDown.cpp
+	"SCREENLastDown.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475516 source:/home/cct/桌面/wufon_chushein_project/SCREENLcnEncode.cpp
+	"SCREENLcnEncode.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENCtlNo.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENLockdb.h"
+
+1205475516 source:/home/cct/桌面/wufon_chushein_project/SCREENLightBoardMap.cpp
+	"SCREENLightBoardMap.h"
+	"screenDirLightBoardMappingMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1304038810 source:/home/cct/桌面/wufon_chushein_project/screenLightEdit.cpp
+	"screenLightEdit.h"
+	"screenSegtype.h"
+	"screenSegtypeEditF2.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPlan.h"
+	"screenLightPreview.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475512 source:/home/cct/桌面/wufon_chushein_project/screenLightPreview.cpp
+	"screenLightPreview.h"
+	"screenSegtype.h"
+	"screenSegtypeEditF2.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPlan.h"
+	"screenLightEdit.h"
+	<stdio.h>
+	"SMEM.h"
+
+1218795212 source:/home/cct/桌面/wufon_chushein_project/SCREENLockdb.cpp
+	"SCREENLockdb.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENModifyDT.h"
+	"SCREENHWCycle.h"
+	"SCREENModifyPWD.h"
+	"SCREENDBSetup.h"
+	"SCREENSendCycle.h"
+	"SCREENCmdSet.h"
+	"SCREENLcnEncode.h"
+	"SCREENMain.h"
+	<stdio.h>
+
+1234868618 source:/home/cct/桌面/wufon_chushein_project/SCREENLogin.cpp
+	<string.h>
+	<stdlib.h>
+	"SCREENLogin.h"
+	"SCREENLoginErr.h"
+	"SCREENLogo.h"
+	"SCREENOnline.h"
+	"SCREENOffline.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENMain.h"
+
+1205475500 source:/home/cct/桌面/wufon_chushein_project/SCREENLoginErr.cpp
+	"SCREENLoginErr.h"
+	"SCREENLogo.h"
+	"SCREENLogin.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1218792030 source:/home/cct/桌面/wufon_chushein_project/SCREENLogo.cpp
+	"SCREENLogo.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENLogin.h"
+	<stdio.h>
+	<stdlib.h>
+
+1226891724 source:/home/cct/桌面/wufon_chushein_project/SCREENMain.cpp
+	"SCREENMain.h"
+	"SCREENLogo.h"
+	"SCREENCtlSetup.h"
+	"SCREENSendCycle.h"
+	"SCREENUpdateDB.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"screenSegtypeMenu.h"
+	"screenSegtype.h"
+	"screenPlan.h"
+	"screenRunTableList.h"
+	"screenRTMSInfo.h"
+	"screenRedCountMenu.h"
+	"screenReverseMenu.h"
+	"screenActuateEdit.h"
+	"SCREENDirMap.h"
+	"screenDirLightBoardMappingMenu.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+	"screenChainMenu.h"
+	<time.h>
+
+1207040630 source:/home/cct/桌面/wufon_chushein_project/SCREENMBSelect.cpp
+	"SCREENMBSelect.h"
+	"SCREENMain.h"
+	"SCREENOperStat.h"
+	"SCREENLockdb.h"
+	"SCREENWarning.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1249897590 source:/home/cct/桌面/wufon_chushein_project/SCREENModifyDT.cpp
+	"SCREENModifyDT.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	<unistd.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475494 source:/home/cct/桌面/wufon_chushein_project/SCREENModifyPWD.cpp
+	"SCREENModifyPWD.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"SCREENLockdb.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475494 source:/home/cct/桌面/wufon_chushein_project/screenMotherChainSet.cpp
+	"screenMotherChainSet.h"
+	"SCREENMain.h"
+	"screenChainMenu.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1319438126 source:/home/cct/桌面/wufon_chushein_project/SCREENNetmaskSet.cpp
+	"SCREENNetworkSet.h"
+	"SCREENNetmaskSet.h"
+	"SCREENNetworkSetConfirm.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1319089222 source:/home/cct/桌面/wufon_chushein_project/SCREENNetworkSet.cpp
+	"SCREENNetworkSet.h"
+	"SCREENNetmaskSet.h"
+	"SCREENNetworkSetConfirm.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1319080806 source:/home/cct/桌面/wufon_chushein_project/SCREENNetworkSetConfirm.cpp
+	"SCREENNetworkSetConfirm.h"
+	"SCREENNetworkSet.h"
+	"SCREENHWReset.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"DIGITALIO.h"
+	"CSTC.h"
+	"WRITEJOB.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+
+1205475484 source:/home/cct/桌面/wufon_chushein_project/SCREENNone.cpp
+	"SCREENNone.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENLogo.h"
+
+1205475492 source:/home/cct/桌面/wufon_chushein_project/SCREENOffline.cpp
+	"SCREENOffline.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"SCREENLogo.h"
+
+1205476066 source:/home/cct/桌面/wufon_chushein_project/SCREENOnline.cpp
+	"SCREENOnline.h"
+	"SCREENLogo.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475274 source:/home/cct/桌面/wufon_chushein_project/SCREENOperMode.cpp
+	"SCREENOperMode.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1322528660 source:/home/cct/桌面/wufon_chushein_project/SCREENOperStat.cpp
+	"SCREENOperStat.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENMBSelect.h"
+	"SCREENUart2.h"
+	<string.h>
+
+1205475270 source:/home/cct/桌面/wufon_chushein_project/screenPassModeSet.cpp
+	"screenPassModeSet.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+	<string.h>
+
+1322472818 source:/home/cct/桌面/wufon_chushein_project/screenPhasePreview.cpp
+	"screenPhasePreview.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"screenPlanEditF2.h"
+	"screenPlan.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1234864344 source:/home/cct/桌面/wufon_chushein_project/screenPlan.cpp
+	"screenPlan.h"
+	"screenSegtype.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPlanEditF2.h"
+	"screenPhasePreview.h"
+	"screenLightPreview.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475262 source:/home/cct/桌面/wufon_chushein_project/screenPlanEdit0523.cpp
+	"screenPlanEdit0523.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475258 /home/cct/桌面/wufon_chushein_project/screenPlanEdit0523.h
+	"SCREEN.h"
+
+1322472860 source:/home/cct/桌面/wufon_chushein_project/screenPlanEditF2.cpp
+	"screenPlanEditF2.h"
+	"screenPlan.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"screenPhasePreview.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475256 source:/home/cct/桌面/wufon_chushein_project/screenPlanPreview.cpp
+	"screenPlanPreview.h"
+	"screenSegtype.h"
+	"screenSegtypeEditF2.h"
+	"screenRunTableList.h"
+	"SCREENMain.h"
+	"screenWeekDay.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1322790570 source:/home/cct/桌面/wufon_chushein_project/screenRailwayChainSet.cpp
+	"screenRailwayChainSet.h"
+	"SCREENMain.h"
+	"screenChainMenu.h"
+	"SMEM.h"
+	"LCD240x128.h"
+	"CTIMER.h"
+	"CSTC.h"
+	<stdio.h>
+	<stdlib.h>
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"CSTORINI.h"
+
+1278409714 source:/home/cct/桌面/wufon_chushein_project/screenRedCountHWCheck.cpp
+	"screenRedCountHWCheck.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"screenRedCountMenu.h"
+	"screenRedCountHWCheckSel.h"
+	<stdio.h>
+	"SMEM.h"
+
+1278409714 source:/home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckCycleNum.cpp
+	"screenRedCountHWCheckCycleNum.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	"SMEM.h"
+
+1278409714 source:/home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckDevID.cpp
+	"screenRedCountHWCheckDevID.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	"SMEM.h"
+
+1278409714 source:/home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckNum88.cpp
+	"screenRedCountHWCheckNum88.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	<stdio.h>
+	"SMEM.h"
+
+1271667464 source:/home/cct/桌面/wufon_chushein_project/screenRedCountHWCheckSel.cpp
+	"screenRedCountHWCheckSel.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRedCountHWCheck.h"
+	"screenRedCountMenu.h"
+	<stdio.h>
+	"SMEM.h"
+
+1271924422 source:/home/cct/桌面/wufon_chushein_project/screenRedCountHWVerMenu.cpp
+	"screenRedCountHWVerMenu.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	<stdlib.h>
+	"CSTC.h"
+	"WRITEJOB.h"
+	"SMEM.h"
+	"screenRedCountMenu.h"
+	"SCREENHWReset.h"
+
+1205475236 source:/home/cct/桌面/wufon_chushein_project/SCREENRedCountMap.cpp
+	"SCREENRedCountMap.h"
+	"SCREENMain.h"
+	"screenRedCountMenu.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1228637042 source:/home/cct/桌面/wufon_chushein_project/screenRedCountMenu.cpp
+	"screenRedCountMenu.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"CSTC.h"
+	"SMEM.h"
+	"screenRedCountHWCheckSel.h"
+	"screenRedCountHWVerMenu.h"
+	"SCREENRedCountMap.h"
+	"screenRedCountHWCheckDevID.h"
+	"screenRedCountHWCheckNum88.h"
+	"screenRedCountHWCheckCycleNum.h"
+
+1455765084 source:/home/cct/桌面/wufon_chushein_project/screenReverse.cpp
+	"screenReverse.h"
+	"screenReverseMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1277549574 source:/home/cct/桌面/wufon_chushein_project/screenReverseMenu.cpp
+	"screenReverseMenu.h"
+	<stdio.h>
+	"screenRevWeekDay.h"
+	"screenRevSpecialDay.h"
+	"CSTC.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+
+1205475216 source:/home/cct/桌面/wufon_chushein_project/screenRevSpecialDay.cpp
+	"screenRevSpecialDay.h"
+	"screenReverse.h"
+	"screenReverseMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475226 source:/home/cct/桌面/wufon_chushein_project/screenRevWeekDay.cpp
+	"screenRevWeekDay.h"
+	"SCREENMain.h"
+	"screenReverse.h"
+	"screenReverseMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475214 source:/home/cct/桌面/wufon_chushein_project/screenRTMSInfo.cpp
+	"screenRTMSInfo.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	<stdio.h>
+	"SMEM.h"
+
+1274666210 source:/home/cct/桌面/wufon_chushein_project/screenRunTableList.cpp
+	"screenRunTableList.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenStrategy.h"
+	"screenSegtype.h"
+	"screenCurrentLightStatus.h"
+	"screenPlan.h"
+	"CSTC.h"
+	"SCREENTFDStatus.h"
+	"screenChainStatus.h"
+	"screenActuateArwenStatus.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475212 source:/home/cct/桌面/wufon_chushein_project/screenSegtype.cpp
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"screenSegtypeEditF2.h"
+	"screenWeekDay.h"
+	"screenSpecialDay.h"
+	"screenSegtypeSel.h"
+	"screenRunTableList.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"screenPlan.h"
+	"CSTC.h"
+	<stdio.h>
+
+1205475206 source:/home/cct/桌面/wufon_chushein_project/screenSegtypeEditF2.cpp
+	"screenSegtypeEditF2.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"screenPlanPreview.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"screenPlan.h"
+	"CSTC.h"
+	<stdio.h>
+
+1205475078 source:/home/cct/桌面/wufon_chushein_project/screenSegtypeMenu.cpp
+	"screenSegtypeMenu.h"
+	"screenWeekDay.h"
+	"screenSpecialDay.h"
+	"screenSegtypeSel.h"
+	<stdio.h>
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+
+1205475208 source:/home/cct/桌面/wufon_chushein_project/screenSegtypePreview.cpp
+	"screenSegtypePreview.h"
+	"screenSegtype.h"
+	"screenWeekDayEditF2.h"
+	"screenWeekDay.h"
+	"screenSpecialDay.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"SMEM.h"
+	"screenPlan.h"
+	"CSTC.h"
+	<stdio.h>
+
+1205475074 source:/home/cct/桌面/wufon_chushein_project/screenSegtypeSel.cpp
+	"screenSegtypeSel.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenSegtypeMenu.h"
+	"screenSegtype.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475070 source:/home/cct/桌面/wufon_chushein_project/SCREENSendCycle.cpp
+	"SCREENSendCycle.h"
+	"SCREENMain.h"
+	"SCREENLockdb.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENABOErr.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475076 source:/home/cct/桌面/wufon_chushein_project/screenSpecialDay.cpp
+	"screenSpecialDay.h"
+	"screenSpecialDayView.h"
+	"SCREENMain.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475068 source:/home/cct/桌面/wufon_chushein_project/screenSpecialDayEditF2.cpp
+	"screenSpecialDayEditF2.h"
+	"screenSpecialDayView.h"
+	"screenSpecialDay.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475064 source:/home/cct/桌面/wufon_chushein_project/screenSpecialDayView.cpp
+	"screenSpecialDayView.h"
+	"screenSpecialDayEditF2.h"
+	"screenSpecialDay.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	"var.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205475068 source:/home/cct/桌面/wufon_chushein_project/screenStrategy.cpp
+	"screenStrategy.h"
+	"LCD240x128.h"
+	"SCREENMain.h"
+	"screenRunTableList.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1213696712 source:/home/cct/桌面/wufon_chushein_project/SCREENTFDStatus.cpp
+	"screenRunTableList.h"
+	"SCREENTFDStatus.h"
+	"SCREENLogo.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+
+1205475062 source:/home/cct/桌面/wufon_chushein_project/SCREENTotalRun.cpp
+	"SCREENTotalRun.h"
+	"SCREENMain.h"
+	"SCREENCtlSetup.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	<time.h>
+	<stdio.h>
+	<stdlib.h>
+
+1450147468 source:/home/cct/桌面/wufon_chushein_project/SCREENUart2.cpp
+	"SCREENUart2.h"
+	"SCREENMain.h"
+	"SCREENOperStat.h"
+	"SCREENLockdb.h"
+	"SCREENWarning.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+
+1205475284 source:/home/cct/桌面/wufon_chushein_project/SCREENUpdateDB.cpp
+	"SCREENUpdateDB.h"
+	"SCREENMain.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"CDataToMessageOK.h"
+	"WRITEJOB.h"
+	"SCREENLast92TCPlanSegmentUpdate.h"
+
+1245806918 source:/home/cct/桌面/wufon_chushein_project/SCREENWarning.cpp
+	"SCREENWarning.h"
+	"SCREENMain.h"
+	"SCREENMBSelect.h"
+	"SCREENUart2.h"
+	"LCD240x128.h"
+	"SMEM.h"
+	"SCREENHWReset.h"
+	"WRITEJOB.h"
+	<unistd.h>
+	<stdio.h>
+	<stdlib.h>
+	<error.h>
+	"CSTC.h"
+
+1205475638 source:/home/cct/桌面/wufon_chushein_project/screenWeekDay.cpp
+	"screenWeekDay.h"
+	"screenWeekDayEditF2.h"
+	"SCREENMain.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"SMEM.h"
+
+1205474934 source:/home/cct/桌面/wufon_chushein_project/screenWeekDayEditF2.cpp
+	"screenWeekDayEditF2.h"
+	"screenWeekDay.h"
+	"SCREENMain.h"
+	"screenSegtype.h"
+	"screenSegtypeMenu.h"
+	"LCD240x128.h"
+	"CSTC.h"
+	<stdio.h>
+	"screenSegtypePreview.h"
+	"SMEM.h"
+
+1514186250 source:/home/cct/桌面/wufon_chushein_project/SMEM.cpp
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CTIMER.h"
+	"CSTC.h"
+	"DIGITALIO.h"
+	"CSTORINI.h"
+	<stdio.h>
+	<string.h>
+	<stdlib.h>
+	<unistd.h>
+
+1498908954 source:/home/cct/桌面/wufon_chushein_project/STORAGE.cpp
+	"STORAGE.h"
+	<time.h>
+	<string.h>
+	<stdlib.h>
+	"SMEM.h"
+
+1269857906 source:/home/cct/桌面/wufon_chushein_project/UDP.cpp
+	"UDP.h"
+	<stdio.h>
+	<sys/types.h>
+	<arpa/inet.h>
+	<unistd.h>
+	<string.h>
+
+1502111122 source:/home/cct/桌面/wufon_chushein_project/WRITEJOB.cpp
+	"writejob.h"
+
+1245315926 /home/cct/桌面/wufon_chushein_project/writejob.h
+	"var.h"
+	"JOB.h"
+
+1512106592 /home/cct/桌面/wufon_chushein_project/WRITEJOB.h
+	"var.h"
+	"JOB.h"
+
+1521611592 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
+	"junbo_cms.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"CDataToMessageOK.h"
+	"CTIMER.h"
 

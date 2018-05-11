@@ -27,7 +27,6 @@ bool power_reboot_group::power_reset(BYTE device,int second)//select device=F C 
     {
         printf("power reset sec=%d\n",second);
 
-
         BYTE Send_packet[7];
         char cTMP[256];
 

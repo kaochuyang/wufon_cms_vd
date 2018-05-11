@@ -3212,7 +3212,7 @@ int SMEM::vGetFirmwareInfo_0FC3(const int iSwitch)                              
             }
             else      //other
             {
-                iFirmwareCompanyID = 255;
+                iFirmwareCompanyID =0;
             }
             iTmp = iFirmwareCompanyID;
             break;

@@ -331,7 +331,7 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9f42_module_query()
 
         smem.vWriteMsgToDOM("9f42 module query success\n");
         _9f_object.vReturnToCenterACK(0x9f,0x42);
-       _9fc2_module_report();
+  //     _9fc2_module_report();
 
 
 
