@@ -9610,7 +9610,7 @@
 1510666020 /home/cct/桌面/wufon_chushein_project/var.h
 	<time.h>
 
-1514196092 /home/cct/桌面/wufon_chushein_project/SMEM.h
+1541924402 /home/cct/桌面/wufon_chushein_project/SMEM.h
 	"var.h"
 	"STORAGE.h"
 	"RS232.h"
@@ -9662,7 +9662,7 @@
 	"RS232.h"
 	"var.h"
 
-1514184306 /home/cct/桌面/wufon_chushein_project/junbo_cms.h
+1541926632 /home/cct/桌面/wufon_chushein_project/junbo_cms.h
 	"var.h"
 	<stdlib.h>
 	<stdio.h>
@@ -10066,13 +10066,13 @@
 	"WRITEJOB.h"
 	"CTIMER.h"
 
-1404792418 source:/home/cct/桌面/wufon_chushein_project/LCD240x128.cpp
+1541927463 source:/home/cct/桌面/wufon_chushein_project/LCD240x128.cpp
 	"LCD240x128.h"
 	<stdio.h>
 	<sys/perm.h>
 	<sys/io.h>
 
-1293761418 /home/cct/桌面/wufon_chushein_project/LCD240x128.h
+1541927463 /home/cct/桌面/wufon_chushein_project/LCD240x128.h
 	"pthread.h"
 
 1205475604 source:/home/cct/桌面/wufon_chushein_project/light.cpp
@@ -10081,7 +10081,7 @@
 	<sys/perm.h>
 	<sys/io.h>
 
-1511320856 source:/home/cct/桌面/wufon_chushein_project/main.cpp
+1541599479 source:/home/cct/桌面/wufon_chushein_project/main.cpp
 	"var.h"
 	"SMEM.h"
 	"PARSETRAFFIC.h"
@@ -10490,7 +10490,7 @@
 	"CSTORINI.h"
 	<stdio.h>
 
-1521193186 source:/home/cct/桌面/wufon_chushein_project/power_reboot_group.cpp
+1541927463 source:/home/cct/桌面/wufon_chushein_project/power_reboot_group.cpp
 	"power_reboot_group.h"
 	<stdio.h>
 	"SMEM.h"
@@ -10500,7 +10500,7 @@
 1511320858 source:/home/cct/桌面/wufon_chushein_project/PROTOCOL.cpp
 	"PROTOCOL.h"
 
-1521611193 source:/home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.cpp
+1541927463 source:/home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.cpp
 	"protocol_9F_m_curve.h"
 	"SMEM.h"
 	"PTRAFFIC92COMM.h"
@@ -10540,7 +10540,7 @@
 	<stdlib.h>
 	<error.h>
 
-1521193304 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92COMM.cpp
+1541927463 source:/home/cct/桌面/wufon_chushein_project/PTRAFFIC92COMM.cpp
 	"PTRAFFIC92COMM.h"
 	"CDataToMessageOK.h"
 	"WRITEJOB.h"
@@ -11509,7 +11509,7 @@
 	"screenSegtypePreview.h"
 	"SMEM.h"
 
-1514186250 source:/home/cct/桌面/wufon_chushein_project/SMEM.cpp
+1541927463 source:/home/cct/桌面/wufon_chushein_project/SMEM.cpp
 	"SMEM.h"
 	"WRITEJOB.h"
 	"CDataToMessageOK.h"
@@ -11537,21 +11537,43 @@
 	<unistd.h>
 	<string.h>
 
-1502111122 source:/home/cct/桌面/wufon_chushein_project/WRITEJOB.cpp
-	"writejob.h"
+1526026383 source:/home/cct/桌面/wufon_chushein_project/WRITEJOB.cpp
+	"WRITEJOB.h"
+	"SMEM.h"
+	"PROTOCOL.h"
+	"CHexToInt.h"
+	<unistd.h>
+	"screenCurrentCommPacket.h"
 
 1245315926 /home/cct/桌面/wufon_chushein_project/writejob.h
 	"var.h"
 	"JOB.h"
 
-1512106592 /home/cct/桌面/wufon_chushein_project/WRITEJOB.h
+1526026324 /home/cct/桌面/wufon_chushein_project/WRITEJOB.h
 	"var.h"
 	"JOB.h"
 
-1521611592 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
+1541927463 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
 	"junbo_cms.h"
 	"SMEM.h"
 	"WRITEJOB.h"
 	"CDataToMessageOK.h"
 	"CTIMER.h"
+
+1526026398 /home/cct/桌面/wufon_chushein_project/READJOB.h
+	"var.h"
+	"JOB.h"
+
+1540819933 source:/home/cct/桌面/wufon_chushein_project/READJOB.cpp
+	"READJOB.h"
+	"PROTOCOL.h"
+	"SMEM.h"
+	"WRITEJOB.h"
+	"screenRedCountHWCheck.h"
+
+1541926074 source:/home/cct/桌面/wufon_chushein_project/new_junbo_cms.cpp
+	"new_junbo_cms.h"
+
+1541926461 /home/cct/桌面/wufon_chushein_project/new_junbo_cms.h
+	"junbo_cms.h"
 
