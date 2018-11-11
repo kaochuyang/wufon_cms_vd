@@ -28,14 +28,13 @@ bool junbo_cms::initial_module_state(module_state_struct *object)
     }
     catch(...)
     {
-
     }
 }
 
 void junbo_cms::initial_junbo_control(char *output_tty_name)
 {
     tty_name=output_tty_name;
-        pthread_mutex_init(&_junbo_mutex,NULL);
+    pthread_mutex_init(&_junbo_mutex,NULL);
 
 
     if (junbo_cms_port.OpenRs232Port(tty_name, 9600, false)>0)
@@ -79,19 +78,14 @@ void junbo_cms::initial_junbo_control(char *output_tty_name)
         brightness[i].command=0xc5;
         brightness[i].parameter=i+1;
     }
-
     color_red.command=0xc6;
     color_red.parameter=0x10;
     color_green.command=0xc6;
     color_green.parameter=0x20;
     color_yellow.command=0xc6;
     color_yellow.parameter=0x30;
-
-
     // filename[80]='0';
 //    sprintf(filename,text_record_location);
-
-
 
 }
 
@@ -292,7 +286,8 @@ void junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the jun
                 smem.record_brightness[ID].parameter=junbo_receive_packet[4];
             }
             else if(junbo_receive_packet[3]==0xb4)
-            {    ID=junbo_receive_packet[2];
+            {
+                ID=junbo_receive_packet[2];
                 //module_state_object.bit_block_ID=((junbo_receive_packet[4]>>4)&0xff);
                 smem.record_state[ID][smem.cms_query_count].ID=junbo_receive_packet[2];
                 smem.record_state[ID][smem.cms_query_count].command=junbo_receive_packet[3];//junbo_receive_packet[2]   I am ID
@@ -339,6 +334,10 @@ void junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the jun
     }
     catch(...) {}
 }
+
+
+
+
 void junbo_cms::delete_record_before_15day()
 {
     try
@@ -483,9 +482,9 @@ void junbo_cms::carflow_calculate_interval()
         smem.flow_min=currenttime->tm_min;
         smem.flow_sec=currenttime->tm_sec;
         if(timeOffset>3)
-        smem.car_flow_count++;
+            smem.car_flow_count++;
 
-printf("CAR FLOW  CLACULATE=%d\n\n",smem.car_flow_count);
+        printf("CAR FLOW  CLACULATE=%d\n\n",smem.car_flow_count);
 
     }
     catch(...) {}
@@ -495,34 +494,36 @@ int junbo_cms::clear_calculate_carflow()
     try
     {
 
-printf("SENT CAR FLOW  CLACULATE=%d\n\n",smem.car_flow_count);
-       int car_flow=smem.car_flow_count;
-    smem.car_flow_count=0;
+        printf("SENT CAR FLOW  CLACULATE=%d\n\n",smem.car_flow_count);
+        int car_flow=smem.car_flow_count;
+        smem.car_flow_count=0;
 
- return car_flow;
+        return car_flow;
 
-    }catch(...){}
+    }
+    catch(...) {}
 }
 void junbo_cms::CMS_boot_time()
 {
     try
     {
-pthread_mutex_lock(&_junbo_mutex);
-struct tm* currenttime;
-    time_t now = time(NULL);
-    currenttime = localtime(&now);
+        pthread_mutex_lock(&_junbo_mutex);
+        struct tm* currenttime;
+        time_t now = time(NULL);
+        currenttime = localtime(&now);
 
-    if(smem.CMS_boot_flag==false)
-    {
-        smem.cms_boot_hour=currenttime->tm_hour;
-        smem.cms_boot_min=currenttime->tm_min;
-        smem.cms_boot_sec=currenttime->tm_sec;
-        smem.CMS_boot_flag=true;
+        if(smem.CMS_boot_flag==false)
+        {
+            smem.cms_boot_hour=currenttime->tm_hour;
+            smem.cms_boot_min=currenttime->tm_min;
+            smem.cms_boot_sec=currenttime->tm_sec;
+            smem.CMS_boot_flag=true;
+        }
+
+        pthread_mutex_unlock(&_junbo_mutex);
+
     }
-
-pthread_mutex_unlock(&_junbo_mutex);
-
-    }catch(...){}
+    catch(...) {}
 }
 
 void junbo_cms::brightness_control(int bright_parameter)
@@ -608,19 +609,19 @@ void junbo_cms::query_modual_state()
 
 
 
-                smem.record_state[ID][query_block].ID=0;
-                smem.record_state[ID][query_block].command=0;
-                smem.record_state[ID][query_block].parameter=0;
-                ucSendTMP[0] = 0xAA;//head
-                ucSendTMP[1] =smem.GetSequence();
-                ucSendTMP[2] = ID;
-                ucSendTMP[3] = query[query_block].command;
-                ucSendTMP[4] = query[query_block].parameter;
-                ucSendTMP[5] = 0x0;//cks
-                for (int a=0; a<5; a++)
-                    ucSendTMP[5]^=ucSendTMP[a];
-                printf("\nquery light ID=%d\n",ID);
-                junbo_cms_send(ucSendTMP);
+            smem.record_state[ID][query_block].ID=0;
+            smem.record_state[ID][query_block].command=0;
+            smem.record_state[ID][query_block].parameter=0;
+            ucSendTMP[0] = 0xAA;//head
+            ucSendTMP[1] =smem.GetSequence();
+            ucSendTMP[2] = ID;
+            ucSendTMP[3] = query[query_block].command;
+            ucSendTMP[4] = query[query_block].parameter;
+            ucSendTMP[5] = 0x0;//cks
+            for (int a=0; a<5; a++)
+                ucSendTMP[5]^=ucSendTMP[a];
+            printf("\nquery light ID=%d\n",ID);
+            junbo_cms_send(ucSendTMP);
 
 
 
@@ -629,17 +630,20 @@ void junbo_cms::query_modual_state()
 
 
 
-if((query_block<=2)&&(query_block>=0))
-{
-    smem.cms_query_count++;
-    _intervalTimer.set_query_module_timer(2);
-}
-else {smem.cms_query_count++;
-smem.protocol_9F_object.o_CMS_mannager.o_module._9fc2_module_report();}//20180321
-/*
-if(query_block==4){report_module_state_to_revapp();
- _intervalTimer.set_query_module_timer(0);
-}*/
+        if((query_block<=2)&&(query_block>=0))
+        {
+            smem.cms_query_count++;
+            _intervalTimer.set_query_module_timer(2);
+        }
+        else
+        {
+            smem.cms_query_count++;
+            smem.protocol_9F_object.o_CMS_mannager.o_module._9fc2_module_report();
+        }//20180321
+        /*
+        if(query_block==4){report_module_state_to_revapp();
+         _intervalTimer.set_query_module_timer(0);
+        }*/
         printf("Send junbo light query.by query_modual_state\n");
         /*-----------------*/
     }
@@ -744,9 +748,6 @@ void junbo_cms::report_module_state_to_center()
     }
     catch(...) {}
 }
-
-
-
 
 
 void junbo_cms::report_light_timeout()//for app

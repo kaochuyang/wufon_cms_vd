@@ -241,6 +241,8 @@
 		<Unit filename="light.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="main.h" />
+		<Unit filename="new_junbo_cms.cpp" />
+		<Unit filename="new_junbo_cms.h" />
 		<Unit filename="power_reboot_group.cpp" />
 		<Unit filename="power_reboot_group.h" />
 		<Unit filename="protocol_9F_m_curve.cpp" />

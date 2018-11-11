@@ -26,12 +26,12 @@ static pthread_mutex_t _junbo_mutex;
     int clear_calculate_carflow();
 
     void initial_junbo_control(char *output_tty_name);
-    void junbo_cms_send(unsigned char junbo_send_packet[6]);
+
     void junbo_cms_receive(MESSAGEOK messageIn);
     void junbo_send_by_VD(int textID);
     void delete_record_before_15day();
     bool vClearMsg(MESSAGEOK *messageIn, unsigned short int msgID);
-    bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
+
     void close_light();
 
     void store_color(MESSAGEOK messageIn);
@@ -50,12 +50,6 @@ static pthread_mutex_t _junbo_mutex;
 
 
 
-    typedef  struct junbo_to_cms
-    {
-        unsigned char ID;
-        unsigned char command;
-        unsigned char parameter;
-    };
 
 
     typedef struct module_state_struct
@@ -74,10 +68,12 @@ static pthread_mutex_t _junbo_mutex;
     bool initial_module_state(module_state_struct *object);
     void report_module_state_to_center();
 
+  bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
 
 
 
-//private:
+private:
+ void junbo_cms_send(unsigned char junbo_send_packet[6]);
     char *tty_name;
     char input_string[25];
     char filename[80];//record file director

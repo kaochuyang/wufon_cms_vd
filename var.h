@@ -226,6 +226,13 @@ void SendRequestToKeypad(void);                                                 
     BYTE brightness;
 
 };
+typedef  struct junbo_to_cms
+    {
+        unsigned char ID;
+        unsigned char command;
+        unsigned char parameter;
+         unsigned char parameter2;
+    };
 
 
 

@@ -9607,7 +9607,7 @@
 1278409714 /home/cct/桌面/wufon_chushein_project/CDataToMessageOK.h
 	"var.h"
 
-1510666020 /home/cct/桌面/wufon_chushein_project/var.h
+1541928887 /home/cct/桌面/wufon_chushein_project/var.h
 	<time.h>
 
 1541924402 /home/cct/桌面/wufon_chushein_project/SMEM.h
@@ -9662,7 +9662,7 @@
 	"RS232.h"
 	"var.h"
 
-1541926632 /home/cct/桌面/wufon_chushein_project/junbo_cms.h
+1541943128 /home/cct/桌面/wufon_chushein_project/junbo_cms.h
 	"var.h"
 	<stdlib.h>
 	<stdio.h>
@@ -11553,7 +11553,7 @@
 	"var.h"
 	"JOB.h"
 
-1541927463 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
+1541946059 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
 	"junbo_cms.h"
 	"SMEM.h"
 	"WRITEJOB.h"
@@ -11571,9 +11571,10 @@
 	"WRITEJOB.h"
 	"screenRedCountHWCheck.h"
 
-1541926074 source:/home/cct/桌面/wufon_chushein_project/new_junbo_cms.cpp
+1541943096 source:/home/cct/桌面/wufon_chushein_project/new_junbo_cms.cpp
 	"new_junbo_cms.h"
+	"SMEM.h"
 
-1541926461 /home/cct/桌面/wufon_chushein_project/new_junbo_cms.h
+1541942533 /home/cct/桌面/wufon_chushein_project/new_junbo_cms.h
 	"junbo_cms.h"
 
