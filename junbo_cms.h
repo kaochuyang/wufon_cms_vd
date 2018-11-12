@@ -14,7 +14,7 @@
 class junbo_cms
 {
 public:
-static pthread_mutex_t _junbo_mutex;
+    static pthread_mutex_t _junbo_mutex;
     junbo_cms();
     virtual ~junbo_cms();
 
@@ -68,12 +68,12 @@ static pthread_mutex_t _junbo_mutex;
     bool initial_module_state(module_state_struct *object);
     void report_module_state_to_center();
 
-  bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
+    bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
 
 
 
 private:
- void junbo_cms_send(unsigned char junbo_send_packet[6]);
+    void junbo_cms_send(unsigned char junbo_send_packet[6]);
     char *tty_name;
     char input_string[25];
     char filename[80];//record file director
