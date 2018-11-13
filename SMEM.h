@@ -7,7 +7,7 @@
 #include "UDP.h"
 #include "junbo_light_control.h"
 #include "junli_vd.h"
-#include "junbo_cms.h"
+#include "new_junbo_cms.h"
 #include "power_reboot_group.h"
 #include "protocol_9F_m_curve.h"
 
@@ -67,7 +67,7 @@ public:
 
     protocol_9F_m_curve protocol_9F_object;
     junli_vd junli_object;
-    junbo_cms junbo_object;
+    new_junbo_cms junbo_object;
     int cms_query_count;
     power_reboot_group power_object;
     RS232 power_port;

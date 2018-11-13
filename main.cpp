@@ -294,8 +294,8 @@ int main(int argc, char* argv[])
                         readSelectLength=smem.junbo_object.junbo_cms_port.Rs232Read();
                         if(readSelectLength>0)
                         {
-                            /*  for(int i =0; i<readSelectLength; i++)
-                                  printf("%x ",smem.junbo_object.junbo_cms_port.block[i]);*/
+                              for(int i =0; i<readSelectLength; i++)
+                                  printf("%x ",smem.junbo_object.junbo_cms_port.block[i]);
 
                             //  printf("\n\n");
 

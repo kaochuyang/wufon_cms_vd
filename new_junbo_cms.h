@@ -5,20 +5,20 @@
 class new_junbo_cms : public junbo_cms
 {
 public:
-    new_junbo_cms(char *output_tty_name);
+    new_junbo_cms();
 
     virtual ~new_junbo_cms();
     void setJunboToCms(junbo_to_cms* obj,BYTE Command,BYTE  parameter1);
     void junbo_cms_send(junbo_to_cms sendContext);
     void brightness_control(int bright_parameter);
     bool ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex);
-    void query_modual_state();
+   // void query_modual_state();
     void close_light();
-    void junbo_send_by_VD(int textID);
+    void njunbo_send_by_VD(int textID);
     void junbo_cms_receive(MESSAGEOK messageIn);
     void cms_test_function(int text_ID);
       void light_timeout_control(int control_parameter);
-    void report_light_timeout();//for app
+   // void report_light_timeout();//for app
 
 protected:
 private:
@@ -38,6 +38,8 @@ private:
     junbo_to_cms color_green;
     junbo_to_cms color_yellow;
     junbo_to_cms queryCtrlBoard;
+    junbo_to_cms color[7];//test
+
     int sendPacketLengh;
 };
 

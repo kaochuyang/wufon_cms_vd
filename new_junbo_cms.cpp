@@ -1,14 +1,19 @@
 #include "new_junbo_cms.h"
 #include "SMEM.h"
 #include "CTIMER.h"
-new_junbo_cms::new_junbo_cms(char *output_tty_name)
+new_junbo_cms::new_junbo_cms()
 {
     //ctor
-    initial_junbo_control(output_tty_name);
+    initial_junbo_control("/dev/ttyS1");
+    tty_name="/dev/ttyS1";
     setJunboToCms(&light_off,0xc0,0x0);
     setJunboToCms(&color_red,0xc0,0x1);
     setJunboToCms(&color_green,0xc0,0x2);
     setJunboToCms(&color_yellow,0xc0,0x3);
+
+    for(int i=0; i<=6; i++)
+        setJunboToCms(&color[i],0xc0,i);
+
     for(int i=0; i<=4; i++)
         setJunboToCms(&notice_car[i],0xc1,i);
 
@@ -17,7 +22,7 @@ new_junbo_cms::new_junbo_cms(char *output_tty_name)
     setJunboToCms(&flash_off,0xc3,0x0);
     setJunboToCms(&flash_on,0xc3,0x1);
     for(int i=0; i<5; i++)
-        setJunboToCms(&query[i],0xc4,0x0);
+        setJunboToCms(&query[i],0xc4,i);
     for(int i=0; i<4; i++)
         setJunboToCms(&brightness[i],0xc5,i+1);
     setJunboToCms(&queryCtrlBoard,0xc6,0);
@@ -46,7 +51,7 @@ void new_junbo_cms::setJunboToCms(junbo_to_cms* obj,
 void new_junbo_cms::junbo_cms_send(junbo_to_cms sendContext)
 {
 unsigned char junbo_send_packet[8];
-    int ID=0;
+    int ID=1;
     struct tm* currenttime;
     time_t now = time(NULL);
     currenttime = localtime(&now);
@@ -73,7 +78,7 @@ junbo_send_packet[3]=ID;
 junbo_send_packet[4]=sendContext.command;
 junbo_send_packet[5]=sendContext.parameter;
 junbo_send_packet[6]=sendContext.parameter2;
-    printf("\n junbo_command=%2x parameter=%2x\n",junbo_send_packet[4],junbo_send_packet[5]);
+    printf("\n junbo_command4=%2x parameter5=%2x\n",junbo_send_packet[4],junbo_send_packet[5]);
     junbo_send_packet[7]=0x0;
     for(int i=0; i<7; i++)
     {
@@ -88,7 +93,7 @@ junbo_send_packet[6]=sendContext.parameter2;
           smem.record_light[ID].parameter=0;
       }*/
     junbo_cms_port.Rs232Write(junbo_send_packet,sendPacketLengh,tty_name);//write out
-    memset(input_string,'0',sizeof(input_string));
+   /* memset(input_string,'0',sizeof(input_string));
     pf=fopen(cFileTmp,"a+");
     if(pf!=NULL)
     {
@@ -103,7 +108,7 @@ junbo_send_packet[6]=sendContext.parameter2;
         fwrite( cTimeHeader, length, 1, pf );
         fclose(pf);
     }
-    else printf("pf=NULL!!\n");
+    else printf("pf=NULL!!\n");*/
 
     usleep(30000);
 
@@ -213,7 +218,7 @@ void new_junbo_cms::close_light()
     catch(...) {}
 }
 
-void new_junbo_cms::junbo_send_by_VD(int textID)
+void new_junbo_cms::njunbo_send_by_VD(int textID)
 {
     try
     {

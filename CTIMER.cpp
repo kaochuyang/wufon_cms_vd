@@ -186,7 +186,8 @@ void intervalTimer::set_query_module_timer(int sec)
 
 
 
-    }catch(...)
+    }
+    catch(...)
     {
 
     }
@@ -485,6 +486,14 @@ void intervalTimer::TimersSetting(void)
         if ( timer_settime( _t8, 0, & _it8, NULL ) ) exit( 1 );
 
 
+        _it9.it_value.tv_sec = 5;
+        _it9.it_value.tv_nsec = 0;
+        _it9.it_interval.tv_sec = 60;
+        _it9.it_interval.tv_nsec = 0;
+        if ( timer_settime( _t9, 0, & _it9, NULL ) ) exit( 1 );
+
+
+
         _it10.it_value.tv_sec = 60;                                                 //W77E58, only one
         _it10.it_value.tv_nsec = 0;
         _it10.it_interval.tv_sec = 60;
@@ -531,18 +540,18 @@ void * intervalTimer::PTime(void *arg)
 
         //OTMARKPRINTF  printf( "THREAD_VDINFO: pid=%d\n", getpid() );
 
-          smem.vSetCommEnable(true);
+        smem.vSetCommEnable(true);
 
         TimersCreating();
 
         TimersSetting();
 
-        smem.light_time.read_time();
-        smem.light_time.read_textID();
-        smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
-        smem.junbo_object.read_color();
-        smem.light_time.read_cms_mark_object();//brightness
-
+        /*    smem.light_time.read_time();
+            smem.light_time.read_textID();
+            smem.junbo_object.light_timeout_control(smem.light_time.light_flash_time);
+          //  smem.junbo_object.read_color();
+            smem.light_time.read_cms_mark_object();//brightness
+        */
         printf("hello light control\n");
 
 
@@ -793,7 +802,7 @@ void * intervalTimer::PTime(void *arg)
 
                     break;
                 case( 12 ):
-                smem.protocol_9F_object.o_CMS_mannager.o_module._9f02_moduel_act_report();//period report
+                    smem.protocol_9F_object.o_CMS_mannager.o_module._9f02_moduel_act_report();//period report
 
 
                     break;
@@ -808,7 +817,7 @@ void * intervalTimer::PTime(void *arg)
 
                     printf("timer test 14\n");
 //_intervalTimer.close_junbo_cms_light();
-                 //   smem.record_light[1].command=smem.record_light[2].command=0xff;
+                    //   smem.record_light[1].command=smem.record_light[2].command=0xff;
                     smem.junbo_object.close_light();
 
 
@@ -818,13 +827,14 @@ void * intervalTimer::PTime(void *arg)
 
                 case( 15 )://
 
-                smem.junbo_object.query_modual_state();
+                    smem.junbo_object.query_modual_state();
+
                     break;
 
                 case( 100 ):
-              smem.junbo_object.query_modual_state();
+                    smem.junbo_object.query_modual_state();
 
-                                    break;
+                    break;
 
                 case( 101 ):
                     _intervalTimer.vDBLockRequest(iDBLockCount);                        //default not start
@@ -844,11 +854,43 @@ void * intervalTimer::PTime(void *arg)
 
                 case( 500 ):                                      //\uFFFDï¿½ï¿½\uFFFD\uFFFD\uFFFD\uFFFDTOD,
 
+/**for new_junbo_cms test**/
+
+               /*     smem.junbo_object.junbo_cms_send(smem.junbo_object.light_off);
+
+                    for(int j=0; j<5; j++)
+                    {
+                        smem.junbo_object.njunbo_send_by_VD(j);
+                        sleep(1);
+                        smem.junbo_object.junbo_cms_send(smem.junbo_object.color[j]);
+                    }
+
+
+                    for(int j=0; j<4; j++)
+                    {
+                        sleep(1);
+                        smem.junbo_object.junbo_cms_send(smem.junbo_object.brightness[j]) ;
+                    }
+
+                    for(int j=0; j<5; j++)
+                    {
+
+                        sleep(1);
+                        smem.junbo_object.junbo_cms_send(smem.junbo_object.query[j]);
+                    }
+
+
+
+
+                    sleep(1);
+                    smem.junbo_object.junbo_cms_send(smem.junbo_object.queryCtrlBoard);
+*/
+
                     break;
 
 
                 case( 501 ):
-smem.protocol_9F_object._9f0a_car_calculate();
+                    smem.protocol_9F_object._9f0a_car_calculate();
 
                     smem.count_vd_alive++;// 20180309
                     if(reset_count<3)
@@ -862,9 +904,9 @@ smem.protocol_9F_object._9f0a_car_calculate();
                             smem.power_object.power_reset_all(10);
                             smem.count_vd_alive=0;
                             smem.vWriteMsgToDOM("VD link error");
-                        /*    Send_packet[0]=0x6f;
-                            Send_packet[1]=0xff;
-                            smem._0F80_packet(Send_packet);*/
+                            /*    Send_packet[0]=0x6f;
+                                Send_packet[1]=0xff;
+                                smem._0F80_packet(Send_packet);*/
                             reset_count++;
                         }
 
@@ -872,7 +914,7 @@ smem.protocol_9F_object._9f0a_car_calculate();
                     break;
 
                 case( 600 ):
-                smem.junbo_object.delete_record_before_15day();
+                    smem.junbo_object.delete_record_before_15day();
                     break;
 
                 default:
@@ -1107,15 +1149,15 @@ bool intervalTimer::vCheckSMEM(void)
 //        if ( timer_settime( _t4, 0, & _it4, NULL ) ) exit( 1 );
 //        smem.vSetSimIntervalTimeChangeStatus(false);
 //    }
-       /* if( smem.vGet0FHardwareCycleChangeStatus() )
-        {
-            _it6 = smem.vGet0FHardwareCycle();
+        /* if( smem.vGet0FHardwareCycleChangeStatus() )
+         {
+             _it6 = smem.vGet0FHardwareCycle();
 
-            //OTMARKPRINTF  printf("[Message] Change HWStatus Send Interval:%d\n", _it6.it_interval.tv_sec);
+             //OTMARKPRINTF  printf("[Message] Change HWStatus Send Interval:%d\n", _it6.it_interval.tv_sec);
 
-            if ( timer_settime( _t6, 0, & _it6, NULL ) ) exit( 1 );
-            smem.vSet0FHardwareCycleChangeStatus(false);
-        }*/
+             if ( timer_settime( _t6, 0, & _it6, NULL ) ) exit( 1 );
+             smem.vSet0FHardwareCycleChangeStatus(false);
+         }*/
         if( smem.vGet0F11CommuncationResetChangeStatus() )
         {
             _it7.it_value.tv_sec = 0;

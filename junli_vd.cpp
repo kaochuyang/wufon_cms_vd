@@ -92,6 +92,7 @@ bool junli_vd::parse_junli(int receiveBlockLength,BYTE *block,MESSAGEOK *message
                         smem.junbo_object.CMS_boot_time();
                         printf("textID=%d\n",smem.light_time.text_ID);
                         smem.junbo_object.junbo_send_by_VD(smem.light_time.text_ID);
+
                     } //make cms light_on
                     else if(messageIn[j].packet[1]==0x1c)
                     {
