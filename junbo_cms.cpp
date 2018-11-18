@@ -606,9 +606,6 @@ void junbo_cms::query_modual_state()
         for(int ID=1; ID<3; ID++)
         {
 
-
-
-
             smem.record_state[ID][query_block].ID=0;
             smem.record_state[ID][query_block].command=0;
             smem.record_state[ID][query_block].parameter=0;

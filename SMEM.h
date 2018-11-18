@@ -62,8 +62,8 @@ public:
         unsigned char command;
         unsigned char parameter;
     };
-    junbo_to_light record_light[9],record_state[3][4],record_timeout[9],record_brightness[9];
-
+    junbo_to_light record_light[9],record_state[3][5],record_timeout[9],record_brightness[9];
+junbo_to_light record_color[9];
 
     protocol_9F_m_curve protocol_9F_object;
     junli_vd junli_object;

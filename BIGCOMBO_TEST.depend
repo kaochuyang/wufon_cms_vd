@@ -9610,14 +9610,14 @@
 1541928887 /home/cct/桌面/wufon_chushein_project/var.h
 	<time.h>
 
-1541924402 /home/cct/桌面/wufon_chushein_project/SMEM.h
+1542516684 /home/cct/桌面/wufon_chushein_project/SMEM.h
 	"var.h"
 	"STORAGE.h"
 	"RS232.h"
 	"UDP.h"
 	"junbo_light_control.h"
 	"junli_vd.h"
-	"junbo_cms.h"
+	"new_junbo_cms.h"
 	"power_reboot_group.h"
 	"protocol_9F_m_curve.h"
 	<pthread.h>
@@ -9680,7 +9680,7 @@
 	<signal.h>
 	<pthread.h>
 
-1514958568 /home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.h
+1542514693 /home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.h
 	"var.h"
 
 1205475632 /home/cct/桌面/wufon_chushein_project/CHexToInt.h
@@ -9839,7 +9839,7 @@
 	<string.h>
 	<wchar.h>
 
-1520583174 source:/home/cct/桌面/wufon_chushein_project/CTIMER.cpp
+1542516880 source:/home/cct/桌面/wufon_chushein_project/CTIMER.cpp
 	"CTIMER.h"
 	"var.h"
 	"CDataToMessageOK.h"
@@ -10054,7 +10054,7 @@
 	"junbo_light_control.h"
 	"SMEM.h"
 
-1514184306 source:/home/cct/桌面/wufon_chushein_project/junli_vd.cpp
+1542506361 source:/home/cct/桌面/wufon_chushein_project/junli_vd.cpp
 	"junli_vd.h"
 	"SMEM.h"
 	<string.h>
@@ -10081,7 +10081,7 @@
 	<sys/perm.h>
 	<sys/io.h>
 
-1541599479 source:/home/cct/桌面/wufon_chushein_project/main.cpp
+1542506361 source:/home/cct/桌面/wufon_chushein_project/main.cpp
 	"var.h"
 	"SMEM.h"
 	"PARSETRAFFIC.h"
@@ -10500,7 +10500,7 @@
 1511320858 source:/home/cct/桌面/wufon_chushein_project/PROTOCOL.cpp
 	"PROTOCOL.h"
 
-1541927463 source:/home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.cpp
+1542516684 source:/home/cct/桌面/wufon_chushein_project/protocol_9F_m_curve.cpp
 	"protocol_9F_m_curve.h"
 	"SMEM.h"
 	"PTRAFFIC92COMM.h"
@@ -11553,7 +11553,7 @@
 	"var.h"
 	"JOB.h"
 
-1541946059 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
+1542514612 source:/home/cct/桌面/wufon_chushein_project/junbo_cms.cpp
 	"junbo_cms.h"
 	"SMEM.h"
 	"WRITEJOB.h"
@@ -11571,11 +11571,12 @@
 	"WRITEJOB.h"
 	"screenRedCountHWCheck.h"
 
-1541943096 source:/home/cct/桌面/wufon_chushein_project/new_junbo_cms.cpp
+1542517362 source:/home/cct/桌面/wufon_chushein_project/new_junbo_cms.cpp
 	"new_junbo_cms.h"
 	"SMEM.h"
+	"CTIMER.h"
 
-1541942533 /home/cct/桌面/wufon_chushein_project/new_junbo_cms.h
+1542517737 /home/cct/桌面/wufon_chushein_project/new_junbo_cms.h
 	"junbo_cms.h"
 
 1542106622 source:/home/cct/Desktop/Untitled4/has_been_log/cms_of_chushein/wufon_chushein_project/CDataToMessageOK.cpp

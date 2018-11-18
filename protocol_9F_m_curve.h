@@ -63,6 +63,7 @@ public:
         public:
             bool _9f42_module_query();
             bool _9fc2_module_report();
+            bool   new_9fc2_module_report(int ID);//for new_junbo_cms
             bool _9f02_moduel_act_report();
 
         };

@@ -27,8 +27,8 @@ new_junbo_cms::new_junbo_cms()
         setJunboToCms(&brightness[i],0xc5,i+1);
     setJunboToCms(&queryCtrlBoard,0xc6,0);
 
-sendPacketLengh=8;
-
+    sendPacketLengh=8;
+    ID=1;
 }
 
 new_junbo_cms::~new_junbo_cms()
@@ -50,7 +50,7 @@ void new_junbo_cms::setJunboToCms(junbo_to_cms* obj,
 }
 void new_junbo_cms::junbo_cms_send(junbo_to_cms sendContext)
 {
-unsigned char junbo_send_packet[8];
+    unsigned char junbo_send_packet[8];
     int ID=1;
     struct tm* currenttime;
     time_t now = time(NULL);
@@ -71,13 +71,13 @@ unsigned char junbo_send_packet[8];
             break;
         }
     FILE *pf=NULL;
-junbo_send_packet[0]=0xaa;
-junbo_send_packet[1]=0xbb;
-junbo_send_packet[2]=smem.GetSequence();
-junbo_send_packet[3]=ID;
-junbo_send_packet[4]=sendContext.command;
-junbo_send_packet[5]=sendContext.parameter;
-junbo_send_packet[6]=sendContext.parameter2;
+    junbo_send_packet[0]=0xaa;
+    junbo_send_packet[1]=0xbb;
+    junbo_send_packet[2]=smem.GetSequence();
+    junbo_send_packet[3]=ID;
+    junbo_send_packet[4]=sendContext.command;
+    junbo_send_packet[5]=sendContext.parameter;
+    junbo_send_packet[6]=sendContext.parameter2;
     printf("\n junbo_command4=%2x parameter5=%2x\n",junbo_send_packet[4],junbo_send_packet[5]);
     junbo_send_packet[7]=0x0;
     for(int i=0; i<7; i++)
@@ -85,32 +85,22 @@ junbo_send_packet[6]=sendContext.parameter2;
         junbo_send_packet[7]^=junbo_send_packet[i];
     }
 
-    /*  if((junbo_send_packet[3]==0xc1)&&(junbo_send_packet[3]==0xc3)&&(junbo_send_packet[3]==0xc0))
-      {
-          ID=junbo_send_packet[2];
-          smem.record_light[ID].ID=0;
-          smem.record_light[ID].command=0;//junbo_receive_packet[2]   I am ID
-          smem.record_light[ID].parameter=0;
-      }*/
-    junbo_cms_port.Rs232Write(junbo_send_packet,sendPacketLengh,tty_name);//write out
-   /* memset(input_string,'0',sizeof(input_string));
-    pf=fopen(cFileTmp,"a+");
-    if(pf!=NULL)
-    {
 
-        sprintf(input_string,"\n    Send junbo_protocol=");
-        fwrite(input_string,sizeof(char),sizeof(input_string),pf);
-        for(int i=0; i<sendPacketLengh; i++)
-        {
-            sprintf(input_string," %x ",junbo_send_packet[i]);
-            fwrite(input_string,3*sizeof(char),sizeof(char),pf);
-        }
-        fwrite( cTimeHeader, length, 1, pf );
-        fclose(pf);
-    }
-    else printf("pf=NULL!!\n");*/
+    junbo_cms_port.Rs232Write(junbo_send_packet,sendPacketLengh,tty_name);//write out
 
     usleep(30000);
+     int count_send=0;
+           while(junbo_receive_packet[3]!=(junbo_send_packet[3]-16))
+            {
+
+                if(count_send<3)
+                {
+                 junbo_cms_port.Rs232Write(junbo_send_packet,sendPacketLengh,tty_name);//write out
+                     usleep(30000);
+                    count_send++;
+                }
+                else break;
+            }
 
 }
 bool new_junbo_cms::ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *messageIn,int *lastPacketIndex)
@@ -179,8 +169,8 @@ void new_junbo_cms::brightness_control(int bright_parameter)
 
         if(bright_parameter<4&&bright_parameter>=0)
         {
-                          printf("\nbrightness_control light\n");
-                junbo_cms_send(brightness[bright_parameter]);
+            printf("\nbrightness_control light\n");
+            junbo_cms_send(brightness[bright_parameter]);
 
             printf("Send junbo cms brightness control.by brightness_control\n");
             writeJob.WritePhysicalOut(Send_packet,2,revAPP);
@@ -202,44 +192,22 @@ void new_junbo_cms::close_light()
     {
         int count_send=0;
         printf("close light\n");
-              junbo_cms_send(light_off);
-            while(smem.record_light[0].command!=0xb0)
-            {
-
-                if(count_send<3)
-                {
-                    junbo_cms_send(light_off);
-                    count_send++;
-                }
-                else break;
-            }
-
-    }
+        junbo_cms_send(light_off);
+         }
     catch(...) {}
 }
 
-void new_junbo_cms::njunbo_send_by_VD(int textID)
+void new_junbo_cms::junbo_send_by_VD(int textID)
 {
     try
     {
         int count_send=0;
 
-                junbo_cms_send(notice_car[textID]);
-                while(smem.record_light[0].command!=0xb1)
-                {
+        junbo_cms_send(notice_car[textID]);
 
-                    if(count_send<3)
-                    {
-                        junbo_cms_send(notice_car[textID]);
-                        count_send++;
-                    }
-                    else break;
-                }
     }
     catch(...) {}
 }
-
-
 void new_junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the junbo_cms return message
 {
     struct tm* currenttime;
@@ -274,10 +242,10 @@ void new_junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the
         {
 
             if((junbo_receive_packet[4]==0xb1)
-                  ||(junbo_receive_packet[4]==0xb3))
+                    ||(junbo_receive_packet[4]==0xb3))
             {
-                ID=junbo_receive_packet[3];
-                smem.record_light[ID].ID=junbo_receive_packet[3];
+
+                smem.record_light[ID].ID=ID;
                 smem.record_light[ID].command=junbo_receive_packet[4];//junbo_receive_packet[2]   I am ID
                 smem.record_light[ID].parameter=junbo_receive_packet[5];
 
@@ -285,29 +253,32 @@ void new_junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the
             }
             else if(junbo_receive_packet[4]==0xb2)
             {
-                ID=junbo_receive_packet[3];
-                smem.record_timeout[ID].ID=junbo_receive_packet[3];
+
+                smem.record_timeout[ID].ID=ID;
                 smem.record_timeout[ID].command=junbo_receive_packet[4];//junbo_receive_packet[2]   I am ID
                 smem.record_timeout[ID].parameter=junbo_receive_packet[5];
             }
             else if(junbo_receive_packet[4]==0xb5)
             {
-                ID=junbo_receive_packet[3];
-                smem.record_brightness[ID].ID=junbo_receive_packet[3];
+
+                smem.record_brightness[ID].ID=ID;
                 smem.record_brightness[ID].command=junbo_receive_packet[4];//junbo_receive_packet[2]   I am ID
                 smem.record_brightness[ID].parameter=junbo_receive_packet[5];
             }
             else if(junbo_receive_packet[4]==0xb4)
             {
-                ID=junbo_receive_packet[3];
-                //module_state_object.bit_block_ID=((junbo_receive_packet[4]>>4)&0xff);
-                smem.record_state[ID][smem.cms_query_count].ID=junbo_receive_packet[3];
+
+                smem.record_state[ID][smem.cms_query_count].ID=ID;
                 smem.record_state[ID][smem.cms_query_count].command=junbo_receive_packet[4];//junbo_receive_packet[2]   I am ID
                 smem.record_state[ID][smem.cms_query_count].parameter=junbo_receive_packet[5];
             }
-else if(junbo_receive_packet[4]==0xb0)
+            else if(junbo_receive_packet[4]==0xb0)
             {
-          //color @to do
+                //color @to do
+                smem.record_brightness[ID].ID=ID;
+                smem.record_color[ID].command=junbo_receive_packet[4];//junbo_receive_packet[2]   I am ID
+                smem.record_color[ID].parameter=junbo_receive_packet[5];
+
             }
 
 
@@ -379,19 +350,182 @@ void new_junbo_cms::light_timeout_control(int control_parameter)
 
     if(control_parameter>99||control_parameter<1)control_parameter=10;
 
-        smem.record_timeout[0].ID=0;
-        smem.record_timeout[0].command=0xc2;
-        if(control_parameter==99)smem.record_timeout[0].parameter=control_parameter;
-        else smem.record_timeout[0].parameter=control_parameter+1;
+    smem.record_timeout[0].ID=0;
+    smem.record_timeout[0].command=0xc2;
+    if(control_parameter==99)smem.record_timeout[0].parameter=control_parameter;
+    else smem.record_timeout[0].parameter=control_parameter+1;
 
-        printf("\nlight_timeout_control light timeoute=%d sec\n",control_parameter);
-        junbo_cms_send(light_timeout[control_parameter]);
+    printf("\nlight_timeout_control light timeoute=%d sec\n",control_parameter);
+    junbo_cms_send(light_timeout[control_parameter]);
+}
+
+void new_junbo_cms::report_light_brightness()
+{
+
+    unsigned char data[27];
+
+    data[	0	]=0x0F;
+    data[	1	]=0xb3;
+//    pthread_mutex_lock(&junbo_light_control::_junbo_mutex);
+    for(int i=1; i<3; i++)
+    {
+
+        data[3*i-1]=ID;
+        data[3*i]=smem.record_light[i].command;
+        data[3*i+1]=smem.record_light[i].parameter;
+    }
+    writeJob.WritePhysicalOut(data, 8, revAPP);
+//   pthread_mutex_unlock(&junbo_light_control::_junbo_mutex);
+
+
+}
+
+void new_junbo_cms::report_light_timeout()//for app
+{
+
+    unsigned char data[27];
+
+    data[	0	]=0x5F;
+    data[	1	]=0xb7;
+    pthread_mutex_lock(&junbo_cms::_junbo_mutex);
+    for(int i=1; i<3; i++)
+    {
+        data[3*i-1]=ID;
+        data[3*i]=smem.record_timeout[i].command;
+        data[3*i+1]=smem.record_timeout[i].parameter;
+        printf(" report light timeout ID=%d  timeout=%d\n",data[3*i-1],data[3*i+1]);
+    }
+    writeJob.WritePhysicalOut(data, 8, revAPP);
+
+
+    pthread_mutex_unlock(&junbo_cms::_junbo_mutex);
+
+
+}
+
+void new_junbo_cms::query_modual_state()
+{
+    try
+    {
+
+        if(smem.cms_query_count>4)smem.cms_query_count=0;
+        int query_block=smem.cms_query_count;
+
+        printf("\nquery light ID=%d\n",ID);
+        junbo_cms_send(query[query_block]);
+
+        if((query_block<=3)&&(query_block>=0))
+        {
+            smem.cms_query_count++;
+            _intervalTimer.set_query_module_timer(2);
+        }
+        else
+        {
+            smem.cms_query_count++;
+            smem.protocol_9F_object.o_CMS_mannager.o_module.new_9fc2_module_report(ID);
+        }//20180321
+        /*
+        if(query_block==4){report_module_state_to_revapp();
+         _intervalTimer.set_query_module_timer(0);
+        }*/
+        printf("Send junbo light query.by query_modual_state\n");
+        /*-----------------*/
+    }
+    catch(...) {}
+}
+
+
+
+void new_junbo_cms::report_module_state_to_revapp()
+{
+
+    BYTE block_test[7];
+
+    int count=0;
+
+    unsigned char data[32];
+
+    data[	0	]=0x0F;
+    data[	1	]=0xb8;
+    pthread_mutex_lock(&junbo_cms::_junbo_mutex);
+    for(int block=1; block<5; block++)
+
+    {
+
+        block_test[0]=block;
+        block_test[1]=(smem.record_state[ID][block].parameter&0x20);
+        block_test[2]=(smem.record_state[ID][block].parameter&0x10);
+        block_test[3]=(smem.record_state[ID][block].parameter&0x8);
+        block_test[4]=(smem.record_state[ID][block].parameter&0x4);
+        block_test[5]=(smem.record_state[ID][block].parameter&0x2);
+        block_test[6]=(smem.record_state[ID][block].parameter&0x1);
+
+        for(int i=1; i<7; i++)
+        {
+            if(block_test[i]>0)block_test[i]=1;
+            else block_test[i]=0;
+        }
+
+        for(int i=0; i<7; i++)data[2+(block-1)*7+(i+1)]=block_test[i];
+
     }
 
+    printf("report_module_state_to_revapp=");
+    for(int i=0; i<30; i++)printf("%x ",data[i]);
+    printf("\n");
+    writeJob.WritePhysicalOut(data, 30, revAPP);
+
+    pthread_mutex_unlock(&junbo_cms::_junbo_mutex);
+}
+
+void new_junbo_cms::color_packet(MESSAGEOK messageIn)
+{
+  try
+    {
+
+        BYTE color[2][3];
+        for(int i=0; i<3; i++)
+        {
+            color[0][i]=messageIn.packet[9+i];
+            color[1][i]=messageIn.packet[9+i];
+        }
+
+        color_control(color);
+        store_color(messageIn);
+    }
+    catch(...) {}
+}
+void new_junbo_cms::color_control(BYTE color[2][3])
+{
+    try
+    {
 
 
+        BYTE packet_error[2]= {0x0f,0x81};
 
+                switch(color[0][0])
+                {
+                case 0x01:
+                junbo_cms_send(color_red);
+                                break;
+                case 0x02:
+                 junbo_cms_send(color_green);
 
+                    break;
+                case 0x03:
+                     junbo_cms_send(color_yellow);
+                    break;
+                default:
+                    smem.vWriteMsgToDOM("wrong color control number \n");
+                    printf("wrong color control ID=%d number= %d\n",1,color[0][0]);
+                    writeJob.WritePhysicalOut(packet_error,2,revAPP);
+                    break;
+                }
 
+        packet_error[1]=0x80;
+        writeJob.WritePhysicalOut(packet_error,2,revAPP);
 
+    }
+    catch(...) {}
+};
 

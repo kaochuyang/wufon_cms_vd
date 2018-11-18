@@ -361,6 +361,7 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
                 block_test[3]=(smem.record_state[ID][block].parameter&0x02);
                 block_test[4]=(smem.record_state[ID][block].parameter&0x01);
 
+
                 for(int i=1; i<5; i++)
                 {
                     if(block_test[i]>0)
@@ -370,6 +371,53 @@ bool protocol_9F_m_curve::cms_manager::module_manager::_9fc2_module_report()
             }
 
         }
+
+
+       /*  if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
+        {*/
+        _9f_object.send_to_center_3(0x9f,0xc2,module_err_quan);
+        _9f_object.vReturnToCenterACK(0x9f,0xc2);
+        smem.vWriteMsgToDOM("9fc2 cms_module state report success\n");
+      //}
+      //  else _9f_object.vReturnToCenterNACK(0x9f,0x42,0x2,0);
+
+        return true;
+
+    }
+    catch(...) {}
+}
+
+bool protocol_9F_m_curve::cms_manager::module_manager::new_9fc2_module_report(int ID)
+{
+
+    try
+    {
+
+
+        module_err_quan=0;
+        BYTE block_test[7];
+
+            for(int block=1; block<4; block++)
+
+            {
+
+                block_test[1]=(smem.record_state[ID][block].parameter&0x08);
+                block_test[2]=(smem.record_state[ID][block].parameter&0x04);
+                block_test[3]=(smem.record_state[ID][block].parameter&0x02);
+                block_test[4]=(smem.record_state[ID][block].parameter&0x01);
+                block_test[5]=(smem.record_state[ID][block].parameter&0x10);
+                block_test[6]=(smem.record_state[ID][block].parameter&0x20);
+
+
+                for(int i=1; i<7; i++)
+                {
+                    if(block_test[i]>0)
+                        module_err_quan++;
+
+                }
+            }
+
+
 
 
        /*  if( smem.record_state[1][0].ID!=0&& smem.record_state[2][0].ID!=0)
