@@ -24,8 +24,8 @@ public:
     void report_module_state_to_revapp();//for app
       void color_packet(MESSAGEOK messageIn);
   void color_control(BYTE color[2][3]);
-
-
+void CalModuleErr(BYTE paramater,int blockNum);
+int getModuleErr();
 protected:
 private:
     char *tty_name;
@@ -37,7 +37,7 @@ private:
     junbo_to_cms flash_on;
     junbo_to_cms flash_off;
     junbo_to_cms light_off;
-    junbo_to_cms query[4];
+    junbo_to_cms query[5];
     junbo_to_cms brightness[4];
     junbo_to_cms light_timeout[100];
     junbo_to_cms color_red;
@@ -47,6 +47,8 @@ private:
     junbo_to_cms color[7];//test
     int ID;
     int sendPacketLengh;
+    int moduleErr;
+    int moduleErr_[5];
 };
 
 #endif // NEW_JUNBO_CMS_H

@@ -6,7 +6,7 @@ new_junbo_cms::new_junbo_cms()
     //ctor
     initial_junbo_control("/dev/ttyS1");
     tty_name="/dev/ttyS1";
-    setJunboToCms(&light_off,0xc0,0x0);
+    setJunboToCms(&light_off,0xc1,0x0);
     setJunboToCms(&color_red,0xc0,0x1);
     setJunboToCms(&color_green,0xc0,0x2);
     setJunboToCms(&color_yellow,0xc0,0x3);
@@ -49,7 +49,7 @@ void new_junbo_cms::setJunboToCms(junbo_to_cms* obj,
     obj->parameter=para1;
 }
 void new_junbo_cms::junbo_cms_send(junbo_to_cms sendContext)
-{
+{  memset(junbo_receive_packet,0,sendPacketLengh);
     unsigned char junbo_send_packet[8];
     int ID=1;
     struct tm* currenttime;
@@ -88,15 +88,15 @@ void new_junbo_cms::junbo_cms_send(junbo_to_cms sendContext)
 
     junbo_cms_port.Rs232Write(junbo_send_packet,sendPacketLengh,tty_name);//write out
 
-    usleep(30000);
+    usleep(700000);
      int count_send=0;
-           while(junbo_receive_packet[3]!=(junbo_send_packet[3]-16))
+           while(junbo_receive_packet[4]!=(junbo_send_packet[4]^0x70))
             {
-
+printf("count=%d recP=%x sendP-16=%x\n",count_send,junbo_receive_packet[4],(junbo_send_packet[4]^0x70));
                 if(count_send<3)
                 {
                  junbo_cms_port.Rs232Write(junbo_send_packet,sendPacketLengh,tty_name);//write out
-                     usleep(30000);
+                     usleep(500000);
                     count_send++;
                 }
                 else break;
@@ -114,7 +114,7 @@ bool new_junbo_cms::ParseBlock(int receiveBlockLength,BYTE *block,MESSAGEOK *mes
     for (i=0; i<receiveBlockLength; i++)
     {
 //      printf("_%C", messageIn[j].packet[k]=block[i]);
-        if (( block[i] == 0xaa)&&(block[i]==0xbb))
+        if (( block[i] == 0xaa)&&(block[i+1]==0xcc))
         {
             if((i>0)&&(messageIn[j].success==true))
             {
@@ -201,7 +201,7 @@ void new_junbo_cms::junbo_send_by_VD(int textID)
 {
     try
     {
-        int count_send=0;
+
 
         junbo_cms_send(notice_car[textID]);
 
@@ -235,9 +235,12 @@ void new_junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the
         }
     int ID=0;
     try
-    {
+    {printf("\n new junbo receive!!! 20181118\n");
         pf=fopen(cFileTmp,"a+");
-        for(int i=0; i<sendPacketLengh; i++)junbo_receive_packet[i]=messageIn.packet[i];
+        for(int i=0; i<sendPacketLengh; i++){junbo_receive_packet[i]=messageIn.packet[i];
+        printf("%x ",junbo_receive_packet[i]);
+
+        }
         if(messageIn.cksStatus==true)
         {
 
@@ -267,10 +270,13 @@ void new_junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the
             }
             else if(junbo_receive_packet[4]==0xb4)
             {
-
+printf("query receive count=%d\n",smem.cms_query_count);
                 smem.record_state[ID][smem.cms_query_count].ID=ID;
                 smem.record_state[ID][smem.cms_query_count].command=junbo_receive_packet[4];//junbo_receive_packet[2]   I am ID
                 smem.record_state[ID][smem.cms_query_count].parameter=junbo_receive_packet[5];
+                printf("query receive %x\n",smem.record_state[ID][smem.cms_query_count].parameter);
+CalModuleErr(smem.record_state[ID][smem.cms_query_count].parameter,smem.cms_query_count);
+
             }
             else if(junbo_receive_packet[4]==0xb0)
             {
@@ -309,13 +315,37 @@ void new_junbo_cms::junbo_cms_receive(MESSAGEOK messageIn)//just for receive the
 
         fwrite( cTimeHeader, length, 1, pf );
         fclose(pf);
-        memset(junbo_receive_packet,0,sendPacketLengh);
+
         memset(cReadString,'\0',sizeof(cReadString));
         memset(wrongstring,'\0',sizeof(wrongstring));
     }
     catch(...) {}
 }
+void new_junbo_cms::CalModuleErr(BYTE parameter,int blockNum)
+{
+moduleErr_[blockNum]=0;
+        BYTE block_test[7];
 
+
+
+            {printf("report module err para=%x\n",parameter);
+
+                block_test[1]=parameter&0x08;
+                block_test[2]=parameter&0x04;
+                block_test[3]=parameter&0x02;
+                block_test[4]=parameter&0x01;
+                block_test[5]=parameter&0x10;
+                block_test[6]=parameter&0x20;
+
+
+                for(int i=1; i<7; i++)
+                {
+                    if(block_test[i]>0)
+                        moduleErr_[blockNum]++;
+
+                }
+            }
+};
 void new_junbo_cms::cms_test_function(int text_ID)
 {
     try
@@ -402,13 +432,19 @@ void new_junbo_cms::report_light_timeout()//for app
 
 
 }
-
+int new_junbo_cms::getModuleErr()
+{
+    moduleErr=0;
+    for(int i=1;i<5;i++)moduleErr+=moduleErr_[i];
+    return moduleErr;
+}
 void new_junbo_cms::query_modual_state()
 {
     try
     {
-
+if(smem.cms_query_count==0)moduleErr=0;
         if(smem.cms_query_count>4)smem.cms_query_count=0;
+
         int query_block=smem.cms_query_count;
 
         printf("\nquery light ID=%d\n",ID);
@@ -422,7 +458,7 @@ void new_junbo_cms::query_modual_state()
         else
         {
             smem.cms_query_count++;
-            smem.protocol_9F_object.o_CMS_mannager.o_module.new_9fc2_module_report(ID);
+            smem.protocol_9F_object.o_CMS_mannager.o_module.new_9fc2_module_report();
         }//20180321
         /*
         if(query_block==4){report_module_state_to_revapp();
